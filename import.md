@@ -1,3 +1,12 @@
+---
+title: import
+date: 2019-4-011 
+tags: [开发笔记]
+---
+
+
+
+
 ##  import * as  xx  from   'xx'
 
 > 导出的内容组合成一个对象返回；

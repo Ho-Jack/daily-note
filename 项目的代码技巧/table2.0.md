@@ -1,3 +1,9 @@
+---
+title:Element-UI中table组件的简单封装
+date: 2019-5-08 
+tags: [开发笔记]
+---
+
 ## Element-UI中 table组件在项目中简单封装
 
 > 暂时还没有添加 双击列表跳转进入编辑页的事件
@@ -90,11 +96,11 @@
           }
       }
       ```
-      
+
       3. 在config文件夹下的columns.js
-      
+
          >   向外导出一个 数组对象
-         
+
          ```js
          //列表的数据模型
          import moment  from 'moment';  //引入moment.js插件需要npm 下载 主要对时间格式化
@@ -176,7 +182,5 @@
          }
          
          
-      
+         
          ```
-         
-         
