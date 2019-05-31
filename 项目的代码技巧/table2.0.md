@@ -1,5 +1,5 @@
 ---
-title:Element-UI中table组件的简单封装
+title: Element-UI中table组件的简单封装
 date: 2019-5-08 
 tags: [开发笔记]
 ---
