@@ -1,3 +1,9 @@
+---
+title: Vue实例里this的使用
+date: 2019-2-11 18:00:00
+tags: [JS,ES6,开发笔记]
+---
+
 # Vue实例里this的使用
 
 > ### 在Vue所有的生命周期钩子方法（如created，mounted， updated以及destroyed）里使用this，

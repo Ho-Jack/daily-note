@@ -1,3 +1,11 @@
+---
+title: this在Vue中的指向
+date: 2019-2-11 16:00:00
+tags: [JS,ES6,开发笔记]
+---
+
+## this在Vue中的指向
+
 我们知道，如果Vue的data中有属性message，那么方法中直接用this.message就可以获取到这个message的值
 
 > ### 在Vue的methdos方法，普通函数的this指向的就是Vue的实例，this.message可以获取到data中的值，
