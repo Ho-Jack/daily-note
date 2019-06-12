@@ -1,9 +1,13 @@
 ---
-title: Element-UI中分页组件在项目中如何用
-date: 2019-4-11 04:00:00
+title:Element-UI中分页组件在项目中如何用
+date: 2019-04-11 04:00:00
 tags: [开发笔记]
 ---
-
+---
+title: 【读书笔记】《JavaScript权威指南》第7章数组
+date: 2018-11-08 04:10:03
+tags: [读书笔记, 《JavaScript权威指南》]
+---
 
 
 https://raw.githubusercontent.com/Ho-Jack/daily-note/master/img/

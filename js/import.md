@@ -1,7 +1,7 @@
 ---
 title: import
-date: 2019-4-011 
-tags: [开发笔记]
+date: 2019-04-011 
+tags: [JS, ES6, 开发笔记]
 ---
 
 

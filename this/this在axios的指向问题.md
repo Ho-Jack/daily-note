@@ -1,7 +1,7 @@
 ---
 title: Element-UI中分页组件在项目中如何用
-date: 2019-2-11 04:00:00
-tags: [JS,ES6,开发笔记]
+date: 2019-02-11 04:00:00
+tags: [JS,ES6, 开发笔记]
 ---
 ## this在axios的指向问题
 
