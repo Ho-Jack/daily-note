@@ -10,7 +10,7 @@ tags: [VUE,开发笔记]
 
 1. 定义一个mixin.js文件
 
-   ！[混入](https://raw.githubusercontent.com/Ho-Jack/daily-note/master/img/混入1.png)
+   ![混入](https://raw.githubusercontent.com/Ho-Jack/daily-note/master/img/mixin1.png)
 
 2. 随便写一些数据
 
@@ -53,7 +53,7 @@ tags: [VUE,开发笔记]
 
   1. 在mixin.js 文件中，引入vue 并且注册全局混合
 
-     ！[全局混合](https://raw.githubusercontent.com/Ho-Jack/daily-note/master/img/混合2.png)
+     ![全局混合](https://raw.githubusercontent.com/Ho-Jack/daily-note/master/img/mixin2.png)
 
      ```js
      import Vue form 'vue';
