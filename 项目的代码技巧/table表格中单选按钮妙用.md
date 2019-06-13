@@ -1,7 +1,7 @@
 ---
 title: Element-UI,table表格里单选按钮妙用
 date: 2019-4-11 04:00:00
-tags: [Element-UI,开发笔记]
+tags: [Element-UI, 开发笔记]
 ---
 
 - table表格组件中单选按钮

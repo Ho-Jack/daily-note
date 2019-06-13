@@ -1,7 +1,7 @@
 ---
 title: table里enum如何渲染色彩
 date: 2019-5-20 18:00:00
-tags: [Element-UI,开发笔记]
+tags: [Element-UI, 开发笔记]
 ---
 
 > ### 用过滤器和class绑定实现，先过滤不同字段的颜色然后再绑定class
