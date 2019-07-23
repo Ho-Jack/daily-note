@@ -1,0 +1,50 @@
+>  在JavaScript中，有三种常用的绑定事件的方法：
+> 1. 在DOM元素中直接绑定；
+> 2. 在JavaScript代码中绑定；
+> 3. 绑定事件监听函数。
+
+ ##### 1. 在DOM元素中直接绑定  onXXX = 'js代码'
+
+> onXXX为事件名称，onclick 单击事件、 ondouble 双击事件、onmouseover移入事件、onmouseout移出事件
+
+```html
+<input  onclick='fun()' type='button'/>
+<script>
+function  fun(){
+   (js代码) 
+}
+</script>
+```
+
+#####  2.在JS代码中绑定    elementObject.onXXX=function(){     // 事件处理代码    }
+
+>elementObject 为DOM对象， 
+
+```html
+<input id="demo" type="button" value="点击我，显示 type 属性" />
+
+<script type="text/javascript">
+document.getElementById("demo").onclick=function(){
+alert(this.getAttribute("type")); // this 指当前发生事件的HTML元素，这里是<div>标签
+}
+</script>
+```
+
+##### 3. 绑定事件监听函数     
+
+#####  elementObject.addEventListener(eventName,handle,useCapture);
+
+| 参数          | 说明                                                         |
+| ------------- | ------------------------------------------------------------ |
+| elementObject | DOM对象（即DOM元素）。                                       |
+| eventName     | 事件名称。注意，这里的事件名称没有“ on ”，如鼠标单击事件 click ，鼠标双击事件 doubleclick ，鼠标移入事件 mouseover，鼠标移出事件 mouseout 等。 |
+| handle        | 事件句柄函数，即用来处理事件的函数。                         |
+| useCapture    | Boolean类型，是否使用捕获，一般用false 。这里涉及到JavaScript事件流的概念，后续章节将会详细讲解。 |
+
+elementObject.attachEvent(eventName,handle);
+
+| 参数          | 说明                                                         |
+| ------------- | ------------------------------------------------------------ |
+| elementObject | DOM对象（即DOM元素）。                                       |
+| eventName     | 事件名称。注意，与addEventListener()不同，这里的事件名称有“ on ”，如鼠标单击事件 onclick ，鼠标双击事件 ondoubleclick ，鼠标移入事件 onmouseover，鼠标移出事件 onmouseout 等。 |
+| handle        | 事件句柄函数，即用来处理事件的函数。                         |
