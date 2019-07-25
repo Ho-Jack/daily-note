@@ -1,3 +1,5 @@
+> rem是css中的长度单位，1rem=根元素html的font-size值。当页面中所有元素都使用rem单位时，你只需要改变根元素font-size值，所有元素就会按比例放大或者缩小。因此我们只需要写一小段js代码，根据屏幕宽度改变html的font-size值，就可以做到弹性布局。
+
 
 
 ```js
@@ -6,6 +8,7 @@
     var resize = 'orientationchange' in window ? 'orientationchange' :'resize';
             var setRem = function () {
            var screenWidth = docEl.clientWidth || window.screen.width || 375;
+                //1000是设计稿的宽度
                 docEl.style.fontSize = (100 * screenWidth / 1000) + 'px';
             };
             // 屏幕大小变化后重新设置rem字号
@@ -14,10 +17,5 @@
         })();
 ```
 
+   
 
-
----------------------
-作者：麦乐乐 
-来源：CSDN 
-原文：https://blog.csdn.net/qq_41831345/article/details/80651050 
-版权声明：本文为博主原创文章，转载请附上博文链接！
