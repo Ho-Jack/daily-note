@@ -16,3 +16,10 @@
 5. maximum-scale=1.0    //用户可以放大到的最大尺度（1.0表示不缩放）
 
 6. user-scalable=no        //用户是否可以通过他的手势来缩放整个应用程序，使应用程序的尺度发生一个改变（yes/no）
+
+经常使用的meta
+
+```html
+<meta name='viewport' content='width=device-width,initial-scale=1,user-scale=no' />
+```
+

@@ -1,5 +1,5 @@
 title GIT提交代码
-color 16
+color 7 
 
 
 echo 开始提交代码到本地仓库
