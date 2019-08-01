@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JQUERY弹出框在鼠标处出现</title>
+    <script src='page/jquery-1.9.1.min.js'></script>
+ 
+
+</head>
+<body>
+ 
+	<button id="btn1">点我出现弹出框</button>
+	  <div class="showbtn">弹出</div>
+    <lable class="showbtn">弹出</lable>
+    <div class="box" style="display:none">
+    <h2>jQuery 学习交流<a href="#" class="close">关闭</a></h2>
+    <div class="list">
+        <ul>
+            <li>我是稀饭</li>
+            <li>我是稀饭</li>
+            <li>我是稀饭</li>
+        </ul>
+    </div>
+</div>
+
+
+</body>
+</html>
+<script>
+	//如何使用弹出层的js 
+//1.必须含有jquery
+//2.在body下面有个class 为box的div，为弹出层
+ 
+//原理见http://www.jquery001.com/jquery-mask-layer.html
+$(function () 
+{
+	function initalertcss(){
+		//这里http://www.bejson.com/jshtml_format/通过它来互转
+		//css
+		var tmp='<style>ul{list-style: none outside none;}.box h2{margin: 0;padding: 0;	}.box{position:absolute;width:300px;left:50%;height:auto;z-index:100;background-color:#fff;border:1px #ddd solid;padding:1px}.box h2{height:25px;font-size:16px;background-color:#aaa;position:relative;padding-left:10px;line-height:25px;color:#fff}.box h2 a{position:absolute;right:5px;font-size:14px;color:#fff}.box .list{padding:10px}.box .list li{height:24px;line-height:24px}.box .list li span{margin:0 5px 0 0;font-family:\"宋体\";font-size:12px;font-weight:400;color:#ddd}.showbtn{font:bold 24px \'微软雅黑\'}#bg{background-color:#666;position:absolute;z-index:99;left:0;top:0;display:none;width:100%;height:100%;opacity:0.5;filter:alpha(opacity=50);-moz-opacity:0.5}</style>';
+		//bg
+		//tmp=tmp+'<div id=bg></div>'
+		$("body").append(tmp);
+	}
+	
+	initalertcss();
+    $(".showbtn").click(function (event) {
+		var myEvent=event||window.event
+        $("#bg").css({
+            display: "block", height: $(document).height()
+        });
+        var $box = $('.box');
+        $box.css({
+            //设置弹出层距离左边的位置
+            left: myEvent.clientX+"px",
+            //设置弹出层距离上面的位置
+            top: myEvent.clientY+"px",
+            display: "block"
+        });
+    });
+    //点击关闭按钮的时候，遮罩层关闭
+    $(".close").click(function () {
+        $("#bg,.box").css("display", "none");
+    });
+});
+
+</script>
