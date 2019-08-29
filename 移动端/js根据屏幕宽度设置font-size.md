@@ -7,6 +7,7 @@
     var docEl = document.documentElement;
     var resize = 'orientationchange' in window ? 'orientationchange' :'resize';
             var setRem = function () {
+                //获取屏幕的宽度
            var screenWidth = docEl.clientWidth || window.screen.width || 375;
                 //1000是设计稿的宽度
                 docEl.style.fontSize = (100 * screenWidth / 1000) + 'px';

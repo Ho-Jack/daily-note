@@ -28,15 +28,14 @@ tags: [JS,ES6,开发笔记]
             data : {
                 message : "hello vue!"
             },
-            methods : {
-              
+            methods : {  
                 // 普通函数this的指向是其调用者
                 getMessage : function(){
                     // alert(this.message);
                     console.log(this);  // 指向Vue的实例
                 },
                   // 箭头函数的this指向了window，其实应该指向vue的实例
-                // 箭头函数的指向是其定义的外部函数（有宿主对象决定）
+                  // 箭头函数的指向是其定义的外部函数（有宿主对象决定）
                 getMessage : ()=>{
                     console.log(this);  // window
                 }
