@@ -10,35 +10,54 @@ tags: [VUE, 开发笔记]
 
   > store( state、mutations、actions、getters)
 
-* state 用来数据共享数据存储                                   $store.state.xxx
+* state 用来数据共享数据存储                                      $store.state.xxx
 
-* mutation 用来注册改变数据状态（同步）               $store.commit( mutation名称 )
+* mutation 用来注册改变数据状态（同步）               $store.commit( "mutation名称 ")
 
-* action 解决异步改变共享数据( 异步 )                      $store.dispatch( action名称，data)
+* action 解决异步改变共享数据( 异步 )                        $store.dispatch("action名称" ，data)
 
-* getters 用来对共享数据进行过滤操作（计算属性）$store.getters.xx      
+* getters 用来对共享数据进行过滤操作（计算属性）$store.getters.xx    
+
+  (在js文件中 引入store文件 然后直接  store.dispach 不用写$ )  
 
 >在组件中分发 state、mutations 、actions 、getters
 >* **...mapActions([   '你要获取的actions名字'   ])**，你传入什么，就会返回一个包含对应的actions的对象，通过...对象扩展运算符，将返回值解析就成为methods的属性，和平常的方法一样调用即可
 >
->  **mapActions**、**mapMutations**、   **①**必须先引用   **②**且要放在 **methods**中。
+>  **mapActions**、**mapMutations**、   **①**必须先引用   **②**且要放在 **methods**中。  
 >
->  **mapState、mapGetters **              **①**必须先引用 **②**并且放在**computed**中
+>  **mapState、mapGetters **              **①**必须先引用 **②**并且放在**computed**中   
 ```js
 import { mapActions } from 'vuex'   //引用
 export default {
  // ...
     methods: {
         ...mapActions([
-'increment', // 将 `this.increment()` 映射为`this.$store.dispatch('increment')` 
+         'increment',  
+            // 将 `this.increment()` 映射为`this.$store.dispatch('increment')` 
             // `mapActions` 也支持载荷：
-  'incrementBy' // 将 `this.incrementBy(amount)` 映射为 `this.$store.dispatch('incrementBy', amount)`
+        'incrementBy'
+             // 将 `this.incrementBy(amount)` 映射为                                                      //   `this.$store.dispatch('incrementBy', amount)`
         ]),
         ...mapActions({
-            add: 'increment' // 将 `this.add()` 映射为 `this.$store.dispatch('increment')`
+            add: 'increment'  // 将 `this.add()` 映射为 `this.$store.dispatch('increment')`
         })
     }}
 ```
+```js
+<span>{{user}}</span>
+
+import { mapState } from 'vuex'   //引用
+computed: {
+    ...mapState({
+    user: state => state.user.XX,
+   })
+}
+只要vuex里面的user.xx发生变化就能监控到
+
+```
+
+
+
 1. 
 ```js
 const state ={
@@ -58,6 +77,9 @@ const getters ={
     DD(state){
         return  state.AA
 }
+const getters  ={
+    DD：state=>state.AA
+}
 ```
 
 2. 
@@ -76,11 +98,12 @@ const moduleB = {
 const store =new Vuex.Store({
                 modules:{
                 a:moduleA,
-                b:moduleB 
+                b:moduleB
                }
             })
-    store.state.a      //  获取moduleA
-    store.state.b      //  获取moduleB    
+  export default store
+    store.state.a.XX      //  获取moduleA
+    store.state.b.XX      //  获取moduleB    
 ```
 
 
@@ -180,9 +203,11 @@ const store =new Vuex.Store({
 
 
   ```js
-computed: mapState({
+computed: {
+    ...mapState({
     user: state => state.user,//从全局存储里取出当前登录用户信息
     menuTabList: state => state.menuTab.menuTabList,//从全局存储里取出当前打开的菜单tab
-   }),
+   })
+}
   ```
 
