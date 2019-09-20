@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "LED";
+  src: url('./LED.woff');
+  font-weight: normal;
+  font-style: normal;
+ }
+
+ .font-led{
+	 font-family: 'LED';
+	 font-size: 46px;
+ }
