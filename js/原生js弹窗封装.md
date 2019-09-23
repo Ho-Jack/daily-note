@@ -1,4 +1,10 @@
-封装函数
+---
+title: 原生JS弹窗封装
+date: 2019-04-11 04:00:00
+tags: [JS, 开发笔记]
+---
+
+##### 封装函数
 
 ```
 document.body.appendChild(node);  

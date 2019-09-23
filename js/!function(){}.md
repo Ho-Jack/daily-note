@@ -1,3 +1,8 @@
+---
+title: 立即执行函数的几种写法
+date: 2019-9-11 00:00:00
+tags: [JS, 开发笔记]
+---
 ```js
 !function(){
 
@@ -9,13 +14,13 @@
 
 ##### 立即执行函数
 
-```
+```js
 (function() {
     console.log(“Foo!”); 
 })();
 ```
 
-```
+```js
 (function() {
     console.log(“Foo!”); 
 }());

@@ -1,3 +1,9 @@
+title: git push 命令
+date: 2019-7-18 00:00:00
+tags: [Git, 开发笔记]
+
+
+
 $ git push origin
 
 上面命令表示，将当前分支推送到origin主机的对应分支。 

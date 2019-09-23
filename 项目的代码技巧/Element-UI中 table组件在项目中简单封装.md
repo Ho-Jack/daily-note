@@ -32,17 +32,18 @@ tags: [Element-UI, 开发笔记]
                               :show-overflow-tooltip="true">
                <template slot-scope="scope">
                  <!--普通列-->
-                 <span v-if="column.type =='common'">   {{ scope.row[column.prop] }}  </span>
+          <span v-if="column.type =='common'">   {{ scope.row[column.prop] }}  </span>
                  <!--图片-->
                  <div v-else-if="column.type=='img'" style="text-align:center">
                    <img :src='scope.row[column.prop]' style="width:200px; height:100px;">
                  </div>
                  <!--类型为枚举enumTag，显示为tag-->
-         <div class="tag-list-wrap" v-else-if="column.type=='enumTag' && scope.row[column.prop]">
+         <div class="tag-list-wrap"
+              v-else-if="column.type=='enumTag' && scope.row[column.prop]">
                    <template v-for="item of column.enumList">
                      <el-tag v-if="scope.row[column.prop].desc === item.desc"
                              @click.stop="$emit('tagClick', item.key)"
-                             :style="item.clickable ? 'cursor: pointer;' : ''" :type="item.type">
+                 :style="item.clickable ? 'cursor: pointer;' : ''" :type="item.type">
                        {{ item.desc }}
                      </el-tag>
                    </template>
@@ -62,10 +63,10 @@ tags: [Element-UI, 开发笔记]
                </template>
              </el-table-column>
            </el-table>
-   ```
-
-   2. script
-
+```
+   
+2. script
+   
       ```js
        import columns from './config/columns'   //将表格栏的信息封装进columns好管理
       export default{
@@ -95,12 +96,12 @@ tags: [Element-UI, 开发笔记]
             },
           }
       }
-      ```
-
-      3. 在config文件夹下的columns.js
-
-         >   向外导出一个 数组对象
-
+   ```
+   
+   3. 在config文件夹下的columns.js
+   
+      >   向外导出一个 数组对象
+   
          ```js
          //列表的数据模型
          import moment  from 'moment';  //引入moment.js插件需要npm 下载 主要对时间格式化

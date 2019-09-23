@@ -1,14 +1,22 @@
 ---
 title: Vue实例里this的使用
 date: 2019-02-11 18:00:00
-tags: [JS,ES6,开发笔记]
+tags: [JS,ES6,Vue,开发笔记]
 ---
 
 # Vue实例里this的使用
 
-> ### 在Vue所有的生命周期钩子方法（如created，mounted， updated以及destroyed）里使用this，
->
-> ### this指向调用它的Vue实例。 
+> ##### 在Vue的生命周期钩子方法（如created，mounted， updated以及destroyed）里使用this，
+> ##### this指向调用它的Vue实例。 
+
+##### 在vue的生命周期的钩子方法中使用箭头函数可能改变this的指向：（箭头函数不能作为对象的属性）
+
+```js
+methods:{  xx : ()=>{  this  }}       //this指向window  （箭头函数为对象的属性）
+methods:{  xx : function (){  this  }}     //this指向vue实例 vm
+```
+
+例子
 
 ```js
 <!DOCTYPE html>

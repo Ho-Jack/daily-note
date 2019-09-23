@@ -1,3 +1,11 @@
+---
+title:移动端mate头设置
+date: 2019-08-25 00:00:00
+tags: [开发笔记, 移动端]
+---
+
+
+
 ###  <mate name="viewport">移动端设置详
 
 ```html
