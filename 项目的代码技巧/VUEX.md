@@ -64,8 +64,8 @@ const state ={
     AA: ' '
 }
 const  mutations={
-    BB(state,{对象1}){
-         //更新state的操作
+    BB(state,{对象1}){    
+        state.AA=xx //更新state的操作
     }
 }
 const actions ={

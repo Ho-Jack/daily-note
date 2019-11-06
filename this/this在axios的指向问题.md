@@ -30,7 +30,7 @@ methods:{
     loadData:function(){
         axios.get('static/mock.json')
             .then(  (response)=>{
-            //this为undefined
+            
             response=response.data
             this.title=response.title
         })
