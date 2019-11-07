@@ -1,5 +1,5 @@
 ---
-title:js根据屏幕宽度设置font-size
+title: js根据屏幕宽度设置font-size
 date: 2019-08-05 00:00:00
 tags: [开发笔记, 移动端]
 ---
