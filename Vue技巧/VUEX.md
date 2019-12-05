@@ -204,10 +204,25 @@ const store =new Vuex.Store({
 
   ```js
 computed: {
+    //对象写法
     ...mapState({
     user: state => state.user,//从全局存储里取出当前登录用户信息
     menuTabList: state => state.menuTab.menuTabList,//从全局存储里取出当前打开的菜单tab
    })
+    //数组写法
+   ...mapState([  'user',  'menuTabList'  ])
 }
   ```
+
+```js
+computed: {
+      ...mapGetters([ 'singer'  ]),
+      }
+      //转换
+computed: {
+   singer() {
+        return this.$store.state.singer
+    }
+ }
+```
 

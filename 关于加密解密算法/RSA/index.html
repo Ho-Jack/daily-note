@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./jquery-3.4.1.min.js"></script>
+    <script src="./jsencrypt.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <div><span>账号：admin</span></div></br>
+        <div>账号密文：<span class="username">密文：</span></div> </br>
+        <div>账号解码：<span class="username2">密文：</span></div></br>
+        <div><span>密码：123456</span></div></br>
+        <div>密码密文：<span class="password">密文：</span></div></br>
+        <div>密码解码：<span class="password2">密文：</span></div></br>
+        <div><span>登录时对账号密码进行序列化JSON：{"username":"amdin","password":"123456"}</span></div></br>
+        <div>账号+密码密文：<span class="total">密文：</span></div></br>
+        <div>账号+密码解码：<span class="total2">密文：</span></div></br>
+    </div>
+</body>
+
+</html>
+<script>
+    $(function () {
+        //实例RSA加密解密JS库
+        var encrypt = new JSEncrypt();
+        //公钥
+        let publicKey = `-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqs1caPGKxjVqx/sAXyA5+OL8Z
+A2rRnu5zhoCK83GMkI0F/jB5i810/Co4KK47+MwjlRH7DImN01TtxquDXSLYmEbW
+TCziAXoDTxb71ywyA0XQt0raPPs0PUXTEJVweFueQ5qG419uR5+SiY1/0+BMHFuS
+rDPEOYCqtULeox5S8QIDAQAB
+-----END PUBLIC KEY-----`
+        //私钥
+        let privateKey = `-----BEGIN RSA PRIVATE KEY-----
+MIICWwIBAAKBgQCqs1caPGKxjVqx/sAXyA5+OL8ZA2rRnu5zhoCK83GMkI0F/jB5
+i810/Co4KK47+MwjlRH7DImN01TtxquDXSLYmEbWTCziAXoDTxb71ywyA0XQt0ra
+PPs0PUXTEJVweFueQ5qG419uR5+SiY1/0+BMHFuSrDPEOYCqtULeox5S8QIDAQAB
+AoGAdteTDb36zDhoa0G8BRKQHIpvaP+7D6PByYZb2eFxLXa55/E3WHffm9GvpxeT
+bkdiAGfZc9ofrjDykPRfFn7yMYyBUStyPDx6kt4yBdx+UoinMdE54YASwTlY+Izq
+l1kMNTij/h2QzpYZUqTDIPmU+UqTiyELmtsH5cYGHHytFD0CQQDTmejd1tSL6PWl
+lrR+t9n7arpuidv21hp/TcP8gpxnvWDv5/FfxTZwPbcITssrA3NNYKj3J/sEU5iU
+6GizAn1jAkEAzoR2/uwEemSUtpjb4XHRoy2/PisMactBKZCE9cqvMX5okc6WpmDH
+yOJ6ly2yC/FLBdCGkAcuHOIP8bqerbJ4mwJARDdyI1KG4zQPPXsAZXnQBIW75Lb8
++u67TB8998IDuk4LWkxkPIPPsQ+0WjFMvmk2WtO2pTd2bUamAhuK5WsAEQJAcliY
+Bpgp9pbAXMYQYSiDOcW3sTVmvyEiaGAzrmBWVqI2Rh1L/r1xgUIdPJ25irFEp+iI
+yTCgkK9+wophF63M5wJAYj275laSaCi1jur2QSn6C+DQ3jol+HugT4aJAdcw89u6
+wDu2C/rphWnXEMrGB9a2qSPimt59wkvOqnd2SMvkfQ==
+-----END RSA PRIVATE KEY-----`
+        //账号密码整合成一条密文
+        var json = { username: 'amdin', password: '123456' }
+        var str = JSON.stringify(json);
+        //加密
+        encrypt.setPublicKey(publicKey)
+        var rsaName = encrypt.encrypt('admin')
+        var rsaPasword = encrypt.encrypt('123456')
+        var rsaTotal = encrypt.encrypt(str)
+        $('.username').html(rsaName)
+        $('.password').html(rsaPasword)
+        $('.total').html(rsaTotal)
+        //解密
+        var decrypt = new JSEncrypt();
+        decrypt.setPrivateKey(privateKey)//设置秘钥
+        var decryptName = decrypt.decrypt(rsaName)//解密之前拿公钥加密的内容
+        var decryptPassword = decrypt.decrypt(rsaPasword)//解密之前拿公钥加密的内容
+        var decryptTotal = decrypt.decrypt(rsaTotal)//解密之前拿公钥加密的内容
+        $('.username2').html(decryptName)
+        $('.password2').html(decryptPassword)
+        $('.total2').html(decryptTotal)
+    })
+
+</script>
