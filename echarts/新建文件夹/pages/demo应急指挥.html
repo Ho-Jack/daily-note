@@ -1,0 +1,2095 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head></head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<script src="../javascripts/base.js"></script>
+<!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=Gwyjq0e0pNAAVBH97ctsaXw1CBekvo3G">
+    </script> -->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=5cGAqOaznjB0lLkvxbTBNjH7GG1djf8O">
+</script>
+<link rel="stylesheet" href="../stylesheets/home.css">
+<title>惠州建筑业信用信息项目管理平台</title>
+</head>
+
+<body class="main_bg">
+<div class="header">
+    <h1>惠州建筑业信用信息项目管理平台</h1>
+    <ul class="right_bar">
+        <li>
+            <img src="../images/ic_psn.png">
+            <span>王二小</span>
+        </li>
+        <li>
+            <span>2019/06/19</span>
+            <img src="../images/ic_weather.png">
+        </li>
+        <li style="cursor: pointer">
+            <img src="../images/ic_exit.png">
+        </li>
+    </ul>
+    <ul class="menu_wrapper">
+        <li class="active">应急指挥</li>
+        <li>市场监管</li>
+        <li>业务管理</li>
+    </ul>
+</div>
+<div class="main_wrapper main_box">
+        <div class="top border_color">
+                    <div>
+                        <p>在建项目</p>
+                        <p>1200</p>
+                    </div>
+                    <div>
+                        <p>项目预警(个)</p>
+                        <p class="color_5">29</p>
+                    </div>
+                    <div>
+                        <p>参建企业(个)</p>
+                        <p>174</p>
+                    </div>
+                    <div>
+                        <p>预警企业(个)</p>
+                        <p class="color_5">29</p>
+                    </div>
+                    <div>
+                        <p>未解除预警(个)</p>
+                        <p>648</p>
+                    </div>
+            </div>
+    <div class="main_echar">
+        <div class="echar_left">
+            <div class="left_top">
+                <div class="top_left">
+                    <div class="top_left1" id="echart1"></div>
+                    <div class="top_left2" id="echart2" style="margin:0.2rem 0"></div>
+                </div>
+                <div class="top_right" id="map"></div>
+            </div>
+            <div class="left_foot" id="echart3"></div>
+        </div>
+        <div class="echar_right">
+
+            <div class="right_char1" id="echart5">
+
+            </div>
+            <div class="right_char2" style="margin:0.2rem 0">
+                <div class="echar_table_title">
+                   <span>近三月项目停工次数>10次</span>
+                </div>
+                <div class="echar_table">
+                    <table class="spe_table1" style="table-layout: fixed;width:100%">
+                        <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th  style="width: 70%">
+                                <span>项目</span>
+
+                            </th>
+                            <th>
+                                <span>次数</span>
+
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <span>01</span>
+                            </td>
+                            <td class="table_content">
+                                <span >东坡祠纪念馆</span>
+                            </td>
+                            <td>
+                                <span>2</span>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="right_char3">
+                <div class="echar_table_title">
+                    <span>近三月月均扣分>50分</span>
+                </div>
+                <div class="echar_table">
+                    <table class="spe_table1" style="table-layout: fixed;width:100%">
+                        <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th  style="width: 70%">
+                                <span>项目</span>
+
+                            </th>
+                            <th>
+                                <span>次数</span>
+
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <span>01</span>
+                            </td>
+                            <td class="table_content">
+                                <span >东坡祠纪念馆</span>
+                            </td>
+                            <td>
+                                <span>2</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>01</span>
+                            </td>
+                            <td class="table_content">
+                                <span >东坡祠纪念馆</span>
+                            </td>
+                            <td>
+                                <span>2</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>01</span>
+                            </td>
+                            <td class="table_content">
+                                <span >东坡祠纪念馆</span>
+                            </td>
+                            <td>
+                                <span>2</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>01</span>
+                            </td>
+                            <td class="table_content">
+                                <span >东坡祠纪念馆</span>
+                            </td>
+                            <td>
+                                <span>2</span>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../javascripts/echarts.min.js"></script>
+<script src="../javascripts/jquery-3.1.1.js"></script>
+<script src="../javascripts/huizhouDEMO.js"></script>
+<script>
+    window.addEventListener('resize', initFontSize);
+    initFontSize();
+    //图表配置
+    var ALLOP = {
+        chrOne: function (data) {
+            option = {
+                title: {
+                    text: '最近七天管理人员到岗率',
+                    textStyle: {
+                        fontSize: 30*rate,		//字体大小
+                        color: 'rgba(247,247,247,1)',
+                    }
+
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    },
+                    textStyle:{
+                        fontSize:30*rate
+                    }
+                },
+                legend: {
+                    data: ['实际出勤', '应出勤',],
+                    x: 'right', //居右显示
+                  //  itemGap: 25 * rate,
+                    itemWidth: 35 * rate,
+                    itemHeight: 25 * rate,
+                    textStyle: {
+                        fontSize: 20*rate,		//字体大小
+                        color: 'rgba(247,247,247,1)',
+                    }
+
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['一日', '二日', '三日', '四日', '五日', '六日', '七日'],
+
+                    axisLabel: {
+                        color: 'white',
+                        fontSize:25*rate
+                    },
+                    axisTick: {show: false,}
+                },
+
+                yAxis: {
+                    axisLabel: {show: false},
+                    axisLine: {show: false},
+                    splitLine: {
+                        show: true,
+                        lineStyle: {color: '#27404D'}
+                    }
+
+                },
+                series: [
+                    {
+                        name: '实际出勤',
+                        type: 'bar',
+                        stack: '总量',
+                        barWidth: 60*rate,
+                        //   color:"#00B8E5,#19476B",
+                        label: {
+
+                            normal: {
+                                color: 'white',
+                                show: true,
+                                textStyle:{
+                                    fontSize:25*rate
+                                }
+                                //    position: 'top'
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                    offset: 0,
+                                    color: "#4F8316" // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: "#B6FF77" // 60% 处的颜色
+                                },], false),
+                                barBorderRadius: 3
+                            },
+                        },
+
+                        data: [120, 132, 101, 134, 90, 230, 210]
+                    },
+                    {
+                        name: '应出勤',
+                        type: 'bar',
+                        stack: '总量',
+                        barWidth: 60*rate,
+                        label: {
+                            normal: {
+                                color: 'white',
+                                show: true,
+                                position: 'top',
+                                textStyle:{
+                                    fontSize:25*rate
+                                }
+                            },
+
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                    offset: 0,
+                                    color: "#061792" // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: "#0572FF" // 60% 处的颜色
+                                },], false),
+                                barBorderRadius: 3
+                            },
+
+                        },
+                        data: [320, 302, 301, 334, 390, 330, 320]
+                    },
+                ]
+            };
+            return option;
+        },
+        chrTwo: function (data) {
+            option = {
+                color: ["#723BEF", "#0543ec", "#00c7e9",
+                    "#97ee3b", "#eeaa18", "#ff6ca3"],
+                legend: {
+                    type: 'scroll',
+                    orient: 'vertical',
+                    top: 'middle',
+                    right: '7%',
+                    itemGap: 10 * rate,
+                    itemWidth: 35 * rate,
+                    itemHeight: 25 * rate,
+                    textStyle: {
+                        fontSize: 30  * rate,
+                        color: 'rgba(247,247,247,1)'
+                    },
+                    data: function () {
+                        var arr = [];
+                        for (let i = 0; i < data[0].data.length; i++) {
+                            arr.push(data[0].data[i].name);
+                        }
+                        return arr;
+                    }()
+                },
+                tooltip: {
+                    trigger: 'item',
+                    padding: 10,
+                    backgroundColor: '#222',
+                    borderColor: '#777',
+                    borderWidth: 1,
+                    formatter: tooltipFormatter,
+                    textStyle:{
+                        fontSize:30*rate
+                    }
+                },
+                angleAxis: {
+                    type: 'category',
+                    axisLabel: {
+                        textStyle: {
+                            color: 'white',
+                            fontSize: 30 * rate
+                        }
+                    },
+                    data: function () {
+                        var arr = [];
+                        for (let i = 0; i < data.length; i++) {
+                            arr.push(data[i].site);
+                        }
+                        return arr;
+                    }(),
+                    z: 0
+                },
+                polar: {
+                    center: ['35%', '50%'],
+                    radius: "50%",
+                },
+                radiusAxis: {},
+                series: (function (obj) {
+                    var wrapper = [];
+                    for (var y = 0; y < obj[0].data.length; y++) {
+                        wrapper[y] = {};
+                        wrapper[y].name = obj[0].data[y].name;
+                        wrapper[y].type = "bar";
+                        wrapper[y].data = [];
+                        wrapper[y].stack = "a";
+                        wrapper[y].center = ['35%', '50%'],
+                            wrapper[y].coordinateSystem = 'polar';
+                    }
+                    for (var x = 0; x < obj.length; x++) {
+                        var temp = obj[x];
+                        for (var z = 0; z < temp.data.length; z++) {
+                            wrapper[z].data.push(temp.data[z].value);
+                        }
+                    }
+                    return wrapper;
+                })(data)
+            }
+
+            function tooltipFormatter(params) {
+                var valuesFormatter = [];
+                valuesFormatter.push(
+                    '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 30*rate;padding-bottom: 7px;margin-bottom: 7px">' +
+                    params.name +
+                    '</div>' +
+                    '<span style="color:' + params.color + '">' + params.seriesName + '</span>: ' +
+                    params.value + '<br>');
+
+                return valuesFormatter;
+            }
+
+            return option;
+        },
+        chrThree: function (data) {
+            option = {
+                title: {
+                    text: '现场设备安装情况',
+                    textStyle: {
+                        fontSize: 30*rate,		//字体大小
+                        color: 'rgba(247,247,247,1)',
+                    }
+                },
+                grid: {
+                    left: '2%',
+                    right: '3%',
+                    bottom: '0%',
+                    containLabel: true
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    textStyle:{
+                        fontSize:30*rate
+                    },
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        },
+                    }
+                },
+
+                legend: {
+                    x:'right'  ,
+                    itemWidth: 35 * rate,
+                    itemHeight: 25 * rate,
+                    itemGap:25*rate,
+                    data: ['实名制', '视频监控', '车牌识别', '噪音扬尘','吊塔','升降机', '在建项目',],
+                    textStyle: {
+                        color: 'white',
+                        fontSize: 30*rate,
+                    }
+
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                        axisPointer: {
+                            type: 'shadow'
+                        },
+                        axisLabel: {
+                            color: 'white',
+                            fontSize:30*rate
+                        },
+                        axisTick: {show: false,},
+                        axisLine: {
+                            lineStyle: {
+                                color: "#27404D"
+                            }
+                        }
+
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        min: 0,
+                        max: 300,
+                        interval: 50,
+                        splitLine: {
+                            lineStyle: {
+                                color: "#27404D"
+                            }
+                        },
+                        axisLabel: {
+                            color: '#4D788F',
+                            // interval:2
+                            // showMinLabel:true,
+                            // showMaxLabel:true
+                        },
+                        axisTick: {show: false, interval: 1},
+                        axisLine: {
+                            lineStyle: {
+                                color: "#27404D"
+                            }
+                        },
+
+
+                    },
+
+                ],
+                series: [
+                    {
+                        name: '实名制',
+                        type: 'bar',
+                        data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                    offset: 0,
+                                    color: "#061792" // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: "#0572FF" // 60% 处的颜色
+                                },], false),
+                                barBorderRadius: 3
+                            },
+                        },
+                    },
+                    {
+                        name: '视频监控',
+                        type: 'bar',
+                        data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                    offset: 0,
+                                    color: "#5E1AEA" // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: "#AB99FF" // 60% 处的颜色
+                                },], false),
+                                barBorderRadius: 3
+                            },
+                        },
+                    },
+                    {
+                        name: '车牌识别',
+                        type: 'bar',
+                        data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                    offset: 0,
+                                    color: "#19476B" // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: "#00B8E5" // 60% 处的颜色
+                                },], false),
+                                barBorderRadius: 3
+                            },
+                        },
+                    },
+                    {
+                        name: '噪音扬尘',
+                        type: 'bar',
+                        data: [26, 59, 90, 264, 287, 77, 176, 182, 47, 188, 60, 23],
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                    offset: 0,
+                                    color: "#4F8316" // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: "#B6FF77" // 60% 处的颜色
+                                },], false),
+                                barBorderRadius: 3
+                            },
+                        },
+                    },
+                    {
+                        name: '在建项目',
+                        type: 'line',
+
+                        data: [50, 22, 33, 45, 63, 102, 203, 234, 230, 165, 120, 62],
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                    offset: 0,
+                                    color: "#883AFF" // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: "#883AFF" // 60% 处的颜色
+                                },], false),
+                                barBorderRadius: 3
+                            },
+                        },
+                    },
+                    {
+                        name: '吊塔',
+                        type: 'bar',
+                        data: [26, 59, 90, 264, 287, 77, 176, 182, 47, 188, 60, 23],
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                    offset: 0,
+                                    color: "#E07A00" // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: "#FFE938" // 60% 处的颜色
+                                },], false),
+                                barBorderRadius: 3
+                            },
+                        },
+                    },
+                    {
+                        name: '升降机',
+                        type: 'bar',
+                        data: [26, 59, 90, 264, 287, 77, 176, 182, 47, 188, 60, 23],
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                    offset: 0,
+                                    color: "#B3315C" // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: "#E05092" // 60% 处的颜色
+                                },], false),
+                                barBorderRadius: 3
+                            },
+                        },
+                    },
+                ]
+            };
+
+            return option;
+        },
+        chrFour: function (data) {
+
+
+            return option;
+        },
+        chrFive: function (data) {
+            let myData = [
+                '1月',
+                '2月',
+                '3月',
+                '4月',
+                '5月',
+                '6月',
+            ]
+            var dataFirm = {
+                1: [89, 59, 62, 34, 33,10]
+            }
+            var dataDevice = {
+                1: [11, 38, 23, 39, 32,70 ]
+            }
+            var timeLineData = [1]
+            var option = {
+                baseOption: {
+                    title: {
+                        text: '工资发放情况',
+                        top: '2%',
+                        left: '5%',
+                        textStyle: {
+                            fontSize: 30*rate,		//字体大小
+                            color: 'rgba(247,247,247,1)',
+                        }
+                    },
+                    timeline: {
+                        show: false,
+                        top: 0,
+                        data: []
+                    },
+                    legend: { // 图例
+                        bottom: '0%', // 图例距离顶部距离
+                        //   left: 'center', // 图例距离左侧距离(此处水平居中)
+                        //  itemWidth: 20,
+                        //     itemHeight: 20,
+                        itemWidth: 35 * rate,
+                        itemHeight: 25 * rate,
+                        itemGap: 10*rate,
+                        textStyle: { // 图例文本样式
+                            color: ['#4ca8f6', '#00d484'],
+                            fontSize:30*rate
+                        },
+                        data: ['未发放项目', '已发放项目'] // 图例的数据数组,一般对应系列名称,即 series.name
+                    },
+                    tooltip: {
+                        show: true,
+                        trigger: 'axis',
+                        formatter: '{b}<br/>{a}: {c}',
+                        axisPointer: {
+                            type: 'shadow'
+                        },
+                        textStyle:{
+                            fontSize:30*rate
+                        }
+                    },
+
+                    grid: [{
+                        show: false,
+                        left: '12%',
+                        top: 50,
+                        bottom: 50,
+                        containLabel: true,
+                        width: '31%'
+                    },
+                        {
+                            show: false,
+                            left: '50%',
+                            top: 50,
+                            bottom: 90,
+                            width: '0%'
+                        },
+                        {
+                            show: false,
+                            right: '13%',
+                            top: 50,
+                            bottom:50,
+                            containLabel: true,
+                            width: '31%'
+                        }
+                    ],
+
+                    xAxis: [{
+                        type: 'value',
+                        min: 0,
+                        max: 150,
+                        interval: 50,
+                        inverse: true,
+                        axisLine: {
+                            show: false
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        position: 'bottom',
+
+                        splitLine: {
+                            show: true,
+                            lineStyle:{
+                                color:'#27404D'
+                            }
+                        },
+                        axisLabel: {
+                            color: '#4D788F',
+                            fontSize:25*rate
+                        },
+                    },
+                        {
+                            gridIndex: 1,
+                            show: false
+                        },
+                        {
+                            min: 0,
+                            max: 150,
+                            interval: 50,
+
+                            gridIndex: 2,
+                            nameTextStyle: {
+                                color: '#000',
+                                fontSize: 30*rate
+                            },
+                            axisLine: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            position: 'bottom',
+
+                            splitLine: {
+                                show: true,
+                                lineStyle:{
+                                    color:'#27404D'
+                                }
+                            },
+                            axisLabel :{
+                                top:100,
+                                color:'#4D788F',
+                                fontSize:25*rate
+                            }
+                        }
+                    ],
+                    yAxis: [{
+                        type: 'category',
+                        inverse: true,
+                        position: 'right',
+
+                        axisLine: {
+                            show: false
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false
+                        },
+                        data: myData
+                    },
+                        {
+                            gridIndex: 1,
+                            type: 'category',
+                            inverse: true,
+                            position: 'left',
+                            axisLine: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                show: true,
+                                interval: 0,
+                                textStyle: {
+                                    color: 'white',
+                                    fontSize: 30*rate
+                                }
+                            },
+                            data: myData.map(function(value) {
+                                return {
+                                    value: value,
+                                    textStyle: {
+                                        align: 'center'
+                                    }
+                                }
+                            })
+                        },
+                        {
+                            gridIndex: 2,
+                            type: 'category',
+                            inverse: true,
+                            position: 'left',
+                            axisLine: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                show: false
+                            },
+                            data: myData
+                        }
+                    ],
+                    series: []
+                },
+                options: []
+            }
+            option.baseOption.timeline.data.push(timeLineData[0])
+            option.options.push({
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: '{b}<br/>{a}: {c} '
+                },
+                series: [{
+                    name: '未发放项目',
+                    type: 'bar',
+                    barWidth: 40*rate,
+                    barMinWidth: 2,
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'left',
+                            offset: [0, 0],
+                            textStyle: {
+                                color: 'white',
+                                fontSize: 30*rate
+                            }
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+
+                            barBorderRadius: 3,
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 1,
+                                y2: 0,
+                                colorStops: [{
+                                    offset: 0, color: '#E05092' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: '#B3315C' // 100% 处的颜色
+                                }],
+                                global: false // 缺省为 false
+                            }
+                        },
+
+                    },
+
+                    data: dataFirm[timeLineData[0]]
+                },
+                    {
+                        name: '已发放项目',
+                        type: 'bar',
+                        barWidth: 40*rate,
+                        xAxisIndex: 2,
+                        yAxisIndex: 2,
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'right',
+
+                                offset: [0, 0],
+                                textStyle: {
+                                    color: 'white',
+                                    fontSize: 30*rate
+                                }
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 1,
+                                    y2: 0,
+                                    colorStops: [{
+                                        offset: 0, color: '#0E568D' // 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#03C0EE' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                },
+                                barBorderRadius: 3
+                            }
+                        },
+                        data: dataDevice[timeLineData[0]]
+                    }
+                ]
+            })
+            return option;
+        },
+        chrSix: function (data) {
+            option = {
+                title: {
+                    text: '已发放项目',
+                    top: 'bottom',
+                    left: '50',
+                    textStyle: {
+                        fontSize: '14px',		//字体大小
+                        color: 'rgba(247,247,247,1)',
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+
+                grid: {
+                    left: '3%',
+                    right: '16%',
+                    bottom: '13%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+
+                    min: 0,
+                    max: 150,
+                    interval: 50,
+                    axisLabel: {
+                        color: '#4D788F'
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: "#27404D"
+                        }
+                    },
+                    axisLine: {
+                        show: false
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                    inverse: true,
+                    axisLabel: {
+                        color: 'rgba(247,247,247,1)'
+                    },
+
+                },
+                series: [
+                    {
+                        name: '已发放项目',
+                        type: 'bar',
+                        data: [101, 29, 104, 97, 134, 60],
+                        itemStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 1,
+                                y2: 0,
+                                colorStops: [{
+                                    offset: 0, color: '#0E568D' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: '#03C0EE' // 100% 处的颜色
+                                }],
+                                global: false // 缺省为 false
+
+                            },
+                            barBorderRadius: 3
+                        },
+                    },
+
+                ]
+            };
+
+            return option;
+        },
+        chrSeven: function (data) {
+            option = {
+                title: {
+                    show: true,
+                    text: '人员变动率',
+                    top: '2%',
+                    textStyle: {
+                        fontWeight: "normal",
+                        color: "#fff",
+                        fontSize: 22 * rate
+                    },
+                },
+                grid: {
+                    left: 10,
+                    top: '15%',
+                    bottom: 20,
+                    right: 40,
+                    containLabel: true
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                legend: {
+                    center: "center",
+                    top: '1%',
+                    itemWidth: 30 * rate,
+                    itemHeight: 18 * rate,
+                    itemGap: 30 * rate,
+                    data: function () {
+                        var arr = [];
+                        for (let i = 0; i < data[0].data.length; i++) {
+                            arr.push(data[0].data[i].type);
+                        }
+                        return arr;
+                    }(),
+                    textStyle: {
+                        fontSize: 20 * rate,
+                        color: '#fff'
+                    }
+                },
+                xAxis: {
+                    data: function () {
+                        var arr = [];
+                        for (let i = 0; i < data.length; i++) {
+                            arr.push(data[i].time)
+                        }
+                        return arr;
+                    }(),
+                    boundaryGap: false,
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#4D788F',
+                            fontSize: 20 * rate
+                        }
+                    },
+                    axisTick: {
+                        show: false
+                    }
+                },
+                yAxis: {
+                    ayisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#4D788F',
+                            fontSize: 20 * rate
+                        }
+                    },
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#27404D'
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#27404D'
+                        }
+                    }
+                },
+                series: (function (obj) {
+                    var wrapper = [];
+                    for (var y = 0; y < obj[0].data.length; y++) {
+                        wrapper[y] = {};
+                        wrapper[y].name = obj[0].data[y].type;
+                        wrapper[y].type = "line";
+                        wrapper[y].data = [];
+                        wrapper[y].smooth = "true";
+                        wrapper[y].symbol = "circle";
+                        wrapper[y].symbolSize = 20 * rate;
+                        wrapper[y].lineWidth = 1.5 * rate;
+                    }
+                    wrapper[0].itemStyle = {
+                        normal: {
+                            color: '#01ABD6',
+                            shadowBlur: 40 * rate,
+                        }
+                    }
+                    wrapper[1].itemStyle = {
+                        normal: {
+                            color: '#883AFF',
+                            shadowBlur: 40 * rate,
+                        }
+                    }
+                    for (var x = 0; x < obj.length; x++) {
+                        var temp = obj[x];
+                        for (var z = 0; z < temp.data.length; z++) {
+                            wrapper[z].data.push(temp.data[z].value);
+                        }
+                    }
+                    return wrapper;
+                })(data)
+            };
+            return option;
+        }
+
+    };
+    //图表数据
+    var ALLDATA = {
+        chrOne: [{
+            name: "项目一",
+            value: 80
+        },
+            {
+                name: "项目二",
+                value: 40
+            },
+            {
+                name: "项目三",
+                value: 100
+            },
+            {
+                name: "项目四",
+                value: 170
+            },
+            {
+                name: "项目五",
+                value: 50
+            },
+            {
+                name: "项目六",
+                value: 20
+            },
+            {
+                name: "项目七",
+                value: 180
+            }
+        ],
+        chrTwo: [{
+            site: "惠城区",
+            data: [{
+                name: '塔吊预警',
+                value: 1
+            },
+                {
+                    name: '升降机预警',
+                    value: 3
+                },
+                {
+                    name: '管理未在岗',
+                    value: 5
+                },
+                {
+                    name: '现场执法',
+                    value: 2
+                }, {
+                    name: '扣分处罚',
+                    value: 8
+                },
+                {
+                    name: '整改处罚',
+                    value: 5
+                }
+            ]
+        },
+            {
+                site: "惠阳区",
+                data: [{
+                    name: '塔吊预警',
+                    value: 11
+                },
+                    {
+                        name: '升降机预警',
+                        value: 5
+                    },
+                    {
+                        name: '管理未在岗',
+                        value: 6
+                    },
+                    {
+                        name: '现场执法',
+                        value: 8
+                    }, {
+                        name: '扣分处罚',
+                        value: 2
+                    },
+                    {
+                        name: '整改处罚',
+                        value: 9
+                    }
+                ]
+            },
+            {
+                site: "博罗县",
+                data: [{
+                    name: '塔吊预警',
+                    value: 6
+                },
+                    {
+                        name: '升降机预警',
+                        value: 3
+                    },
+                    {
+                        name: '管理未在岗',
+                        value: 8
+                    },
+                    {
+                        name: '现场执法',
+                        value: 9
+                    }, {
+                        name: '扣分处罚',
+                        value: 2
+                    },
+                    {
+                        name: '整改处罚',
+                        value: 5
+                    }
+                ]
+            },
+            {
+                site: "惠东县",
+                data: [{
+                    name: '塔吊预警',
+                    value: 6
+                },
+                    {
+                        name: '升降机预警',
+                        value: 7
+                    },
+                    {
+                        name: '管理未在岗',
+                        value: 5
+                    },
+                    {
+                        name: '现场执法',
+                        value: 2
+                    }, {
+                        name: '扣分处罚',
+                        value: 8
+                    },
+                    {
+                        name: '整改处罚',
+                        value: 3
+                    }
+                ]
+            },
+            {
+                site: "龙门县",
+                data: [{
+                    name: '塔吊预警',
+                    value: 7
+                },
+                    {
+                        name: '升降机预警',
+                        value: 8
+                    },
+                    {
+                        name: '管理未在岗',
+                        value: 5
+                    },
+                    {
+                        name: '现场执法',
+                        value: 4
+                    }, {
+                        name: '扣分处罚',
+                        value: 8
+                    },
+                    {
+                        name: '整改处罚',
+                        value: 8
+                    }
+                ]
+            },
+            {
+                site: "仲恺区",
+                data: [{
+                    name: '塔吊预警',
+                    value: 1
+                },
+                    {
+                        name: '升降机预警',
+                        value: 3
+                    },
+                    {
+                        name: '管理未在岗',
+                        value: 5
+                    },
+                    {
+                        name: '现场执法',
+                        value: 2
+                    }, {
+                        name: '扣分处罚',
+                        value: 8
+                    },
+                    {
+                        name: '整改处罚',
+                        value: 5
+                    }
+                ]
+            },
+            {
+                site: "大湾区",
+                data: [{
+                    name: '塔吊预警',
+                    value: 7
+                },
+                    {
+                        name: '升降机预警',
+                        value: 8
+                    },
+                    {
+                        name: '管理未在岗',
+                        value: 5
+                    },
+                    {
+                        name: '现场执法',
+                        value: 4
+                    }, {
+                        name: '扣分处罚',
+                        value: 8
+                    },
+                    {
+                        name: '整改处罚',
+                        value: 8
+                    }
+                ]
+            },
+        ],
+        chrThree: [{
+            value: 1797,
+            name: '机械员'
+        },
+            {
+                value: 1399,
+                name: '装饰装修工'
+            },
+            {
+                value: 1241,
+                name: '通风工'
+            },
+            {
+                value: 1211,
+                name: '库工'
+            },
+            {
+                value: 1198,
+                name: '防水工'
+            },
+            {
+                value: 980,
+                name: '测量工'
+            },
+            {
+                value: 949,
+                name: '吊装工'
+            },
+            {
+                value: 936,
+                name: '机电工'
+            },
+            {
+                value: 2628,
+                name: '施工升降机操作工'
+            }
+        ],
+        chrFour: [{
+            month: 201901,
+            data: [{
+                type: "基坑",
+                value: 25
+            },
+                {
+                    type: "主体",
+                    value: 5
+                },
+                {
+                    type: "基模",
+                    value: 28
+                },
+                {
+                    type: "外墙装修",
+                    value: 35
+                }
+            ]
+        },
+            {
+                month: 201902,
+                data: [{
+                    type: "基坑",
+                    value: 4
+                },
+                    {
+                        type: "主体",
+                        value: 55
+                    },
+                    {
+                        type: "基模",
+                        value: 28
+                    },
+                    {
+                        type: "外墙装修",
+                        value: 21
+                    }
+                ]
+            },
+            {
+                month: 201903,
+                data: [{
+                    type: "基坑",
+                    value: 2
+                },
+                    {
+                        type: "主体",
+                        value: 5
+                    },
+                    {
+                        type: "基模",
+                        value: 42
+                    },
+                    {
+                        type: "外墙装修",
+                        value: 35
+                    }
+                ]
+            },
+            {
+                month: 201904,
+                data: [{
+                    type: "基坑",
+                    value: 11
+                },
+                    {
+                        type: "主体",
+                        value: 22
+                    },
+                    {
+                        type: "基模",
+                        value: 28
+                    },
+                    {
+                        type: "外墙装修",
+                        value: 3
+                    }
+                ]
+            },
+            {
+                month: 201905,
+                data: [{
+                    type: "基坑",
+                    value: 25
+                },
+                    {
+                        type: "主体",
+                        value: 15
+                    },
+                    {
+                        type: "基模",
+                        value: 20
+                    },
+                    {
+                        type: "外墙装修",
+                        value: 15
+                    }
+                ]
+            },
+            {
+                month: 201906,
+                data: [{
+                    type: "基坑",
+                    value: 15
+                },
+                    {
+                        type: "主体",
+                        value: 55
+                    },
+                    {
+                        type: "基模",
+                        value: 13
+                    },
+                    {
+                        type: "外墙装修",
+                        value: 17
+                    }
+                ]
+            },
+            {
+                month: 201907,
+                data: [{
+                    type: "基坑",
+                    value: 20
+                },
+                    {
+                        type: "主体",
+                        value: 50
+                    },
+                    {
+                        type: "基模",
+                        value: 30
+                    },
+                    {
+                        type: "外墙装修",
+                        value: 10
+                    }
+                ]
+            }
+        ],
+        chrFive: [{
+            name: "人数",
+            data: [{
+                type: "3以下",
+                value: 1
+            },
+                {
+                    type: '3',
+                    value: 3
+                },
+                {
+                    type: '4',
+                    value: 17
+                },
+                {
+                    type: '5',
+                    value: 15
+                },
+                {
+                    type: '6',
+                    value: 5
+                },
+                {
+                    type: '7',
+                    value: 22
+                },
+                {
+                    type: '8',
+                    value: 31
+                },
+                {
+                    type: '9',
+                    value: 13
+                },
+                {
+                    type: '10',
+                    value: 11
+                },
+                {
+                    type: '11',
+                    value: 9
+                },
+                {
+                    type: '12',
+                    value: 8
+                },
+                {
+                    type: '12以上',
+                    value: 7
+                }
+            ]
+        },
+
+            {
+                name: "占比",
+                data: [{
+                    type: "3以下",
+                    value: 1
+                },
+                    {
+                        type: '3',
+                        value: 3
+                    },
+                    {
+                        type: '4',
+                        value: 17
+                    },
+                    {
+                        type: '5',
+                        value: 15
+                    },
+                    {
+                        type: '6',
+                        value: 5
+                    },
+                    {
+                        type: '7',
+                        value: 22
+                    },
+                    {
+                        type: '8',
+                        value: 31
+                    },
+                    {
+                        type: '9',
+                        value: 13
+                    },
+                    {
+                        type: '10',
+                        value: 11
+                    },
+                    {
+                        type: '11',
+                        value: 9
+                    },
+                    {
+                        type: '12',
+                        value: 8
+                    },
+                    {
+                        type: '12以上',
+                        value: 7
+                    }
+                ]
+            }
+
+        ],
+        chrSix: [{
+            time: 1,
+            data: [{
+                type: "值1",
+                value: 6
+            },
+                {
+                    type: "值2",
+                    value: 5
+                }
+            ]
+        },
+            {
+                time: 2,
+                data: [{
+                    type: "值1",
+                    value: 16
+                },
+                    {
+                        type: "值2",
+                        value: 3
+                    }
+                ]
+            },
+            {
+                time: 3,
+                data: [{
+                    type: "值1",
+                    value: 6
+                },
+                    {
+                        type: "值2",
+                        value: 25
+                    }
+                ]
+            },
+            {
+                time: 4,
+                data: [{
+                    type: "值1",
+                    value: 3
+                },
+                    {
+                        type: "值2",
+                        value: 18
+                    }
+                ]
+            },
+            {
+                time: 5,
+                data: [{
+                    type: "值1",
+                    value: 9
+                },
+                    {
+                        type: "值2",
+                        value: 16
+                    }
+                ]
+            },
+            {
+                time: 6,
+                data: [{
+                    type: "值1",
+                    value: 30
+                },
+                    {
+                        type: "值2",
+                        value: 3
+                    }
+                ]
+            },
+            {
+                time: 7,
+                data: [{
+                    type: "值1",
+                    value: 4
+                },
+                    {
+                        type: "值2",
+                        value: 15
+                    }
+                ]
+            },
+            {
+                time: 8,
+                data: [{
+                    type: "值1",
+                    value: 9
+                },
+                    {
+                        type: "值2",
+                        value: 11
+                    }
+                ]
+            },
+            {
+                time: 9,
+                data: [{
+                    type: "值1",
+                    value: 8
+                },
+                    {
+                        type: "值2",
+                        value: 21
+                    }
+                ]
+            },
+            {
+                time: 10,
+                data: [{
+                    type: "值1",
+                    value: 11
+                },
+                    {
+                        type: "值2",
+                        value: 2
+                    }
+                ]
+            },
+            {
+                time: 11,
+                data: [{
+                    type: "值1",
+                    value: 4
+                },
+                    {
+                        type: "值2",
+                        value: 7
+                    }
+                ]
+            },
+            {
+                time: "12以上",
+                data: [{
+                    type: "值1",
+                    value: 30
+                },
+                    {
+                        type: "值2",
+                        value: 12
+                    }
+                ]
+            }
+        ],
+        chrSeven: [{
+            time: 1,
+            data: [{
+                type: "管理人员",
+                value: 6
+            },
+                {
+                    type: "建筑工人",
+                    value: 5
+                }
+            ]
+        },
+            {
+                time: 2,
+                data: [{
+                    type: "管理人员",
+                    value: 16
+                },
+                    {
+                        type: "建筑工人",
+                        value: 3
+                    }
+                ]
+            },
+            {
+                time: 3,
+                data: [{
+                    type: "管理人员",
+                    value: 6
+                },
+                    {
+                        type: "建筑工人",
+                        value: 25
+                    }
+                ]
+            },
+            {
+                time: 4,
+                data: [{
+                    type: "管理人员",
+                    value: 3
+                },
+                    {
+                        type: "建筑工人",
+                        value: 18
+                    }
+                ]
+            },
+            {
+                time: 5,
+                data: [{
+                    type: "管理人员",
+                    value: 9
+                },
+                    {
+                        type: "建筑工人",
+                        value: 16
+                    }
+                ]
+            },
+            {
+                time: 6,
+                data: [{
+                    type: "管理人员",
+                    value: 30
+                },
+                    {
+                        type: "建筑工人",
+                        value: 3
+                    }
+                ]
+            },
+            {
+                time: 7,
+                data: [{
+                    type: "管理人员",
+                    value: 4
+                },
+                    {
+                        type: "建筑工人",
+                        value: 15
+                    }
+                ]
+            },
+            {
+                time: 8,
+                data: [{
+                    type: "管理人员",
+                    value: 9
+                },
+                    {
+                        type: "建筑工人",
+                        value: 11
+                    }
+                ]
+            },
+            {
+                time: 9,
+                data: [{
+                    type: "管理人员",
+                    value: 8
+                },
+                    {
+                        type: "建筑工人",
+                        value: 21
+                    }
+                ]
+            },
+            {
+                time: 10,
+                data: [{
+                    type: "管理人员",
+                    value: 11
+                },
+                    {
+                        type: "建筑工人",
+                        value: 2
+                    }
+                ]
+            },
+            {
+                time: 11,
+                data: [{
+                    type: "管理人员",
+                    value: 6
+                },
+                    {
+                        type: "建筑工人",
+                        value: 5
+                    }
+                ]
+            },
+            {
+                time: 12,
+                data: [{
+                    type: "管理人员",
+                    value: 16
+                },
+                    {
+                        type: "建筑工人",
+                        value: 3
+                    }
+                ]
+            },
+            {
+                time: 13,
+                data: [{
+                    type: "管理人员",
+                    value: 6
+                },
+                    {
+                        type: "建筑工人",
+                        value: 25
+                    }
+                ]
+            },
+            {
+                time: 14,
+                data: [{
+                    type: "管理人员",
+                    value: 3
+                },
+                    {
+                        type: "建筑工人",
+                        value: 18
+                    }
+                ]
+            },
+            {
+                time: 15,
+                data: [{
+                    type: "管理人员",
+                    value: 9
+                },
+                    {
+                        type: "建筑工人",
+                        value: 16
+                    }
+                ]
+            },
+            {
+                time: 16,
+                data: [{
+                    type: "管理人员",
+                    value: 30
+                },
+                    {
+                        type: "建筑工人",
+                        value: 3
+                    }
+                ]
+            },
+            {
+                time: 17,
+                data: [{
+                    type: "管理人员",
+                    value: 4
+                },
+                    {
+                        type: "建筑工人",
+                        value: 15
+                    }
+                ]
+            },
+            {
+                time: 18,
+                data: [{
+                    type: "管理人员",
+                    value: 9
+                },
+                    {
+                        type: "建筑工人",
+                        value: 11
+                    }
+                ]
+            },
+            {
+                time: 19,
+                data: [{
+                    type: "管理人员",
+                    value: 8
+                },
+                    {
+                        type: "建筑工人",
+                        value: 21
+                    }
+                ]
+            }
+        ],
+        alarmData: [{
+            lon: 114.4,
+            lat: 23.11
+        }, {
+            lon: 114.0,
+            lat: 23.04
+        }, {
+            lon: 115.4,
+            lat: 23.02
+        }, {
+            lon: 116.4,
+            lat: 23.12
+        }, {
+            lon: 114.8,
+            lat: 23.07
+        }, {
+            lon: 113.2,
+            lat: 23.09
+        }],
+        buildingData: [
+            {
+                lon: 115.0,
+                lat: 23.31
+            }, {
+                lon: 114.6,
+                lat: 23.08
+            }, {
+                lon: 113.0,
+                lat: 23.38
+            }, {
+                lon: 115.3,
+                lat: 23.15
+            }, {
+                lon: 115.8,
+                lat: 23.1
+            }, {
+                lon: 113.2,
+                lat: 23.04
+            }
+        ],
+    }
+
+    var rykq = echarts.init($("#echart1").get(0));
+    // debugger
+    rykq.setOption(ALLOP.chrOne(ALLDATA.chrOne), true);
+
+    var tdyj = echarts.init($("#echart2").get(0));
+    tdyj.setOption(ALLOP.chrTwo(ALLDATA.chrTwo), true);
+
+    var czlx = echarts.init($("#echart3").get(0));
+    czlx.setOption(ALLOP.chrThree(ALLDATA.chrThree), true);
+
+    // var wqzx = echarts.init($("#echart4").get(0));
+    // wqzx.setOption(ALLOP.chrFour(ALLDATA.chrFour), true);
+    //
+    var rszb = echarts.init($("#echart5").get(0));
+    rszb.setOption(ALLOP.chrFive(ALLDATA.chrFive), true);
+
+    // var dtrj = echarts.init($("#echart6").get(0));
+    // dtrj.setOption(ALLOP.chrSix(ALLDATA.chrSix), true);
+
+    // var rybd = echarts.init($("#echart7").get(0));
+    // rybd.setOption(ALLOP.chrSeven(ALLDATA.chrSeven), true);
+
+    //窗口自适应  wqzx , , rybd dtrj
+    var arrFun = [rykq, tdyj, czlx, rszb, ]
+    window.addEventListener('resize', function () {
+        arrFun.forEach(function (item) {
+          //  console.log(rate)
+            item.resize();
+        })
+    });
+
+    $('.nav li').on('click', function () {
+        $(this).siblings().removeClass('click_active');
+        $(this).addClass("click_active");
+    })
+
+    
+</script>
+</body>
+
+</html>

@@ -16,6 +16,8 @@ tags: [VUE, 开发笔记]
 
 * action 解决异步改变共享数据( 异步 )                        $store.dispatch("action名称" ，data)
 
+  ​                                                                                            'user/login'  (modules中user 下的login)     
+
 * getters 用来对共享数据进行过滤操作（计算属性）$store.getters.xx    
 
   (在js文件中 引入store文件 然后直接  store.dispach 不用写$ )  
@@ -226,3 +228,36 @@ computed: {
  }
 ```
 
+
+
+
+
+
+
+//只用state的用法
+
+/store/modules/goods
+
+```js
+export default{
+  state:{
+  AA:0
+  }
+}
+```
+
+/  xx.vue
+
+```JS
+import store from 'vuex'; //引用
+AA: {
+			get: function() {
+				return this.$store.state.goods.AA;
+			},
+			set: function(val) {
+				this.$store.state.goods.AA = val;
+			}
+		},	
+```
+
+> 这样就能像使用  data（）{     retrun{    AA:0            }} 一样使用AA这个变量了
