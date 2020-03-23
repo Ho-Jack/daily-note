@@ -249,7 +249,7 @@ export default{
 /  xx.vue
 
 ```JS
-import store from 'vuex'; //引用
+//import store from 'vuex'; //引用  (都用了$store 不用再引入)
 AA: {
 			get: function() {
 				return this.$store.state.goods.AA;
