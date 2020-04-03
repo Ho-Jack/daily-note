@@ -3,7 +3,7 @@ $(function () {
 
     var myChart = echarts.init(document.getElementById('map'));
     //各省份的地图json文件
-    var ququ = {
+    var townJson = {
         '惠东县': '../javascripts/Echarts/huidon.json',
         '龙门县': '../javascripts/Echarts/longmen.json',
         '博罗县': '../javascripts/Echarts/boluo.json',
@@ -34,11 +34,11 @@ $(function () {
 
     ];
     //总预警项目 \ 114.21112060546875, 23.324602156920964
-    114.1204833984375,23.67219738298302
+   // 114.1204833984375,23.67219738298302
     var warmingTotal = [{
         name: '惠东县',
         value: [114.9774169921875, 23.1959117878095, 120],
-        total: 222
+        total: 1111111
     },
         {
             name: '龙门',
@@ -65,7 +65,7 @@ $(function () {
         {
             name: '惠城区',
             value: [   114.52835083007812,23.24639340521435  , 120],
-            total: 111
+            total: 2222
         },
         {
             name: '大亚湾',
@@ -106,8 +106,6 @@ $(function () {
     var allData = [{
         name: '龙门县',
         value: 1111,
-
-
     }, {
         name: '博罗县',
         value: 2222,
@@ -159,7 +157,7 @@ $(function () {
         timeFn = setTimeout(function () {
             var name = params.name; //地区name
             //debugger
-            var mapCode = ququ[name]; //地区的json数据地址
+            var mapCode = townJson[name]; //地区的json数据地址
             myChart.clear();   //清楚返回时上个地图的信息
             if (!mapCode) {
                 if (params.seriesType === "scatter") {
