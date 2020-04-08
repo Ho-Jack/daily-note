@@ -36,8 +36,9 @@ export default function  Button()  {
   该函数返回一个数组，数组的第一个成员是一个变量（上例是buttonText），指向状态的当前值。
   第二个成员是一个函数，用来更新状态，约定是set前缀加上状态的变量名（上例是setButtonText）。 */
   const  [count, setCount] =  useState(0);
- 
+
   function handleClick()  {
+    setCount(10);
     return setCount(count+1);
   }
 
