@@ -37,7 +37,7 @@ alert(this.getAttribute("type")); // this 指当前发生事件的HTML元素，�
 
 ##### 3. 绑定事件监听函数     
 
-#####  elementObject.addEventListener(eventName,handle,useCapture);
+####  elementObject.addEventListener(eventName,handle,useCapture);
 
 | 参数          | 说明                                                         |
 | ------------- | ------------------------------------------------------------ |
@@ -46,7 +46,7 @@ alert(this.getAttribute("type")); // this 指当前发生事件的HTML元素，�
 | handle        | 事件句柄函数，即用来处理事件的函数。                         |
 | useCapture    | Boolean类型，是否使用捕获，一般用false 。这里涉及到JavaScript事件流的概念，后续章节将会详细讲解。 |
 
-elementObject.attachEvent(eventName,handle);
+#### elementObject.attachEvent(eventName,handle);
 
 | 参数          | 说明                                                         |
 | ------------- | ------------------------------------------------------------ |

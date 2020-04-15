@@ -82,7 +82,6 @@ class Father extends React.Component{
         console.log("Father: UNSAFE_componentWillMount") //2
     }
     shouldComponentUpdate(nextProps,nextState){
-   
         console.log("Father: shouldComponentUpdate") // 2-1
         // if(nextState.number%2 === 0){
         //     return true
@@ -444,23 +443,56 @@ React Hooks 的意思是，组件尽量写成纯函数，如果需要外部功�
 
 - useState()      状态钩子(useState返回一个数组：一个 state，一个更新 state 的函数)
                        
-                            ```react
+     ```react
          [xx,setXx]=useState('')    
          setXx('')
-                            ```
-      
+  ```
+  
+  ​             
+  
 - useReducer()    action 钩子
   
      ```react
    const [state, dispatch] = useReducer(reducer, {xx:''});  // Reducer函数和状态的初始值作为参数
-      const reducer=(state, action) => newState  // Reducer函数
+      const reducer=(state, action) => newState  // Reducer函数 （翻译：减速器）
     调度函数: dispatch(action)  
-     ```
-  
-  
-  
+   ```
+
+  ```react
+import React, { useReducer } from "react";
+import ReactDOM from "react-dom";
+import "./styles.css";
+const myReducer = (state, action) => {
+  switch(action.type) {
+    case('countUp'):
+      return {
+        ...state,
+        count: state.count + 1
+      }
+    default:
+      return state
+  }
+}
+function App() {
+  const [state, dispatch] = useReducer(myReducer, { count: 0 })
+  return (
+    <div className="App">
+      <button onClick={() => dispatch({ type: 'countUp' })}>
+        +1
+      </button>
+      <p>Count: {state.count}</p>
+    </div>
+  );
+}
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
+
+  ```
+
+
+
    
-  
+
 - useContext()    共享状态钩子        context （上下文）
 
      ```react
