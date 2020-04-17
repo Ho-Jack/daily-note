@@ -23,7 +23,7 @@ function  fun(){
 
 #####  2.在JS代码中绑定    elementObject.onXXX=function(){     // 事件处理代码    }
 
->elementObject 为DOM对象， 
+>elementObject 为DOM对象( 例： document.getElementById()    ) 
 
 ```html
 <input id="demo" type="button" value="点击我，显示 type 属性" />
