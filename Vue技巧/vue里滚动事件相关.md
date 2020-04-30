@@ -1,7 +1,12 @@
+- ##### 元素上：
+
+```
+ @scroll.native=""   
+```
+
+- ##### 方法：
+
 ```js
-元素上：  @scroll.native=""   
-
-
 mounted(){
     // 监听resize事件，
     window.onresize = () => {}

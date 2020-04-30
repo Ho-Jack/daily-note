@@ -1,0 +1,97 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "smartbox",
+        "scope": null,
+        "escapedName": "smartbox",
+        "name": "smartbox",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\Administrator\\Desktop\\test"
+    ]
+  ],
+  "_from": "smartbox@latest",
+  "_id": "smartbox@1.0.3",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/smartbox",
+  "_nodeVersion": "4.4.5",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/smartbox-1.0.3.tgz_1475914080007_0.6366891250945628"
+  },
+  "_npmUser": {
+    "name": "huangshuwei",
+    "email": "hsw89520@163.com"
+  },
+  "_npmVersion": "3.10.6",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "smartbox",
+    "scope": null,
+    "escapedName": "smartbox",
+    "name": "smartbox",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/smartbox/-/smartbox-1.0.3.tgz",
+  "_shasum": "55623dd815cee709f20e02c7927a31720bcceadc",
+  "_shrinkwrap": null,
+  "_spec": "smartbox",
+  "_where": "C:\\Users\\Administrator\\Desktop\\test",
+  "author": {
+    "name": "Huang ShuWei"
+  },
+  "bugs": {
+    "url": "https://github.com/huangshuwei/jquery.smartbox/issues"
+  },
+  "dependencies": {},
+  "description": "smartbox is a popup layer plugin based on jquery.It supports drag、asynchronous access to html、asynchronous access to pictures, support iframe、 simple and diverse styles.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "55623dd815cee709f20e02c7927a31720bcceadc",
+    "tarball": "https://registry.npmjs.org/smartbox/-/smartbox-1.0.3.tgz"
+  },
+  "ecosystem": "jquery",
+  "gitHead": "a3fc056b2768ba71178b682799792cf0685c700c",
+  "homepage": "https://github.com/huangshuwei/jquery.smartbox#readme",
+  "jquery-plugin": "smartbox",
+  "keywords": [
+    "lightbox",
+    "effect",
+    "responsive",
+    "modal",
+    "window",
+    "ui",
+    "plugin",
+    "jquery",
+    "javascript"
+  ],
+  "license": "MIT",
+  "main": "",
+  "maintainers": [
+    {
+      "name": "huangshuwei",
+      "email": "hsw89520@163.com"
+    }
+  ],
+  "name": "smartbox",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huangshuwei/jquery.smartbox.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.3"
+}

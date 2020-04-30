@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport" />
+
+<style type="text/css">
+body {
+	font: 14px/150% microsoft yahei,tahoma;
+	}
+.clear {
+	clear: both
+	}
+.RadioStyle input {
+	display: none
+	}
+.RadioStyle label {
+	border: 1px solid #CCC;
+	color: #666;
+	padding: 2px 10px 2px 5px;
+	line-height: 28px;
+	min-width: 80px;
+	text-align: center;
+	float: left;
+	margin: 2px;
+	border-radius: 4px
+	}
+.RadioStyle input:checked + label {
+	background: url(images/ico_checkon.svg) no-repeat right bottom;
+	border: 1px solid #00a4ff;
+	background-size: 21px 21px;
+	color: #00a4ff
+	}
+.RadioStyle input:disabled + label {
+	opacity: 0.7;
+	}
+</style>
+
+<title>纯CSS 单/复选框 美化</title>
+</head>
+<body>
+
+请选择iPhone 型号
+
+<div class="RadioStyle">
+    <div class="Block PaddingL">
+        <input type="radio" name="Storage" id="model1" />
+        <label for="model1">iPhone 6s</label>
+        <input type="radio" name="Storage" id="model2" />
+        <label for="model2">iPhone 6s Plus</label>
+        <input type="radio" name="Storage" id="model3" />
+        <label for="model3">iPhone 7</label>
+        <input type="radio" name="Storage" id="model4" checked />
+        <label for="model4">iPhone 7 Plus</label>
+    </div>
+</div>
+
+<div class="clear"></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+选择兴趣爱好
+
+<div class="RadioStyle">
+    <div class="Block PaddingL">
+        <input type="checkbox" id="love1" />
+        <label for="love1">女</label>
+        <input type="checkbox" id="love2" />
+        <label for="love2">绘画</label>
+        <input type="checkbox" id="love3" />
+        <label for="love3">摄影</label>
+        <input type="checkbox" id="love4" checked />
+        <label for="love4">骑行</label>
+    </div>
+</div>
+
+<div class="clear"></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+不可用
+<div class="RadioStyle">
+    <div class="Block PaddingL">
+        <input type="checkbox" id="dis1" checked disabled />
+        <label for="dis1">2年不离网</label>
+        <input type="checkbox" id="dis2" disabled />
+        <label for="dis2">2年不变更套餐</label>
+    </div>
+</div>
+
+<div class="clear"></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+原理在这里 input:checked + label
+</body>
+</html>
