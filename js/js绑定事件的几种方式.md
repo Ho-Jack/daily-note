@@ -35,7 +35,7 @@ alert(this.getAttribute("type")); // this 指当前发生事件的HTML元素，�
 </script>
 ```
 
-##### 3. 绑定事件监听函数     
+##### 3. 绑定事件监听函数     (优点：可以监听多种事件)
 
 ####  elementObject.addEventListener(eventName,handle,useCapture);
 
@@ -44,12 +44,13 @@ alert(this.getAttribute("type")); // this 指当前发生事件的HTML元素，�
 | elementObject | DOM对象（即DOM元素）。                                       |
 | eventName     | 事件名称。注意，这里的事件名称没有“ on ”，如鼠标单击事件 click ，鼠标双击事件 doubleclick ，鼠标移入事件 mouseover，鼠标移出事件 mouseout 等。 |
 | handle        | 事件句柄函数，即用来处理事件的函数。                         |
-| useCapture    | Boolean类型，是否使用捕获，一般用false 。这里涉及到JavaScript事件流的概念，后续章节将会详细讲解。 |
+| useCapture    | Boolean类型，是否在捕获阶段就触发事件，一般用false 。涉及到JavaScript事件流的概念 |
 
-#### elementObject.attachEvent(eventName,handle);
+#### elementObject.attachEvent(eventName,handle);（ie8以下的浏览器）
 
 | 参数          | 说明                                                         |
 | ------------- | ------------------------------------------------------------ |
 | elementObject | DOM对象（即DOM元素）。                                       |
 | eventName     | 事件名称。注意，与addEventListener()不同，这里的事件名称有“ on ”，如鼠标单击事件 onclick ，鼠标双击事件 ondoubleclick ，鼠标移入事件 onmouseover，鼠标移出事件 onmouseout 等。 |
 | handle        | 事件句柄函数，即用来处理事件的函数。                         |
+

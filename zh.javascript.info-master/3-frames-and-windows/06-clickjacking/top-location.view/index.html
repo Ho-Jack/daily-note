@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+
+  <style>
+    iframe {
+      width: 400px;
+      height: 100px;
+      position: absolute;
+      top: 0;
+      left: -20px;
+      opacity: 0;
+      z-index: 1;
+    }
+  </style>
+
+  <script>
+    function attack() {
+
+      window.onbeforeunload = function() {
+        window.onbeforeunload = null;
+        return "Want to leave without learning all the secrets (he-he)?";
+      };
+
+      document.body.insertAdjacentHTML('beforeend', '<iframe src="iframe.html">');
+    }
+  </script>
+</head>
+
+<body>
+
+  <p>点击该按钮后，访问者会收到一条关于他们是否要离开的“奇怪”问题。</p>
+
+  <p>他们可能会回答“否”，这样就保护了 iframe 不被黑。</p>
+
+  <button onclick="attack()">添加一个“受保护的” iframe</button>
+
+</body>
+</html>

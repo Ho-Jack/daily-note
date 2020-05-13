@@ -5,7 +5,7 @@ push()           (从后添加)接收任意数量的参数，逐个添加至数�
 pop()          （从后删除）从数组末尾删除最后一项并返回该项
 shift()         （从前删除）与pop()类似
 unshift()     （从前添加）与push()类似
-sort()         排序，需要传入callback函数
+sort()         排序，需要传入callback函数  (修改原数组，返回数组的引用)
 
 > arr.sort( (a,b)=>(a-b) )   从小到大排序
 > arr.sort( (a,b)=>(a-b) )   从大到小排序   
