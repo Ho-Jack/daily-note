@@ -61,3 +61,5 @@ DVA 的 model 对象有几个基本的属性，需要大家了解。
 
 
 如果你熟悉 React 中最基本的两个概念 props 和 state，一定知道 props 和 state 对于一个组件来讲都是数据的来源，而 state 又可以通过 props 传递给子组件，这像是一个鸡生蛋蛋生鸡的问题：到底谁是数据的源头 ？答案是 state，而且是广义的 state：它可以是 react 组件树中各级组件的 state，也可以是 react 组件树外部由其他 js 数据结构表示的 state，而 dva 管理的就是[ react 组件树之外的 state: Redux](https://redux.js.org/)。归根结底，props 是用来传导数据的，而 state 是数据改变的源泉
+
+1
