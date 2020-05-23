@@ -1,10 +1,18 @@
+---
+title: setTimeout在循环中的问题
+date: 2020-01-15 16:45:03
+tags: [JS, 开发笔记]
+---
+
+##  setTimeout在循环中的问题
+
 > #### 同步优先于异步优先于回调
 
-## 一、背景
+### 一、背景
 
 最近在翻看以前的老书《node.js开发指南》，恰好碰到 for 循环 + setTimeout 的经典例子，于是重新梳理了思路并记录下。
 
-## 二、写在前面，setTimeout 和 setInterval 的执行机制
+### 二、写在前面，setTimeout 和 setInterval 的执行机制
 
 在日常编码中，你会发现，给 setTimeout 和 setInterval 设定延迟时间往往并不准，或者干脆 setTimeout(function(){xxx},0) 也不是立马执行（特别是有耗时代码在前），这是因为 js 是**单线程**的，有一个**事件队列**机制，setTimeout 和 setInterval 的回调会到了延迟时间塞入事件队列中，排队执行。
 
@@ -29,7 +37,7 @@ for (var i = 0; i < 5; i++) {
 
 
 
-## 三、正文
+### 三、正文
 
 接下来就是那道经典的代码：
 
@@ -75,7 +83,7 @@ for (let i = 0; i < 5; i++) {     //let 代替 var
 
 **let** 为代码块的作用域，所以每一次 for 循环，console.log(i); 都引用到 for 代码块作用域下的i，因为这样被引用，所以 for 循环结束后，这些作用域在 setTimeout 未执行前都不会被释放。
 
-## 四、补充
+### 四、补充
 
 在写示例代码的过程中，发现一个语法点：
 

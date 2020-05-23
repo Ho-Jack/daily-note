@@ -1,13 +1,24 @@
 ---
-title:Element-UI中分页组件在项目中如何用
+title: Element-UI中分页组件在项目中如何用
 date: 2019-04-11 04:00:00
-tags: [开发笔记]
+tags: [Vue, 开发笔记]
 ---
+
+
 ---
-title: 【读书笔记】《JavaScript权威指南》第7章数组
+title: Element-UI中分页组件在项目中如何用
+date: 2020-04-11 04:00:00
+tags: [JS, ES6, 开发笔记]
+---
+
+
+
+---
+title:【读书笔记】《JavaScript权威指南》第7章数组
 date: 2019-11-08 00:00:00
 tags: [开发笔记, 《JavaScript权威指南》]
 ---
 
+：后必须带一个空格
 
 https://raw.githubusercontent.com/Ho-Jack/daily-note/master/img/

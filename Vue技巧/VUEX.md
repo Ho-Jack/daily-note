@@ -4,7 +4,7 @@ date: 2019-04-11 04:00:00
 tags: [VUE, 开发笔记]
 ---
 
-# Vuex 知识
+## Vuex 知识
 
 *  ### 基础知识总结
 
@@ -246,7 +246,7 @@ export default{
 }
 ```
 
-/  xx.vue
+//  xx.vue
 
 ```JS
 //import store from 'vuex'; //引用  (都用了$store 不用再引入)

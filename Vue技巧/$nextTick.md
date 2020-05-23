@@ -1,3 +1,11 @@
+---
+title: Vue有关`$nextTick`的理解
+date: 2019-10-14 09:29:30
+tags: [Vue]
+---
+
+
+
 #### vue有关`$nextTick`的理解
 
 > ##### this.$nextTick( ()=>{} )
@@ -8,8 +16,6 @@
 
 2、vue对页面数据变化的监控操作
 类似于setTimeout延时应用，具体简单用法就如下面编码一样
-
-
 
 ```js
  this.$nextTick(() => {

@@ -1,3 +1,11 @@
+---
+title: table
+date: 2020-04-15 09:11:54
+tags: [HTML, 样式]
+---
+
+## table
+
 <thead>   表头  <tbody> 主体   <tfoot>表尾
 
 <tr> 表格行，<th>表头（table head），<td> 单元格（table data）。

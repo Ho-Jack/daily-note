@@ -3,7 +3,7 @@ title: sessionStroage应用要点
 date: 2018-11-08 04:10:03
 tags: [开发笔记, JS]
 ---
-
+## sessionStroage应用要点
 * #### 基本使用
 
   ```js
@@ -27,4 +27,20 @@ tags: [开发笔记, JS]
    const myData = JSON.parse(sessionStorage.getItem(key) || null);
    ```
 
+
+
+
+
+### 知识要点总结
+
+> - localstorage (长期)
+> - sessionstorage（浏览器关闭，则清除）
+> - cookies  (可以设置有效期)
+
+```javascript
+localstorage.getItem(key)
+sessionstorage.getItem(key)
+localstorage.setItem(key,value)
+sessionstorage.setItem(key,value)
+```
 

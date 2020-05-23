@@ -4,6 +4,11 @@ date: 2019-05-15 18:00:00
 tags: [JS, ES6, 开发笔记]
 ---
 
+## promise实现函数顺序执行
+
+> Promise.resolve(value) == return new Promise((resolve,reject)=>{ resolve(value) })
+> promise.then() 必须返回新的promise对象 才能进行组成promise链
+
 ### 函数顺序执行
 
 ```js

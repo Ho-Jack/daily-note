@@ -1,7 +1,7 @@
 ---
 title: Element-UI中table组件的简单封装
 date: 2019-5-08 04:00:00
-tags: [Element-UI, 开发笔记]
+tags: [Vue, Element-UI, 开发笔记]
 ---
 
 ## Element-UI中 table组件在项目中简单封装
@@ -63,6 +63,7 @@ tags: [Element-UI, 开发笔记]
                </template>
              </el-table-column>
            </el-table>
+   ```
 ```
    
 2. script
@@ -96,8 +97,8 @@ tags: [Element-UI, 开发笔记]
             },
           }
       }
-   ```
-   
+```
+
    3. 在config文件夹下的columns.js
    
       >   向外导出一个 数组对象

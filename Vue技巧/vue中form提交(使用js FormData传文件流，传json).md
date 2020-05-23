@@ -1,6 +1,12 @@
+---
+title: Vue中form提交(使用js的 FormData对象传文件流，传json)
+date: 2020-03-03 16:04:08
+tags: [Vue, 开发笔记]
+---
 
+## Vue中form提交(使用js的 FormData对象传文件流，传json)
 
-基础知识：
+### 基础知识：
 
 ```
 XMLHttpRequest 的实例有两种方式提交表单：

@@ -1,4 +1,10 @@
-### [DIV居中的几种方法](https://www.cnblogs.com/ones/p/4362531.html)
+---
+title: DIV居中的几种方法
+date: 2020-04-15 10:22:00
+tags: [CSS, 样式]
+---
+
+## [DIV居中的几种方法](https://www.cnblogs.com/ones/p/4362531.html)
 
 1、
 

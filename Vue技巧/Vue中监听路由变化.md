@@ -1,15 +1,15 @@
 ---
 title: vue 监听路由变化
-date: 2019-10-24 00:00:00
+date: 2019-10-24 ‏‎14:32:43
 tags: [Vue, 路由]
 ---
 
-##### vue 监听路由变化
+## vue 监听路由变化
 
-- **to: Route**: 即将要进入的目标 路由对象
-- **from: Route**: 当前导航正要离开的路由
+> - **to: Route** 即将要进入的目标 路由对象
+> - **from: Route**当前导航正要离开的路由
 
-##### 方法一：通过 watch
+### 方法一：通过 watch
 
 ```js
 // 监听,当路由发生变化的时候执行
@@ -59,7 +59,7 @@ methods: {
 
 ```
 
-###### 方法二：：通过 vue-router 的钩子函数
+### 方法二：：通过 vue-router 的钩子函数
 
 >  beforeRouteEnter   beforeRouteUpdate   beforeRouteLeave
 

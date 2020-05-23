@@ -1,7 +1,7 @@
 ---
 title: Vue中混入mixin的使用
 date: 2019-04-11 04:00:00
-tags: [VUE,开发笔记]
+tags: [Vue,开发笔记]
 ---
 
 ###  关于VUE的混入使用

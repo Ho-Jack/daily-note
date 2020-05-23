@@ -38,15 +38,38 @@ app.model({
 
 DVA 的 model 对象有几个基本的属性，需要大家了解。
 
-
-
 1. `namespace`：model 的命名空间，只能用字符串。一个大型应用可能包含多个 model，通过`namespace`区分。
+
 2. `state`：当前 model 状态的初始值，表示当前状态。
+
 3. `reducers`：用于处理同步操作，可以修改 `state`，由 `action` 触发。reducer 是一个纯函数，它接受当前的 state 及一个 action 对象。action 对象里面可以包含数据体（payload）作为入参，需要返回一个新的 state。
+
 4. `effects`：用于处理异步操作（例如：与服务端交互）和业务逻辑，也是由 action 触发。但是，它不可以修改 state，要通过触发 action 调用 reducer 实现对 state 的间接操作。
+
+   （call异步请求数据，put用于触发 action 。）
+
 5. `action`：是 reducers 及 effects 的触发器，一般是一个对象，形如`{ type: 'add', payload: todo }`，通过 type 属性可以匹配到具体某个 reducer 或者 effect，payload 属性则是数据体，用于传送给 reducer 或 effect。
 
+( action.type 的构造是 `namespace 名称` + `/` + `reducer 名称`，
+事实上 action.type 也可以是 `namespace 名称` + `/` + `effect 名`)
 
+## onnect 方法
+
+connect 是一个函数，绑定 State 到 View。
+
+```js
+import { connect } from 'dva';
+
+function mapStateToProps(state) {
+  return { todos: state.todos };
+}
+connect(mapStateToProps)(App);
+//connect(({todos})=>({todos: state.todos}))(App)
+```
+
+connect 方法返回的也是一个 React 组件，通常称为容器组件。因为它是原始 UI 组件的容器，即在外面包了一层 State。
+
+connect 方法传入的第一个参数是 mapStateToProps 函数，mapStateToProps 函数会返回一个对象，用于建立 State 到 Props 的映射关系。
 
 
 
@@ -62,4 +85,3 @@ DVA 的 model 对象有几个基本的属性，需要大家了解。
 
 如果你熟悉 React 中最基本的两个概念 props 和 state，一定知道 props 和 state 对于一个组件来讲都是数据的来源，而 state 又可以通过 props 传递给子组件，这像是一个鸡生蛋蛋生鸡的问题：到底谁是数据的源头 ？答案是 state，而且是广义的 state：它可以是 react 组件树中各级组件的 state，也可以是 react 组件树外部由其他 js 数据结构表示的 state，而 dva 管理的就是[ react 组件树之外的 state: Redux](https://redux.js.org/)。归根结底，props 是用来传导数据的，而 state 是数据改变的源泉
 
-1
