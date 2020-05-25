@@ -1,4 +1,10 @@
-### `crypto`模块
+---
+title: Node的 解密和加密模块crypto
+date: 2019-12-05 14:48:39
+tags: [Node, 开发笔记]
+---
+
+## Node的 解密和加密模块crypto
 
 `crypto`模块的目的是为了提供通用的加密和哈希算法。
 `crypto` 模块提供了加密功能，包含对` OpenSSL` 的哈希、HMAC、加密、解密、签名、以及验证功能的一整套封装。

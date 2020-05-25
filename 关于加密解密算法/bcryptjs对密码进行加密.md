@@ -1,6 +1,10 @@
-# [nodejs中的bcryptjs密码加密](https://segmentfault.com/a/1190000008841988)
+---
+title: nodejs中的bcryptjs密码加密
+date: 2019-12-05 15:33:51
+tags: [Node, 开发笔记]
+---
 
-
+## [nodejs中的bcryptjs密码加密](https://segmentfault.com/a/1190000008841988)
 
 ## bcryptjs密码加密
 

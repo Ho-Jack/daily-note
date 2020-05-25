@@ -6,9 +6,14 @@ tags: [HTML, 样式]
 
 ## table
 
-<thead>   表头  <tbody> 主体   <tfoot>表尾
+### 关键标签：
 
+```html
+<thead>   表头  <tbody> 主体   <tfoot>表尾
 <tr> 表格行，<th>表头（table head），<td> 单元格（table data）。
+```
+
+### 实例
 
 ```html
  <table  border="1" width="95%"  cellspacing="0" ><!--表格开始-->        
