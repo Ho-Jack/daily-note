@@ -76,7 +76,6 @@ let vm = new Vue({
 })
 
 vm.message = 2
-
 ```
 
 输出结果：
@@ -100,6 +99,5 @@ vm.message = 2
 // 调用了updated
 // 2
 // <div id="app"><p>2</p></div>
-
 ```
 

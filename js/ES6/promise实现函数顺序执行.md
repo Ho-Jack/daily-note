@@ -12,21 +12,39 @@ tags: [JS, ES6, 开发笔记]
 ### 函数顺序执行
 
 ```js
-function2(){
+function  A(){
     // 你的逻辑代码 
     return Promise.resolve(/* 这里是需要返回的数据*/)
 }
 
-function3(){
+function B(){
     // 你的逻辑代码 
     return Promise.resolve(/* 这里是需要返回的数据*/)
 }
 
-// 调用
-function1(){
-    this.function2().then(val => { 
-        this.function3();
-    });
+
+```
+
+#### 普通写法：
+
+```js
+function GO(){
+    A().then(val=>{
+        /* A 函数运行成功，并获取A函数的val */
+        B().then(val=>{
+          /* B函数运行成功 并获取B 函数的val */
+        })
+    })
+}
+```
+
+#### 最优写法 async/await：
+
+```js
+async function GO(){
+let  a= await A()
+  console.log(a)
+    await B()
 }
 ```
 

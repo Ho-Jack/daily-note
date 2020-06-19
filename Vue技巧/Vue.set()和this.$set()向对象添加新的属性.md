@@ -24,7 +24,7 @@ data () {
     student: {
       name: '',
       sex: ''
-//这里并没有提前将age属性添加上去（Student对象的结构只有2个属性没有age 属性）
+//这里并没有提前将age属性添加上去（Student对象的结构只有2个属性，没有age 属性）
     }
   }
 }

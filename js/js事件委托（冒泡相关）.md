@@ -1,10 +1,10 @@
 ---
-title: JS事件委托（冒泡相关）
+title: JS事件委托/事件代理（冒泡相关）
 date: 2020-04-15 19:22:05
 tags: [JS, ES6, 开发笔记]
 ---
 
-## JS事件委托（冒泡相关）
+## JS事件委托/事件代理（冒泡相关）
 
 ![事件委托1](https://github.com/Ho-Jack/daily-note/raw/master/img/事件委托1.png)
 
