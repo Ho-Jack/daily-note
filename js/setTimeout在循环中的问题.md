@@ -23,7 +23,7 @@ tags: [JS, 开发笔记]
 
 看下面示例：
 
-```
+```js
 for (var i = 0; i < 5; i++) {
     setTimeout(function() {
         console.log(i);
@@ -41,7 +41,7 @@ for (var i = 0; i < 5; i++) {
 
 接下来就是那道经典的代码：
 
-```
+```js
 Copyfor (var i = 0; i < 5; i++) { 
     setTimeout(function (){
         console.log(i);  
@@ -57,9 +57,11 @@ Copyfor (var i = 0; i < 5; i++) {
 
 **解决办法：人为给 console.log(i); 创造作用域，保存i的值。**
 
-#### 解决办法一
+#### 解决办法一 
 
-```
+> 立即执行函数，创建独立的作用域，免全面局污染
+
+```js
 for (var i = 0; i < 5; i++) { 
     (function(i){      //立刻执行函数
         setTimeout(function (){
@@ -73,7 +75,7 @@ for (var i = 0; i < 5; i++) {
 
 #### 解决办法二
 
-```
+```js
 for (let i = 0; i < 5; i++) {     //let 代替 var
     setTimeout(function (){
         console.log(i);  
@@ -87,7 +89,7 @@ for (let i = 0; i < 5; i++) {     //let 代替 var
 
 在写示例代码的过程中，发现一个语法点：
 
-```
+```js
  function a(i){ 
     console.log(i);   
  }
@@ -107,7 +109,7 @@ for (var i = 0; i < 5; i++) {
 
 #### （1）匿名函数包装
 
-```
+```js
  function a(i){ 
     console.log(i);   
 }
@@ -124,7 +126,7 @@ for (var i = 0; i < 5; i++) {
 > setTimeout(func, delay, param1, param2, ...)
 > 第三个参数及以后的参数都可以作为 func 函数的参数
 
-```
+```js
 Copyfunction a(i){ 
     console.log(i);   
  }

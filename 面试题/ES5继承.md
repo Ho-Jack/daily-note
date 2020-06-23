@@ -85,12 +85,14 @@ u1.showPass();
 // 老版本继承
 function VipUser(name, pass, level) {
 //继承属性    
-    User.call(this, name, pass);
+ User.call(this, name, pass);
+//新属性    
 this.level = level;
 }
 //继承方法
 VipUser.prototype = new User()  
 VipUser.prototype.constructor = VipUser;
+
 VipUser.prototype.showLevel = function () {
     console.log(this.level);
 };

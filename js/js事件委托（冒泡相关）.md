@@ -36,8 +36,7 @@ tags: [JS, ES6, 开发笔记]
 
 ```js
   document.getElementById('list').onclick=function(e){
-    console.log(e.target.innerText); 
-      
+    console.log(e.target.innerText);   
   }
 ```
 
