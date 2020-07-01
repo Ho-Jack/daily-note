@@ -40,6 +40,8 @@ tags: [面试]
 
 ### 1. transition  过度
 
+> 无论是通过操作dom 或者css 来改变的dom元素的变化 都能过度
+
 语法： 
 
 ```css
@@ -77,25 +79,65 @@ div:hover {width:300px;}
 
 
 
-### 2.动画 animation
+### 2.动画 animation                  美[ˌænɪˈmeɪʃn]
 
-| 值                                                           | 说明                                                         |
+#### @keyframes 规定动画
+
+```css
+/*定义动画go*/
+@keyframes go {
+　　0% {}
+　　50%{}
+　　100%{}
+}
+@keyframes go {
+   from {     } /*0%*/   
+   to  {     }  /*100%*/   
+}
+```
+
+
+
+| 值  | 说明  |
 | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| *[animation-name](https://www.runoob.com/cssref/css3-pr-animation-name.html)* | 指定要绑定到选择器的关键帧的名称                             |
-| *[animation-duration](https://www.runoob.com/cssref/css3-pr-animation-duration.html)* | 动画指定需要多少秒或毫秒完成                                 |
-| *[animation-timing-function](https://www.runoob.com/cssref/css3-pr-animation-timing-function.html)* | 设置动画将如何完成一个周期                                   |
-| *[animation-delay](https://www.runoob.com/cssref/css3-pr-animation-delay.html)* | 设置动画在启动前的延迟间隔。                                 |
-| *[animation-iteration-count](https://www.runoob.com/cssref/css3-pr-animation-iteration-count.html)* | 定义动画的播放次数。                                         |
-| *[animation-direction](https://www.runoob.com/cssref/css3-pr-animation-direction.html)* | 指定是否应该轮流反向播放动画。                               |
+| animation-name   | 规定需要绑定到选择器的 keyframe 名称。 |
+| animation-duration  | 规定完成动画所花费的时间，以秒或毫秒计。 |
+| animation-timing-function | 设置动画将如何完成一个周期（动画的速度曲线） |
+| animation-delay| 设置动画在启动前的延迟间隔。 |
+| animation-iteration-count | 定义动画的播放次数。 |
+|animation-direction| 指定是否应该轮流反向播放动画。  |
 | [animation-fill-mode](https://www.runoob.com/cssref/css3-pr-animation-fill-mode.html) | 规定当动画不播放时（当动画完成时，或当动画有一个延迟未开始播放时），要应用到元素的样式。 |
 | *[animation-play-state](https://www.runoob.com/cssref/css3-pr-animation-play-state.html)* | 指定动画是否正在运行或已暂停。                               |
 | initial                                                      | 设置属性为其默认值。 [阅读关于 *initial*的介绍。](https://www.runoob.com/cssref/css-initial.html) |
 | inherit                                                      | 从父元素继承属性。 [阅读关于 *initinherital*的介绍。](https://www.runoob.com/cssref/css-inherit.html) |
 
-语法:
+
+
+**animation-timing-function** 设置动画如何完成一个周期（动画的速度曲线）
+
+| 值                            | 描述                                                         |
+| :---------------------------- | :----------------------------------------------------------- |
+| linear                        | 动画从头到尾的速度是相同的。                                 |
+| ease                          | 默认。动画以低速开始，然后加快，在结束前变慢。               |
+| ease-in                       | 动画以低速开始。                                             |
+| ease-out                      | 动画以低速结束。                                             |
+| ease-in-out                   | 动画以低速开始和结束。                                       |
+| cubic-bezier(*n*,*n*,*n*,*n*) | 在 cubic-bezier 函数中自己的值。可能的值是从 0 到 1 的数值。 |
+
+**animation-iteration-count**   动画的播放次数
+
+| 值       | 描述                             |
+| :------- | :------------------------------- |
+| *n*      | 一个数字，定义应该播放多少次动画 |
+| infinite | 指定动画应该播放无限次（永远）   |
+
+
+
+语法: 
 
 ```css
-animation：动画名称，一个周期花费时间，效果曲线（默认ease），动画延迟（默认0），播放次数（默认1），是否反向播放动画（默认normal），是否暂停动画（默认running）
+animation：动画名称 | 一个周期花费时间(多少秒) | 效果曲线（默认ease） | 动画延迟（默认0） 
+| 播放次数（默认1） | 是否反向播放动画（默认normal） | 是否暂停动画（默认running）
 ```
 
 例1：
@@ -329,7 +371,7 @@ background-color: hsla( 49, 65%, 60%, 0.68);
 ### 9.滤镜Filter
 
 ```css
-filter: grayscale(100%);  //黑白色
+filter: grayscale(100%);  //黑白色  grayscale  ['grei,skeil] 灰度级;
 filter:opacity(.5);       //透明色
 filter:sepia(1);          //褐色
 filter:saturate(2);       //饱和度saturate

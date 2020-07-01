@@ -1,5 +1,15 @@
 vue style中穿透scoped
 
- /deep/ ::v-deep >>> 深度选择器
+深度选择器
+
+```css
+ /deep/ 
+ ::v-deep
+ >>> 
+```
+
+
+
+
 
 目前官推 ::v-deep
