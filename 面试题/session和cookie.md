@@ -36,3 +36,19 @@ sessionStorage.setItem('key',JSON.stringify(obj))
 var info= JSON.parse(sessionStorage.getItem(key))
 ```
 
+
+
+
+
+ cookie安全性不高， document.cookie即可获取  （可以设置 httpOnly，限制在js 中获取）
+
+### session
+
+ 1，session 在服务器端，cookie 在客户端（浏览器）
+ 2，session 默认被存在在服务器的一个文件里（不是内存）
+ 3，session 的运行依赖 session id，而 session id 是存在 cookie 中的，也就是说，如果浏览器禁用了 cookie ，同时 session 也会失效（但是可以通过其它方式实现，比如在 url 中传递 session_id）
+ 4，session 可以放在 文件、数据库、或内存中都可以。
+ 5，用户验证这种场合一般会用 session 
+
+
+

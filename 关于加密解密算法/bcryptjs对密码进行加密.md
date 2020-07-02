@@ -8,7 +8,7 @@ tags: [Node, 开发笔记]
 
 ## bcryptjs密码加密
 
-bcryptjs是一个第三方密码加密库，是对原有bcrypt的优化，优点是不需要安装任何依赖
+bcrypt.js是一个第三方密码加密库，是对原有bcrypt的优化，优点是不需要安装任何依赖
 
 [npmjs地址](https://www.npmjs.com/package/bcryptjs)
 
@@ -81,7 +81,7 @@ bcrypt.compare("123456", hash).then((res) => {
 
 快速生成hash值
 
-```
+```js
 bcrypt.hash('bacon', 8, function(err, hash) {
 });
 ```

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+   <div> XSS攻击 <input id="XSS1" value='' /></div>
+   <div> 防御XSS攻击 <input id="XSS2" value='' /></div>
+    <p id="show"></p>
+</body>
+
+</html>
+<script>
+    let xss1 = document.getElementById('XSS1')
+    let xss2 = document.getElementById('XSS2')
+    let show = document.getElementById('show')
+
+    xss1.addEventListener('change', () => {
+        console.log(xss1.value);
+        let message = xss1.value
+        show.innerHTML = message
+    })
+    xss2.addEventListener('change', () => {
+        console.log(xss2.value);
+        let message = xss2.value
+        /* escape是防止XSS的代码
+           针对一些输入的内容进行替换
+        <   替换为:    &lt
+        >   替换为:    &gt
+        "   替换为:    &quto
+        '   替换为:    &#39
+        */
+        escape = function (str) {
+            return str.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        }
+        show.innerHTML = escape(message)
+    })
+</script>
+
+
+<!-- 
+           <input type="button" value="XSS攻击" onclick="alert('111')"/>
+ -->

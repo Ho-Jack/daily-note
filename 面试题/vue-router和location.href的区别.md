@@ -31,3 +31,25 @@
 | [assign()](https://www.w3school.com.cn/jsref/met_loc_assign.asp) | 加载新的文档。           |
 | [reload()](https://www.w3school.com.cn/jsref/met_loc_reload.asp) | 重新加载当前文档。       |
 | [replace()](https://www.w3school.com.cn/jsref/met_loc_replace.asp) | 用新的文档替换当前文档。 |
+
+```js
+ancestorOrigins: DOMStringList {length: 0}
+assign: ƒ assign()
+fragmentDirective: FragmentDirective {}
+hash: "#/smz"
+host: "localhost:9004"
+hostname: "localhost"
+href: "http://localhost:9004/#/smz"
+origin: "http://localhost:9004"
+pathname: "/"
+port: "9004"
+protocol: "http:"
+reload: ƒ reload()
+replace: ƒ replace()
+search: ""
+toString: ƒ toString()
+valueOf: ƒ valueOf()
+Symbol(Symbol.toPrimitive): undefined
+__proto__: Location
+```
+
