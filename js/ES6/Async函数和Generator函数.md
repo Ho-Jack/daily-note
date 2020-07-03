@@ -5,7 +5,7 @@
 
 2、函数声明时带上 * ，如 function *go(){}。函数内部使用 yield 关键字实现暂停。
 
-3、generator函数函数执行并不会执行其代码，而是返回一个迭代器对象，之后调用迭代器的 next 方法，可以获得`yield`/`return`的返回值象。
+3、generator函数函数执行并不会执行其代码，而是**返回一个迭代器对象**，之后调用迭代器的 next 方法，可以获得`yield`/`return`的返回值象。
 
 ![generator函数](F:\daily-note\js\ES6\generator函数.jpg)
 
@@ -32,6 +32,7 @@ console.log(r3)     //{ value: undefined, done: true }
 
 **注意：**
 
+- next()的返回值：  {value:xx, done:true/false}
 - yield语句只是个标识符，并没有返回值。
 - yield左边等于等于next()传来的参数值，没传参则为undefined。yield右边的是next()的返回值。
 - **第二次调用`next()`的参数**会被**第一次`yield`赋值的变量接收到**
@@ -104,5 +105,92 @@ async function fn(){
 fn();
  
 console.log('world')
+```
+
+实例1：
+
+```js
+function A(){
+    console.log('AAAAAA');
+ //  return Promise.reject('函数A 失败')
+ return Promise.resolve('函数A 成功')
+}
+function B(){
+    console.log('BBBBBB');
+   // return Promise.reject('函数B 失败')
+    return Promise.resolve('函数B 成功')
+}
+
+function C(){
+    console.log('CCCCCC');
+    return  '普通函数'
+}
+async function GO (){
+  try{
+      let result1= await A()
+      console.log(result1);
+      
+      let result2=await B()
+      console.log(result2);
+
+      let result3=await C()
+      console.log(result3);
+  }catch(error){
+      console.log('被caech 捕获');     
+      console.log(error); 
+  }
+}
+```
+
+```
+AAAAAA
+函数A 成功
+BBBBBB
+函数B 成功
+CCCCCC
+普通函数
+```
+
+实例2：
+
+```js
+function A(){
+    console.log('AAAAAA');
+ //  return Promise.reject('函数A 失败')
+ return Promise.resolve('函数A 成功')
+}
+function B(){
+    console.log('BBBBBB');
+    return Promise.reject('函数B 失败')
+   // return Promise.resolve('函数B 成功')
+}
+
+function C(){
+    console.log('CCCCCC');
+    return  '普通函数'
+}
+async function GO (){
+  try{
+      let result1= await A()
+      console.log(result1);
+      
+      let result2=await B()
+      console.log(result2);
+
+      let result3=await C()
+      console.log(result3);
+  }catch(error){
+      console.log('被caech 捕获');     
+      console.log(error); 
+  }
+}
+```
+
+```
+AAAAAA
+函数A 成功
+BBBBBB
+被caech 捕获
+函数B 失败
 ```
 

@@ -392,6 +392,16 @@ filter:drop-shadow(5px 5px 5px #000);    //阴影drop-shadow(5px 5px 5px #000)
 - md >=992   (中屏，桌面)
 - lg >=1200   (大屏，桌面)
 
+常用匹配特征 :
+- width/height: 浏览器宽高
+- max-width： 表示小于最大宽度时生效
+- min-width： 表示大于最小宽度时生效
+- device-width/device-height: 设备屏幕分辨率宽高
+- resolution: 设备分辨率
+- orientation：portrait(纵向),高度大于等于宽度时，landscape(横向),高度小于宽度时
+
+
+
 ```css
 @media screen and (min-width: 1200px) {   }   //lg大屏幕
 ```
