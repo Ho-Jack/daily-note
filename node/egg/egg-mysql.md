@@ -16,7 +16,7 @@ $ npm i --save egg-mysql
 
 开启插件：
 
-```
+```js
 // config/plugin.js
 exports.mysql = {
   enable: true,
@@ -30,7 +30,7 @@ exports.mysql = {
 
 如果我们的应用只需要访问一个 MySQL 数据库实例，可以如下配置：
 
-```
+```js
 // config/config.${env}.js
 exports.mysql = {
   // 单数据库信息配置
@@ -55,7 +55,7 @@ exports.mysql = {
 
 使用方式：
 
-```
+```js
 await app.mysql.query(sql, values); // 单实例可以直接通过 app.mysql 访问
 ```
 
@@ -63,7 +63,7 @@ await app.mysql.query(sql, values); // 单实例可以直接通过 app.mysql 访
 
 如果我们的应用需要访问多个 MySQL 数据源，可以按照如下配置：
 
-```
+```js
 exports.mysql = {
   clients: {
     // clientId, 获取client实例，需要通过 app.mysql.get('clientId') 获取
@@ -107,7 +107,7 @@ exports.mysql = {
 
 使用方式：
 
-```
+```js
 const client1 = app.mysql.get('db1');
 await client1.query(sql, values);
 
@@ -119,7 +119,7 @@ await client2.query(sql, values);
 
 我们可以不需要将配置提前申明在配置文件中，而是在应用运行时动态的从配置中心获取实际的参数，再来初始化一个实例。
 
-```
+```js
 // {app_root}/app.js
 module.exports = app => {
   app.beforeStart(async () => {
@@ -139,7 +139,7 @@ module.exports = app => {
 
 更多 Service 层的介绍，可以参考 [Service](https://eggjs.org/zh-cn/basics/service.html)
 
-```
+```js
 // app/service/user.js
 class UserService extends Service {
   async find(uid) {
@@ -152,7 +152,7 @@ class UserService extends Service {
 
 之后可以通过 Controller 获取 Service 层拿到的数据。
 
-```
+```js
 // app/controller/user.js
 class UserController extends Controller {
   async info() {
@@ -172,7 +172,7 @@ class UserController extends Controller {
 
 可以直接使用 `insert` 方法插入一条记录。
 
-```
+```js
 // 插入
 const result = await this.app.mysql.insert('posts', { title: 'Hello World' }); // 在 post 表中，插入 title 为 Hello World 的记录
 
@@ -201,7 +201,7 @@ const insertSuccess = result.affectedRows === 1;
 
 - 查询一条记录
 
-```
+```js
 const post = await this.app.mysql.get('posts', { id: 12 });
 
 => SELECT * FROM `posts` WHERE `id` = 12 LIMIT 0, 1;
@@ -209,7 +209,7 @@ const post = await this.app.mysql.get('posts', { id: 12 });
 
 - 查询全表
 
-```
+```js
 const results = await this.app.mysql.select('posts');
 
 => SELECT * FROM `posts`;
@@ -217,7 +217,7 @@ const results = await this.app.mysql.select('posts');
 
 - 条件查询和结果定制
 
-```
+```js
 const results = await this.app.mysql.select('posts', { // 搜索 post 表
   where: { status: 'draft', author: ['author1', 'author2'] }, // WHERE 条件
   columns: ['author', 'title'], // 要查询的表字段
@@ -235,7 +235,7 @@ const results = await this.app.mysql.select('posts', { // 搜索 post 表
 
 可以直接使用 `update` 方法更新数据库记录。
 
-```
+```js
 // 修改数据，将会根据主键 ID 查找，并更新
 const row = {
   id: 123,
@@ -274,7 +274,7 @@ const updateSuccess = result.affectedRows === 1;
 
 可以直接使用 `delete` 方法删除数据库记录。
 
-```
+```js
 const result = await this.app.mysql.delete('posts', {
   author: 'fengmk2',
 });
@@ -292,7 +292,7 @@ const result = await this.app.mysql.delete('posts', {
 
 参考 [preventing-sql-injection-in-node-js](http://stackoverflow.com/questions/15778572/preventing-sql-injection-in-node-js)
 
-```
+```js
 const postId = 1;
 const results = await this.app.mysql.query('update posts set hits = (hits + ?) 
 where id = ?', [1, postId]);
@@ -320,7 +320,7 @@ egg-mysql 提供了两种类型的事务。
 - 优点：`beginTransaction`, `commit` 或 `rollback` 都由开发者来完全控制，可以做到非常细粒度的控制。
 - 缺点：手写代码比较多，不是每个人都能写好。忘记了捕获异常和 cleanup 都会导致严重 bug。
 
-```
+```js
 const conn = await app.mysql.beginTransaction(); // 初始化事务
 
 try {
@@ -346,7 +346,7 @@ try {
 
 - 缺点：整个事务要么成功，要么失败，无法做细粒度控制。
 
-```
+```js
 const result = await app.mysql.beginTransactionScope(async conn => {
   // don't commit or rollback by yourself
   await conn.insert(table, row1);
@@ -364,7 +364,7 @@ const result = await app.mysql.beginTransactionScope(async conn => {
 
 - `NOW()`：数据库当前系统时间，通过 `app.mysql.literals.now` 获取。
 
-```
+```js
 await this.app.mysql.insert(table, {
   create_time: this.app.mysql.literals.now,
 });
@@ -376,7 +376,7 @@ await this.app.mysql.insert(table, {
 
 下例展示了如何调用 MySQL 内置的 `CONCAT(s1, ...sn)` 函数，做字符串拼接。
 
-```
+```js
 const Literal = this.app.mysql.literals.Literal;
 const first = 'James';
 const last = 'Bond';

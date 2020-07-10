@@ -2,8 +2,8 @@
 
 本节介绍 sequelize 中的各种关联类型. Sequelize 中有四种类型的关联
 
-1. BelongsTo
-2. HasOne
+1. BelongsTo   一对一关联
+2. HasOne      一对一关联
 3. HasMany
 4. BelongsToMany
 

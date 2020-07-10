@@ -2,7 +2,7 @@
 
 在[快速入门](https://eggjs.org/zh-cn/intro/quickstart.html)中，大家对框架应该有了初步的印象，接下来我们简单了解下目录约定规范。
 
-```
+```js
 egg-project
 ├── package.json
 ├── app.js (可选)

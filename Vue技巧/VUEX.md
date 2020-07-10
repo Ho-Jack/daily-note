@@ -10,16 +10,31 @@ tags: [VUE, 开发笔记]
 
   > store( state、mutations、actions、getters)
 
-* state 用来数据共享数据存储                                      $store.state.xxx
+* state 用来数据共享数据存储                       
 
-* mutation 用来注册改变数据状态（同步）               $store.commit( "mutation名称 ")
+                ```js
+   $store.state.xxx
+                ```
 
-* action 解决异步改变共享数据( 异步 )                        $store.dispatch("action名称" ，data)
+* mutation 用来注册改变数据状态（同步）          
 
-  ​                                                                                            'user/login'  (modules中user 下的login)     
+  ```
+   $store.commit( "mutation名称 ")
+  ```
 
-* getters 用来对共享数据进行过滤操作（计算属性）$store.getters.xx    
+* action 解决异步改变共享数据( 异步 )                
 
+  ```js
+  $store.dispatch("action名称" ，data)
+  $store.dispatch("user/login" ，data)  // 'user/login'  (modules中user下的login)                                                                                             
+  ```
+
+* getters 用来对共享数据进行过滤操作（计算属性）
+
+  ```js
+  $store.getters.xx    
+  ```
+  
   (在js文件中 引入store文件 然后直接  store.dispach 不用写$ )  
 
 >在组件中分发 state、mutations 、actions 、getters
@@ -162,11 +177,12 @@ const store =new Vuex.Store({
         ```js
         import store from './store/'   //结尾还有一个 / 这是寻找到store文件夹下的index.js入口文件
         new Vue({
-            store,}
-        ```
-
-        4.使用
-
+            store,
+        }
+```
+        
+4.使用
+        
         ```js
         import {  mapActions} from 'vuex'
         import { USER_SIGNIN} from 'store/user'

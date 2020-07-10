@@ -8,7 +8,7 @@
 
 在这个例子中，我们会使用 sequelize 连接到 MySQL 数据源，因此在开始编写代码之前，我们需要先在本机上安装好 MySQL，如果是 MacOS，可以通过 homebrew 快速安装：
 
-```
+```js
 brew install mysql
 brew services start mysql
 ```
@@ -17,7 +17,7 @@ brew services start mysql
 
 通过 `npm` 初始化一个项目:
 
-```
+```shell
 $ mkdir sequelize-project && cd sequelize-project
 $ npm init egg --type=simple
 $ npm i
@@ -27,13 +27,13 @@ $ npm i
 
 - 安装
 
-```
+```shell
 npm install --save egg-sequelize mysql2
 ```
 
 - 在 `config/plugin.js` 中引入 egg-sequelize 插件
 
-```
+```js
 exports.sequelize = {
   enable: true,
   package: 'egg-sequelize',
@@ -42,7 +42,7 @@ exports.sequelize = {
 
 - 在 `config/config.default.js` 中编写 sequelize 配置
 
-```
+```js
 config.sequelize = {
   dialect: 'mysql',
   host: '127.0.0.1',
@@ -53,7 +53,7 @@ config.sequelize = {
 
 我们可以在不同的环境配置中配置不同的数据源地址，用于区分不同环境使用的数据库，例如我们可以新建一个 `config/config.unittest.js` 配置文件，写入如下配置，将单测时连接的数据库指向 `egg-sequelize-doc-unittest`。
 
-```
+```js
 exports.sequelize = {
   dialect: 'mysql',
   host: '127.0.0.1',
@@ -68,14 +68,14 @@ exports.sequelize = {
 
 接下来我们先暂时离开 egg 项目的代码，设计和初始化一下我们的数据库。首先我们通过 mysql 命令在本地快速创建开发和测试要用到的两个 database：
 
-```
+```js
 mysql -u root -e 'CREATE DATABASE IF NOT EXISTS `egg-sequelize-doc-default`;'
 mysql -u root -e 'CREATE DATABASE IF NOT EXISTS `egg-sequelize-doc-unittest`;'
 ```
 
 然后我们开始设计 `users` 表，它有如下的数据结构：
 
-```
+```js
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
   `name` varchar(30) DEFAULT NULL COMMENT 'user name',
@@ -92,13 +92,13 @@ sequelize 提供了 [sequelize-cli](https://github.com/sequelize/cli) 工具来�
 
 - 安装 sequelize-cli
 
-```
+```js
 npm install --save-dev sequelize-cli
 ```
 
 在 egg 项目中，我们希望将所有数据库 Migrations 相关的内容都放在 `database` 目录下，所以我们在项目根目录下新建一个 `.sequelizerc` 配置文件：
 
-```
+```js
 'use strict';
 
 const path = require('path');
@@ -113,14 +113,14 @@ module.exports = {
 
 - 初始化 Migrations 配置文件和目录
 
-```
+```shell
 npx sequelize init:config
 npx sequelize init:migrations
 ```
 
 执行完后会生成 `database/config.json` 文件和 `database/migrations` 目录，我们修改一下 `database/config.json` 中的内容，将其改成我们项目中使用的数据库配置：
 
-```
+```js
 {
   "development": {
     "username": "root",
@@ -141,13 +141,13 @@ npx sequelize init:migrations
 
 此时 sequelize-cli 和相关的配置也都初始化好了，我们可以开始编写项目的第一个 Migration 文件来创建我们的一个 users 表了。
 
-```
+```shell
 npx sequelize migration:generate --name=init-users
 ```
 
 执行完后会在 `database/migrations` 目录下生成一个 migration 文件(`${timestamp}-init-users.js`)，我们修改它来处理初始化 `users`表：
 
-```
+```js
 'use strict';
 
 module.exports = {
@@ -186,7 +186,7 @@ npx sequelize db:migrate
 
 现在终于可以开始编写代码实现业务逻辑了，首先我们来在 `app/model/` 目录下编写 user 这个 Model：
 
-```
+```js
 'use strict';
 
 module.exports = app => {
@@ -206,7 +206,7 @@ module.exports = app => {
 
 这个 Model 就可以在 Controller 和 Service 中通过 `app.model.User` 或者 `ctx.model.User` 访问到了，例如我们编写 `app/controller/users.js`：
 
-```
+```js
 // app/controller/users.js
 const Controller = require('egg').Controller;
 
@@ -269,7 +269,7 @@ module.exports = UserController;
 
 最后我们将这个 controller 挂载到路由上：
 
-```
+```js
 // app/router.js
 module.exports = app => {
   const { router, controller } = app;

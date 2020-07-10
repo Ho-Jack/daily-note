@@ -58,11 +58,33 @@ export的几种方法：
 5. export function  XX(){ }
 
 例：
-①导出的内容组合成一个对象返回         import  * as  XX  from  ‘xx’         
-​         在xx.js下                        export  const  x1={}     export  const  x2={}
+①导出的内容组合成一个对象返回  
 
-②导出这个默认 xx 的对象作为一个对象    import xx from ' xx'
-​        在xx.js下                        const xx ={}   export default xx
+```js
+  import  * as  XX  from  ‘xx’  
+```
+
+   在xx.js下               
+
+
+   ```js
+export  const  x1={}  
+export  const  x2={}
+   ```
+
+
+
+②导出这个默认 xx 的对象作为一个对象    
+
+```js
+import xx from ' xx'
+```
+在xx.js下   
+
+```js
+const xx ={}  
+export default xx
+```
 
  
 
