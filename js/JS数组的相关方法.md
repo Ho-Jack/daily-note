@@ -30,8 +30,8 @@ arr/str.slice(开始索引，结束索引)               返回起始和结束�
 arr.splice(索引，删除数量，插入元素)      数组增/删/改，返回被删除/替换的元素。  (**修改原数组**)
 
 查询字符串
-str.indexOf()和str.lastIndexOf() （ES5新增）  返回第一次/最后一次的索引，不存在返回-1
-str.includes()    判断是否给定值，返回布尔  
+arr/str.indexOf()和arr/str.lastIndexOf() （ES5新增）  返回第一次/最后一次的索引，不存在返回-1
+arr/str.includes()    判断是否给定值，返回布尔  
 str.startWith()    判断是否以xx开始，返回布尔
 str.endWith()     判断是否以xx结束，返回布尔
 

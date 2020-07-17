@@ -47,6 +47,9 @@ mounted () { // ——钩子函数，实例挂载之后,在实例创建之后添
 ### this.$set(‘对象名’,要添加/修改的属性名,属性值)
 
 > 使用**$set()**方法，既可以新增属性,又可以触发视图更新.
+>
+> - Vue.set(this.items, indexOfItem, newValue)   
+> - 如果是数组    indexOfItem 就是 index
 
 ```js
 mounted () {

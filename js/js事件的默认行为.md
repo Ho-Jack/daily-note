@@ -9,12 +9,14 @@ tags: [JS, 开发笔记]
 JS事件的默认行为：
 
 - a标签点击跳转
-- form表单提交  <input type="submit">
+- form表单提交  <input type="submit">   
 - contextmenu 右击弹出菜单
 
 
 
+### 解决
 
+ <input type="button">      type设为button
 
 ### 原生JS中：
 

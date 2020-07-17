@@ -357,7 +357,7 @@ SELECT `id`, `firstName`, `lastName` AS `lsName` FROM `users` AS `user`;
 
 #### 基本条件
 
-```
+```js
 const users = await UserModel.findAll({
   attributes: ['id', 'firstName'],
   where: {
@@ -370,7 +370,7 @@ console.log(users);
 
 以上代码运行后，终端将会输出相应的 SQL 语句：
 
-```
+```sql
 SELECT `id`, `firstName` FROM `users` AS `user` WHERE `user`.`id` IN (1, 2) AND `user`.`firstName` = 'John';
 ```
 
@@ -378,7 +378,7 @@ SELECT `id`, `firstName` FROM `users` AS `user` WHERE `user`.`id` IN (1, 2) AND 
 
 #### AND 条件
 
-```
+```js
 const Op = Sequelize.Op;
 const users = await UserModel.findAll({
   attributes: ['id', 'firstName'],
@@ -394,13 +394,13 @@ console.log(users);
 
 以上代码运行后，终端将会输出相应的 SQL 语句：
 
-```
+```sql
 SELECT `id`, `firstName` FROM `users` AS `user` WHERE (`user`.`id` IN (1, 2) AND `user`.`firstName` = 'John');
 ```
 
 #### OR 条件
 
-```
+```js
 const Op = Sequelize.Op;
 const users = await UserModel.findAll({
   attributes: ['id', 'firstName'],
@@ -416,13 +416,13 @@ console.log(users);
 
 以上代码运行后，终端将会输出相应的 SQL 语句：
 
-```
+```sql
 SELECT `id`, `firstName` FROM `users` AS `user` WHERE (`user`.`id` IN (1, 2) OR `user`.`firstName` = 'John');
 ```
 
 #### NOT 条件
 
-```
+```js
 const Op = Sequelize.Op;
 const users = await UserModel.findAll({
   attributes: ['id', 'firstName'],
@@ -437,7 +437,7 @@ console.log(users);
 
 以上代码运行后，终端将会输出相应的 SQL 语句：
 
-```
+```sql
 SELECT `id`, `firstName` FROM `users` AS `user` WHERE NOT (`user`.`id` IN (1, 2));
 ```
 
@@ -449,20 +449,20 @@ SELECT `id`, `firstName` FROM `users` AS `user` WHERE NOT (`user`.`id` IN (1, 2)
 
 1. 方式一：调用 findById 方法：
 
-```
+```js
 const user = await UserModel.findById(1);
 console.log(user.get({'plain': true}));
 ```
 
 以上代码运行后，终端将会输出相应的 SQL 语句：
 
-```
+```sql
 SELECT `id`, `firstName`, `lastName`, `createdAt`, `updatedAt` FROM `users` AS `user` WHERE `user`.`id` = 1;
 ```
 
 1. 方式二：调用 findOne 方法：
 
-```
+```js
 const user = await UserModel.findOne({
   where: { firstName: 'Sue' }
 });
@@ -471,13 +471,13 @@ console.log(user.get({'plain': true}));
 
 以上代码运行后，终端将会输出相应的 SQL 语句：
 
-```
+```sql
 SELECT `id`, `firstName`, `lastName`, `createdAt`, `updatedAt` FROM `users` AS `user` WHERE `user`.`firstName` = 'Sue' LIMIT 1;
 ```
 
 #### 查询并获取数量
 
-```
+```js
 const result = await UserModel.findAndCountAll({
   limit: 10,
   offset: 0
@@ -487,7 +487,7 @@ console.log(result);
 
 以上代码运行后，终端将会输出相应的 SQL 语句：
 
-```
+```sql
 SELECT count(*) AS `count` FROM `users` AS `user`;
 SELECT `id`, `firstName`, `lastName`, `createdAt`, `updatedAt` FROM `users` AS `user` LIMIT 0, 10;
 ```
@@ -553,7 +553,7 @@ INSERT INTO `users` (`id`,`firstName`,`lastName`,`createdAt`,`updatedAt`) VALUES
 
 #### 更新
 
-```
+```js
 const Op = Sequelize.Op;
 const affectedRows = await UserModel.update(
   { firstName: "King" },
@@ -576,7 +576,7 @@ UPDATE `users` SET `firstName`='King',`updatedAt`='2018-10-08 10:11:15' WHERE NO
 
 #### 删除
 
-```
+```js
 const affectedRows = await UserModel.destroy({
   where: { firstName: 'King' }
 });

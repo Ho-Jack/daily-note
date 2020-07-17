@@ -11,6 +11,32 @@ tags: [开发笔记，JS]
       download = “ 不写默认文件名，作用是防止浏览器对jpg等格式文件直接打开而不是下载” />
 ```
 
+注意：  href 写的是相对路径 （查找的相对路径下的文件进行下载）
+
+    ```js
+// 下载文件
+export function saveAs(uri, params, filename) {
+	var link = document.createElement('a');
+	if (typeof link.download === 'string') {
+		document.body.appendChild(link); // Firefox requires the link to be in the body
+		link.download = filename ;
+		var href = "";
+		if (params) {
+			href = "?" + obj2params(params)
+		} else {
+			href = "";
+		}
+		link.href = uri + href;
+		link.click();
+		document.body.removeChild(link);
+	} else {
+		location.replace(uri);
+	}
+}
+    ```
+
+
+
 ##### 导出功能
 
 ```js

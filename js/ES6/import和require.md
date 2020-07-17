@@ -56,6 +56,7 @@ export的几种方法：
 3. export const XX ={}
 4. const XX=()=>{ }   export default XX
 5. export function  XX(){ }
+6. function xx （）{}              export {  xx   }
 
 例：
 ①导出的内容组合成一个对象返回  
