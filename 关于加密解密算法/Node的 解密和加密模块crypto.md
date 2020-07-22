@@ -57,7 +57,7 @@ console.log(hmac.digest('hex')); // 80f7e22570...
 
 ### AES
 
-- AES是一种常用的对称加密算法，加解密都用**同一个密钥。**
+- AES是一种常用的**对称**加密算法，加解密都用**同一个密钥。**
 
 ### HD     (  Diffie-Hellman )
 

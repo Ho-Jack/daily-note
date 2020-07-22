@@ -8,8 +8,8 @@ tags: [JS, ES6, 开发笔记]
 
 ## import和require
 
->- require    特点： 1.运行时加载  2.拷贝到本页面   3.全部引入
->- import     特点： 1.编译时加载  2.只引用定义     3.按需加载
+>- **require**    特点： 1.运行时加载  2.拷贝到本页面   3.全部引入
+>- **import**     特点： 1.编译时加载  2.只引用定义     3.按需加载
 >
 >- es6:         export  default            import 
 >- commonjs:     module.exports/exports     require   
@@ -20,26 +20,74 @@ tags: [JS, ES6, 开发笔记]
 
 import的几种写法：
 
-- 导入默认值:           import  defaultExport  from “module-name”;
+- 导入默认值:   
 
-- 导入整个模块的内容:   import * as name from “module-name”;
+  ```js
+   import  defaultExport  from “module-name”;
+  ```
 
-- 导入单个导出:         import { export } from “module-name”;   
-  ​                                     使用export.xx
+- 导入整个模块的内容:  
 
-- 导入多个导出:            import { export1 , export2 } from “module-name”; 
+  ```js
+   import * as name from “module-name”;
+  ```
 
-- 导入时重命名导出:    import { export as alias } from “module-name”;
+- 导入单个导出:        
+  
+```js
+   import { AA } from “module-name”;   
+  
+  //使用: 
+   AA.xx
+```
 
-- 导入时重命名多个导出: import { export1, export2 as alias2 , [...] } from “module-name”;
-  ​                                          import defaultExport, { export [ , [...] ] } from “module-name”;
-  ​                                          import defaultExport, * as name from “module-name”;
+- 导入多个导出:     
 
-- 仅为副作用导入模块:   import “module-name”;  （运行模块中的全局代码）
-  (模块设置了一些可供其他模块使用的全局状态,这些模块可能没有任何出口)
+   ```js
+   import { export1 , export2 } from “module-name”; 
+   ```
 
-- import()    （返回一个 Promise 对象。）
-  例：  if(x === 2){ import('myModual').then((MyModual)=>{ new MyModual(); }) }
+
+- 导入时重命名导出:   
+
+  ```JS
+   import { export as alias } from “module-name”;
+  ```
+
+- 导入时重命名多个导出:
+  
+  ```js
+ import { export1, export2 as alias2 , [...] } from “module-name”;
+  
+   import defaultExport, { export [ , [...] ] } from “module-name”;
+  
+   import defaultExport, * as name from “module-name”;
+  ```
+  
+- 仅为副作用导入模块:   
+  
+```js
+  import “module-name”; 
+  //（运行模块中的全局代码）
+  //(模块设置了一些可供其他模块使用的全局状态,这些模块可能没有任何出口)
+```
+
+- （返回一个 Promise 对象。）
+  
+  ```js
+  import()    
+  ```
+  
+  例：  
+  
+  ```js
+  if(x === 2){
+      import('myModual').then(  MyModual=>{ 
+          new MyModual(); 
+      }) 
+  }
+  ```
+  
   （引擎处理import语句是在编译时，这时不会去分析或执行if语句，所以import语句放在if代码块之中毫无意义，因此会报句法错误，而不是执行时错误。没办法像require样根据条件动态加载。 于是[提案](https://link.juejin.im?target=https://github.com/tc39/proposal-dynamic-import)引入import()函数，编译时分析if语句,完成动态加载。）
 
 > - defaultExport： 将引用模块默认导出的名称。
@@ -51,12 +99,38 @@ import的几种写法：
  
 
 export的几种方法：
-1. export default {}
-2. const XX={}       export default XX
-3. export const XX ={}
-4. const XX=()=>{ }   export default XX
-5. export function  XX(){ }
-6. function xx （）{}              export {  xx   }
+1. ```js
+   export default {}
+   ```
+
+2.  ```js
+   const XX={}       
+   export default XX
+   ```
+
+3. ```js
+   export const XX ={}
+   ```
+
+4. ```js
+   const XX=()=>{ }   
+   export default XX
+   ```
+
+5.  ```js
+   export function  XX(){ }
+   ```
+
+6. ```js
+   //可能有多个函数
+   function xx1 (){   }  
+   function xx2 (){   }  
+   export default{  xx1,xx2   }
+   //使用
+   import  XX form ' '
+      XX.xx1    
+      XX.xx2
+   ```
 
 例：
 ①导出的内容组合成一个对象返回  
@@ -89,23 +163,41 @@ export default xx
 
  
 
-  
-
-### commonjs的导出方法
+## commonjs的导出方法
 
 > commonjs:  require   export/module.export
 
-#### require:  模块导入
-- 核心模块:                                                    var fs = require('fs')         
--  第三方模块: npm install markedvar            marked = require('marked')       
--  自己写的：                                                 var foo = require('./foo.js')
--  自己写的（可以省略后缀名 .js）               var foo = require('./foo')
+### require:  模块导入
+- 核心模块:            `
 
- 
+  ```js
+  var fs = require('fs')   
+  ```
 
-####  exports： 模块导出
+- 第三方模块: 
 
-- ##### 导出多个成员:
+  ```js
+  //先下载对应模块     npm install markedvar           
+  marked = require('marked')    
+  ```
+
+- 自己写的：                                               
+
+  ```js
+    var foo = require('./foo.js')
+  ```
+
+- 自己写的（可以省略后缀名 .js） 
+  
+  ```js
+    var foo = require('./foo.js')
+  ```
+  
+  
+
+###  exports： 模块导出
+
+- #### 导出多个成员:
 
 ①      
 ```js

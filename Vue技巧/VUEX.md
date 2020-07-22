@@ -12,9 +12,9 @@ tags: [VUE, 开发笔记]
 
 * state 用来数据共享数据存储                       
 
-                ```js
+            ```js
    $store.state.xxx
-                ```
+   ```
 
 * mutation 用来注册改变数据状态（同步）          
 
@@ -179,6 +179,7 @@ const store =new Vuex.Store({
         new Vue({
             store,
         }
+        ```
 ```
         
 4.使用
@@ -217,7 +218,7 @@ const store =new Vuex.Store({
                     }
                 });
             },
-        ```
+```
 
 
   ```js
