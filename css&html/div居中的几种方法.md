@@ -54,10 +54,14 @@ body{
 
 ```css
   .div {
-     margin: auto;
      position: absolute;
+     margin: auto;
+      /**水平居中**/
      left: 0;
      right: 0;
+      /**垂直居中**/
+     top: 0;
+     bottom: 0;
 } 
 ```
 

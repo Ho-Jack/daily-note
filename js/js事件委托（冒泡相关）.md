@@ -75,7 +75,9 @@ item1
             <div id="D">444</div>
         </li>
     document.getElementById('list').onclick=function(event) {
-      var target = event.target;
+     // var target = event.target;
+         var e = event || window.event;
+         var target = e.target || e.srcElement;
       switch (target.id) {
         case "A":
                alert("A");
@@ -88,6 +90,10 @@ item1
           break;
       }
     }
+```
+
+```
+
 ```
 
 

@@ -496,7 +496,7 @@ SELECT `id`, `firstName`, `lastName`, `createdAt`, `updatedAt` FROM `users` AS `
 
 #### 排序
 
-```
+```js
 const users = await UserModel.findAll({
   attributes: ['id', 'firstName'],
   order: [
@@ -508,13 +508,13 @@ console.log(users);
 
 以上代码运行后，终端将会输出相应的 SQL 语句：
 
-```
+```sql
 SELECT `id`, `firstName` FROM `users` AS `user` ORDER BY `user`.`id` DESC;
 ```
 
 #### 分页
 
-```
+```js
 let countPerPage = 2, currentPage = 1;
 
 const users = await UserModel.findAll({
@@ -527,7 +527,7 @@ console.log(users);
 
 以上代码运行后，终端将会输出相应的 SQL 语句：
 
-```
+```sql
 SELECT `id`, `firstName` FROM `users` AS `user` LIMIT 0, 2;
 ```
 
@@ -535,7 +535,7 @@ SELECT `id`, `firstName` FROM `users` AS `user` LIMIT 0, 2;
 
 #### 插入
 
-```
+```js
 const users = await UserModel.bulkCreate([
   { firstName: "John", lastName: "Doe"},
   { firstName: "Sue", lastName: "Smith"},

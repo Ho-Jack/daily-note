@@ -12,21 +12,22 @@ tags: [VUE, 开发笔记]
 
 * state 用来数据共享数据存储                       
 
-            ```js
-   $store.state.xxx
-   ```
+  ```js
+  $store.state.xxx  
+  ```
 
-* mutation 用来注册改变数据状态（同步）          
+* mutation 用来注册改变数据状态（**同步**）          
 
   ```
    $store.commit( "mutation名称 ")
   ```
 
-* action 解决异步改变共享数据( 异步 )                
+* action 解决异步改变共享数据**( 异步/同步 )**                
 
   ```js
   $store.dispatch("action名称" ，data)
-  $store.dispatch("user/login" ，data)  // 'user/login'  (modules中user下的login)                                                                                             
+  $store.dispatch("user/login" ，data)  
+  // 'user/login' (modules中user下的login) 
   ```
 
 * getters 用来对共享数据进行过滤操作（计算属性）
@@ -50,10 +51,10 @@ export default {
     methods: {
         ...mapActions([
          'increment',  
-            // 将 `this.increment()` 映射为`this.$store.dispatch('increment')` 
-            // `mapActions` 也支持载荷：
-        'incrementBy'
-             // 将 `this.incrementBy(amount)` 映射为                                                      //   `this.$store.dispatch('incrementBy', amount)`
+ // 将 this.increment() 映射为  this.$store.dispatch('increment') 
+ // `mapActions` 也支持载荷：
+         'incrementBy'
+// 将this.incrementBy(amount)  映射为  this.$store.dispatch('incrementBy', amount)
         ]),
         ...mapActions({
             add: 'increment'  // 将 `this.add()` 映射为 `this.$store.dispatch('increment')`
@@ -69,7 +70,7 @@ computed: {
     user: state => state.user.XX,
    })
 }
-只要vuex里面的user.xx发生变化就能监控到
+//只要vuex里面的user.xx发生变化就能监控到
 
 ```
 
@@ -82,7 +83,7 @@ const state ={
 }
 const  mutations={
     BB(state,{对象1}){    
-        state.AA=xx //更新state的操作
+        state.AA=对象1.xx //更新state的操作
     }
 }
 const actions ={
@@ -251,9 +252,9 @@ computed: {
 
 
 
-//只用state的用法
+###  只用state的用法
 
-/store/modules/goods
+- 在 /store/modules/goods 下
 
 ```js
 export default{
@@ -263,18 +264,20 @@ export default{
 }
 ```
 
-//  xx.vue
+- 在 xx.vue  下
 
-```JS
+```js
 //import store from 'vuex'; //引用  (都用了$store 不用再引入)
-AA: {
-			get: function() {
-				return this.$store.state.goods.AA;
-			},
-			set: function(val) {
-				this.$store.state.goods.AA = val;
-			}
-		},	
+  computed：{
+        AA: {
+            get: function() {
+                return this.$store.state.goods.AA;
+            },
+            set: function(val) {
+                this.$store.state.goods.AA = val;
+            }
+        },
+    }
 ```
 
 > 这样就能像使用  data（）{     retrun{    AA:0            }} 一样使用AA这个变量了

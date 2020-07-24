@@ -81,7 +81,7 @@ async await是天生一对，async函数中没有出现await那就跟普通函�
 
 await“等待”，await命令后是一个promise对象，如果不是，会被转成一个resolve的promise对象。如果await后面的promise状态是reject的话会抛出异常，所以可以将await语句写在**try catch**里。
 
-当async函数执行的时候，一旦遇到await就会先返回，等到异步操作完成，再接着执行函数体内后面的语句，所以调用async函数虽然有等待, 但是并不会导致阻塞, 因为他内部的所有阻塞都封装在promise对象中异步执行.。
+当async函数执行的时候，一旦遇到await就会先返回，**等到异步操作完成，再接着执行函数体内后面的语句**，所以调用async函数虽然有等待, 但是并不会导致阻塞, 因为他内部的所有阻塞都封装在promise对象中异步执行.。
 
 ```js
 function promiseFn(){
@@ -194,3 +194,95 @@ BBBBBB
 函数B 失败
 ```
 
+
+
+
+
+
+
+```js
+   async function demo() {
+      
+        await setTimeout(() => {
+            console.log('AAA');
+        }, 3000)
+        await setTimeout(() => {
+            console.log('BBB');
+
+        }, 1000)
+        console.log('CCC');
+
+    }
+    demo()
+```
+
+```
+CCC
+BBB
+AAA
+```
+
+
+
+如果想按照  AAA  BBB  CCC顺序来：
+
+```js
+  function do1() {
+        console.log('进入函数：' + new Date().getSeconds());     
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                console.log('AAA:' + new Date().getSeconds());
+                resolve('AAA传递给下一个')
+            }, 4000)
+        })
+    }
+    do1().then(res => {
+        console.log(res+ + new Date().getSeconds());
+    })
+-----------------------------------------------------------------------------------------------
+   //async 个人理解  不太好进行  .then  控制 因为内部 不能主动  resove 或  reject 
+      
+```
+
+注意： 如果想 控制 前后 执行顺序，只能通过新建Promise对象，然后通过 then()链式调用来控制
+
+
+
+
+
+```js
+  async function demo() {
+        await setTimeout(() => {
+            console.log('AAA:' + new Date().getSeconds());
+        }, 4000)
+        await setTimeout(() => {
+            console.log('BBB:' + new Date().getSeconds());
+
+        }, 3000)
+        console.log('CCC:' + new Date().getSeconds());
+    }
+      demo()
+------------------------------------------------------------------------------------------------
+
+    setTimeout(() => {
+        console.log('AAA:' + new Date().getSeconds());
+    }, 4000)
+
+    setTimeout(() => {
+        console.log('BBB:' + new Date().getSeconds());
+
+    }, 3000)
+
+    console.log('CCC:' + new Date().getSeconds());
+```
+
+```js
+CCC:31
+CCC:31
+BBB:34
+BBB:34
+AAA:35
+AAA:35
+```
+
+说明：settimeout 本身就是异步操作

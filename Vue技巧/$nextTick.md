@@ -10,8 +10,10 @@ tags: [Vue]
 
 > ##### this.$nextTick( ()=>{} )
 
-1、就是在vue生命周期creat()创建初始，一定要把对dom的操作放在Vue.nextTick()中
-因为vue在creat阶段并没有任何对页面的渲染，这时候进行的操作没有任何作用，
+> `created` ：初始化了 `Inject` 、`Provide` 、 `props` 、`methods` 、`data` 、`computed` 和 `watch`，执行 `created` ；**未挂载dom**，可对data进行操作，操作dom需放到nextTick中
+
+1、就是在vue生命周期created()创建初始，一定要把对dom的操作放在Vue.nextTick()中
+因为vue在created阶段并没有任何对页面的渲染，这时候进行的操作没有任何作用，
 所以需要Vue.nextTick()方法等待vue的dom渲染完成之后渲染
 
 2、vue对页面数据变化的监控操作

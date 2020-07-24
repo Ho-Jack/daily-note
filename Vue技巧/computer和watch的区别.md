@@ -89,7 +89,7 @@ computed:{
 
 #### 用途：
 
-- data李的值
+- data里的值
 
 - props （要避免直接修改父组件传入的值）
 
@@ -98,6 +98,7 @@ computed:{
 #### watch实例
 
 ```js
+//第一个参数是新值，第二个参数是旧值
 watch:{
     XX : function (newVal,oldVal){   }
 //  XX  (newVal,oldVal){   }
