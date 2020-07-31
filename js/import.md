@@ -17,6 +17,10 @@ export const  x1={   }
 export const  x2={   }
 ```
 
+------
+
+
+
 - ### import   xx    from '   xx'
 
 > 导出这个默认 **xx** 的对象作为一个对象
@@ -26,6 +30,10 @@ export const  x2={   }
 const xx ={}
 export default xx
 ```
+
+------
+
+
 
 - ### import 'xx'
 

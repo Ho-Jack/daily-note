@@ -26,3 +26,48 @@ findAndCountAll
 
 ​            offset： 偏移量    计算公式（    （offset-1）*limit         ）
 
+
+
+
+
+事务：
+
+```js
+let transaction;
+try {
+	// 建立事务对象
+    transaction = await this.ctx.model.transaction();
+    
+    // 事务增操作
+    await this.ctx.model.VirtualDeptMember.create({
+        JSON格式数据
+    }, {
+        transaction,
+    });
+    
+    // 事务删操作
+    await this.ctx.model.VirtualDeptMember.destroy({
+        where: {
+        	JSON格式数据
+        },
+    	transaction,
+    });
+    
+    // 事务改操作
+    await this.ctx.model.Device.update({
+        修改的JSON数据
+    }, {
+        where: {
+        	查询的JSON数据
+        },
+        transaction,
+    });
+    
+    // 提交事务
+    await transaction.commit();
+} catch (err) {
+	// 事务回滚
+    await transaction.rollback();
+}
+```
+

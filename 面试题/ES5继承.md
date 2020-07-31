@@ -4,6 +4,10 @@
 function Person(obj) {
 	this.name = obj.name
 	this.age= obj.age
+    //方法
+     this.toString = function () {
+       return '(' + this.name + ', ' + this.age + ')';
+ };
 }
 // 原型方法
 Person.prototype.say = function() {
@@ -90,6 +94,8 @@ function VipUser(name, pass, level) {
 this.level = level;
 }
 //继承方法
+//console.log(person.__proto__ === Person.prototype); // true
+//console.log(Person.prototype.constructor == Person) // true
 VipUser.prototype = new User()  
 VipUser.prototype.constructor = VipUser;
 
@@ -143,4 +149,34 @@ class VipUser extends User {
 v1 = new VipUser('blue', '123', 3)
 v1.showLevel()
 ```
+
+
+
+
+
+
+
+**构造函数特点：**
+
+1.构造函数有原型对象prototype。
+
+2.构造函数原型对象prototype里面有constructor，指向构造函数本身。
+
+3.构造函数可以通过原型对象添加方法。
+
+4.构造函数创建的实例对象有__proto__原型，指向构造函数的原型对象。
+
+**类：**
+
+1.class本质还是function
+
+2.类的所有方法都定义在类的prototype属性上
+
+3.类创建的实例，里面也有__proto__指向类的prototype原型对象
+
+4.新的class写法，只是让对象原型的写法更加清晰，更像面向对象编程的语法而已。
+
+5.ES6的类其实就是语法糖。
+
+
 

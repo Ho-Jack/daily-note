@@ -8,17 +8,17 @@
 
 JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，JavaScript的主要用途是与用户互动，以及操作DOM。这决定了它只能是单线程，否则会带来很复杂的同步问题。比如，假定JavaScript同时有两个线程，一个线程在某个DOM节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？
 
-所以，为了避免复杂性，从一诞生，JavaScript就是单线程，这已经成这门语言的核心特征，将来也不会改变。
+所以，**为了避免复杂性**，从一诞生，JavaScript就是单线程，这已经成这门语言的核心特征，将来也不会改变。
 
-注：所谓单线程，是指在JS引擎中负责解释和执行JavaScript代码的线程只有一个。
+注：**所谓单线程，是指在JS引擎中负责解释和执行JavaScript代码的线程只有一个。**
 
 ### 三、 同步和异步
 
-- 同步任务
+- **同步任务**
 
   同步任务是指在**主线程上排队执行的任务**，只有前一个任务执行完毕，才能继续执行下一个任务，当我们打开网站时，网站的渲染过程，比如元素的渲染，其实就是一个同步任务
 
-- 异步任务
+- **异步任务**
 
   异步任务是指不进入主线程，而**进入任务队列的任务**，只有**任务队列通知主线程**，某个异步任务可以执行了，该任务才会**进入主线程**，当我们打开网站时，像图片的加载，音乐的加载，其实就是一个异步任务
 
@@ -54,11 +54,11 @@ JavaScript的单线程，与它的用途有关。作为浏览器脚本语言，J
 
 - #### 宏队列（macrotask）
 
-​       setTimeout、setInterval、 setImmediate、script（整体代码）、Dom、ajax、 I/O 操作、UI 渲染等
+​       setTimeout、setInterval、 setImmediate、script（整体代码）、Dom、**ajax**、 I/O 操作、UI 渲染等
 
 - #### 微队列（microtask）
 
-  process.nextTick、Promise、MutationObserver 等。
+  process.nextTick、Promise、.then()、MutationObserver 等。
 
 ###  执行顺序
 

@@ -34,13 +34,12 @@ import的几种写法：
 
 - 导入单个导出:        
   
-```js
-   import { AA } from “module-name”;   
-  
-  //使用: 
-   AA.xx
-```
-
+  ```js
+     import { AA } from “module-name”;   
+    
+    //使用: 
+     AA.xx
+  ```
 - 导入多个导出:     
 
    ```js
@@ -66,12 +65,11 @@ import的几种写法：
   
 - 仅为副作用导入模块:   
   
-```js
-  import “module-name”; 
-  //（运行模块中的全局代码）
-  //(模块设置了一些可供其他模块使用的全局状态,这些模块可能没有任何出口)
-```
-
+  ```js
+    import “module-name”; 
+    //（运行模块中的全局代码）
+    //(模块设置了一些可供其他模块使用的全局状态,这些模块可能没有任何出口)
+  ```
 - （返回一个 Promise 对象。）
   
   ```js
@@ -161,7 +159,21 @@ const xx ={}
 export default xx
 ```
 
- 
+ ③默认导出
+
+在xx文件下
+
+```js
+export default{  }
+```
+
+引入
+
+```js
+import xx  from 'xx的路径'
+```
+
+
 
 ## commonjs的导出方法
 
