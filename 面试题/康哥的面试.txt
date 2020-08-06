@@ -1,0 +1,43 @@
+1. 行内元素和块级元素的区别和优缺点
+区别： 行内元素占1行  块级元素 占满才换行
+优点： 块元素能嵌套
+
+
+2. flex布局的兼容问题和优缺点
+  ie一些低版本浏览器不兼容，
+优点：响应式
+缺点: 不兼容 哈哈
+
+3. vuex执行流程
+1dispatch触发aciton
+2. action里面commit 触发mutation
+3 mutation 改变 state状态
+  
+
+4. redux执行流程
+
+和hooks   userReducer差不多
+
+
+1. react hooks解决了什么
+  react 推荐是用函数组件  
+   state必须在类组件里面才能用
+   hook让 函数组件也能使用 useState
+   react生命周期存在类组件  函数组件不能用，hooks解决了这一问题
+  
+
+2. 解释下typescript泛型
+不懂 哈哈
+
+3. vue通信
+子=>父      $emit   refs     vuex
+父=子   props     
+
+4. 小程序通信
+ 不懂
+5. 跨域
+跨域产生：www.baidu.com  端口号  域名  协议号 不一致就会产生跨域问题  
+前端解决跨域分2种情况   开发模式 跨域在webpack配置 devserver      生产模式 nginx  还有个 同源策略？
+6. 项目【难点，解决】
+   新技术需要学习   百度 谷歌  查文档  cv工程师
+   
