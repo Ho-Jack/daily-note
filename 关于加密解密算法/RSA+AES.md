@@ -1,7 +1,7 @@
 ---
 title: 使用RAS+AES对接口数据加密/解密
 date: 2020-07-01 15:11:00
-tags: [JS, 开发笔记]
+tags: [Node, 加密算法, JS, 开发笔记]
 ---
 
 ## [使用RAS+AES对接口数据加解密](https://www.cnblogs.com/strong-FE/p/11694655.html)
