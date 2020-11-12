@@ -17,7 +17,7 @@ git diff --- 默认比较工作区和暂存区
 
 git diff master（分支名称，不一定是master） --- 比较工作区和版本库
 
-git diff --cached -- 比较暂存区和版本库
+git diff --cached -- 比较暂存区和版本库1
 
 git checkout .|文件名 --- 从暂存区将工作区内容覆盖
 
@@ -42,5 +42,19 @@ git checkout -b xxx --- 创建并切换分支
 如果你在某个分支上进行了修改，但是没有git add 和 git commit ,那这个时候你就不能切换，git 会拒绝你到切换,这个时候你可以commit他们，但是你也可以使用 git stash ,切换到时候会暂存起来（分支更改到时候不能切换分支），如果切回来后想再要，用git stash pop,基本不用这个命令
 
 git merge 合并分支
+
+
+
+### 缓存区：
+
+- 缓存修改内容： git stash save  '注释'
+
+- 还原当前分区最后一次缓存：
+
+  1. git stash pop
+
+  2. git stash apply
+
+     
 
 
