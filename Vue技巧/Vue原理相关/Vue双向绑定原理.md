@@ -40,10 +40,80 @@ console.log(Person.naem) //我是AA
 
 
 
+**ES5：Object.defineProperty**
+
+```js
+<body>
+    姓名：<span id="spanName"></span>
+    <br>
+    <input type="text" id="inpName">
+
+    <!-- IMPORT JS -->
+    <script>
+        let obj = {
+            name: ''
+        };
+        let newObj = {
+            ...obj
+        };
+        Object.defineProperty(obj, 'name', {
+            get() {
+                return newObj.name;
+            },
+            set(val) {
+                newObj.name = val;
+                observe();
+            }
+        });
+
+        function observe() {
+            spanName.innerHTML = newObj.name;
+        }
+        inpName.oninput = function () {
+            obj.name = this.value;
+        };
+    </script>
+</body>
+```
+
+
+
 
 
 #### Vue3.0   Proxy
 
  Proxy 可以理解成，在目标对象之前架设一层“拦截”，外界对该对象的访问
-    都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写。
-    Proxy 这个词的原意是代理，用在这里表示由它来“代理”某些操作，可以译为“代理器”。
+​    都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写。
+​    Proxy 这个词的原意是代理，用在这里表示由它来“代理”某些操作，可以译为“代理器”。
+
+```html
+<body>
+    姓名：<span id="spanName"></span>
+    <br>
+    <input type="text" id="inpName">
+
+    <!-- IMPORT JS -->
+    <script>
+        let obj = {
+            name: ''
+        };
+        obj = new Proxy(obj, {
+            get(target, prop) {
+                return target[prop];
+            },
+            set(target, prop, value) {
+                target[prop] = value;
+                observe();
+            }
+        });
+
+        function observe() {
+            spanName.innerHTML = obj.name;
+        }
+        inpName.oninput = function () {
+            obj.name = this.value;
+        };
+    </script>
+</body>
+```
+
