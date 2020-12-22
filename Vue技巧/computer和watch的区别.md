@@ -43,6 +43,7 @@ methdos:{
 -  props的处理
 - $emit 的传值
 - 不能计算 data里的数据
+- v-model  （vue3.0）
 
 复杂的渲染数据计算，用computed计算属性可以减少一定计算开销，增加可维护性
 
@@ -90,10 +91,9 @@ computed:{
 #### 用途：
 
 - data里的值
-
 - props （要避免直接修改父组件传入的值）
-
 - $emit
+- v-model ( vue3.0)
 
 #### watch实例
 
@@ -110,7 +110,7 @@ watch:{
   obj:{
     handler:function(){},
     deep:true,   //监听对象内部的变化
-    immediate:true  //每次自动执行，立即以表达式的值 回调
+    immediate:true  // 是否初始化立即执行一次, 默认是false
   }
 }
 ```

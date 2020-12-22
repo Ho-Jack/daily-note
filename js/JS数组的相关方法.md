@@ -54,6 +54,13 @@ str.search("正则/字符串")                       返回首次出现的索引
 - indexOf()是比search()更加底层，系统资源消耗更小，效率更高
 - search()能使用正则表达式，匹配复杂的数据源
 
+#### indexOf()和includes()的区别
+
+- indexOf() 返回首次出现索引，不存在返回-1   
+- （false   -1）
+-   (true    !-1)
+- includes()返回布尔值
+
 
 
 

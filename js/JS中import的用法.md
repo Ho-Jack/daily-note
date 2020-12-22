@@ -63,10 +63,9 @@ alias，aliasN： 将引用指定的导入的名称。
 **export的几种方法：**
 
 1. export default {}
-
 2. const XX={}       export default XX
-
 3. export const XX ={}
+4. export  default function XX(){}
 
  
 
@@ -74,7 +73,7 @@ alias，aliasN： 将引用指定的导入的名称。
 
 ​             在xx.js下                                             export  const  x1={}     export  const  x2={}
 
-②导出这个默认 xx 的对象作为一个对象      import xx from ' xx'
+​      ②导出这个默认 xx 的对象作为一个对象      import xx from ' xx'
 
 ​               在xx.js下                                            const xx ={}   export default xx
 

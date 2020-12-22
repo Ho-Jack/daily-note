@@ -181,11 +181,13 @@ const store =new Vuex.Store({
             store,
         }
         ```
-```
-        
+     
+
+     
+
 4.使用
-        
-        ```js
+
+```js
         import {  mapActions} from 'vuex'
         import { USER_SIGNIN} from 'store/user'
         methods: {
@@ -222,8 +224,9 @@ const store =new Vuex.Store({
 ```
 
 
+
   ```js
-computed: {
+ computed: {
     //对象写法
     ...mapState({
     user: state => state.user,//从全局存储里取出当前登录用户信息

@@ -9,7 +9,9 @@
 let p = new Proxy(target, handler)
 ```
 
-- traget:需要添加代理(拦截)的对象
+- p 是代理对象
+
+- traget:需要添加被代理(拦截)的对象
 
 - handler：操作被拦截对象，可以用来自定义 `set` （修改对象的时候触发）或者 `get`(读取对象的时候触发) 函数。
 
