@@ -10,7 +10,7 @@
 
 ![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e5ac7e20d1784887a826f6360768a368~tplv-k3u1fbpfcp-watermark.image)
 
-## 2) 使用Compisition API 
+## 2) 使用CompositionAPI 
 
 我们可以更加优雅的组织我们的代码，函数。让相关功能的代码更加有序的组织在一起
 

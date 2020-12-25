@@ -64,5 +64,17 @@ let orderMap = new  Map([
 orderStatus = orderMap.get(res.data.status)
 ```
 
+### 逻辑运算符
+
+```javascript
+if(a>b){
+   a=b
+}
+```
+
+```javascript
+a>b && a=b
+```
+
 
 
