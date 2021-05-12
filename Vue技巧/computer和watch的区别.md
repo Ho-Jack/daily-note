@@ -41,13 +41,13 @@ methdos:{
 
 - 简化计算，template里的{{  }}
 -  props的处理
-- $emit 的传值
+- $emit 的传值     ？？
 - 不能计算 data里的数据
 - v-model  （vue3.0）
 
 复杂的渲染数据计算，用computed计算属性可以减少一定计算开销，增加可维护性
 
-从Vuex Store中收集相关信息，对Vuex中的数据做计算的时候的要特别注意computed的缓存属性，在对Vuex中的对象值进行属性修改的时候，并不会触发computed的中值的变化，这时需要Object.assign({},obj)对依赖对象进行跟新返回一个新对象触发依赖跟新
+从Vuex Store中收集相关信息，对Vuex中的数据做计算的时候的要特别注意computed的缓存属性，在对Vuex中的对象值进行属性修改的时候，并不会触发computed的中值的变化，这时需要Object.assign({},obj)对依赖对象进行跟新返回一个新对象触发依赖更新
 
 > ```js
 > Object.assign() //方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。
@@ -92,7 +92,7 @@ computed:{
 
 - data里的值
 - props （要避免直接修改父组件传入的值）
-- $emit
+- $emit  ？？
 - v-model ( vue3.0)
 
 #### watch实例

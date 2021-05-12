@@ -56,10 +56,10 @@ str.search("正则/字符串")                       返回首次出现的索引
 
 #### indexOf()和includes()的区别
 
-- indexOf() 返回首次出现索引，不存在返回-1   
+- arr/str.indexOf() 返回首次出现索引，不存在返回-1   
 - （false   -1）
 -   (true    !-1)
-- includes()返回布尔值
+- arr/str.includes()返回布尔值
 
 
 
