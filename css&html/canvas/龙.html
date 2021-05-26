@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <canvas id='canvas' ></canvas>
+
+</body>
+
+</html>
+<script>
+    var canvas = document.getElementById("canvas");;
+    var ctx = canvas.getContext("2d");
+  
+    var image = new Image();
+    image.src = "dragon.png";
+    image.onload = function () {
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        //Canvas API 允许将图像文件插入画布，做法是读取图片后，使用drawImage方法在画布内进行重绘。
+        ctx.drawImage(image, 0, 0);
+      
+        /**
+         *getImageData方法可以用来读取Canvas的内容，返回一个对象，包含了每个像素的信息。
+        
+         *getImageData对象有一个data属性，它的值是一个一维数组。
+         * 该数组的值，依次是每个像素的红、绿、蓝、alpha通道值，
+         * 因此该数组的长度等于 图像的像素宽度 x 图像的像素高度 x 4，每个值的范围是0–255。
+         * 这个数组不仅可读，而且可写，因此通过操作这个数组的值，就可以达到操作图像的目的。
+         * 修改这个数组以后，使用putImageData方法将数组内容重新绘制在Canvas上。
+         * putImageData方法将数组内容重新绘制在Canvas上
+        */
+        var imageData = ctx.getImageData(0, 0, image.width, image.height).data;
+        //clearRect方法用来清除某个矩形区域的内容。
+       ctx.clearRect(0, 0, image.width, image.height);  //清除图片
+   //  ctx.putImageData(imageData, 0, 0);
+   
+        console.log(imageData);
+
+        /** 
+         * fillRect(x, y, width, height)方法用来绘制矩形，
+         * 它的四个参数分别为矩形左上角顶点的x坐标、y坐标，
+         * 以及矩形的宽和高。
+         * fillStyle属性用来设置矩形的填充色。
+        */
+        var gap = 5;//每个点的间隔
+        console.log(image.height);
+        for (var h = 0; h < image.height; h += gap) {
+            for (var w = 0; w < image.width; w += gap) {
+                var position = (image.width * h + w) * 4;
+                var r = imageData[position], g = imageData[position + 1], b = imageData[position + 2];
+                //rgb相加等于0 是白色
+                if (r + g + b < 300) {
+                    ctx.fillStyle = "black";  //黑色
+                    ctx.fillRect(w, h, 1, 1);
+                }
+            }
+        }
+
+
+    }
+
+
+
+</script>

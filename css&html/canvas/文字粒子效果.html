@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #txt {
+        line-height: 30px;
+        outline: none;
+        border: 1px solid #00f2fe;
+    }
+
+    #btn {
+        display: inline-block;
+        background-color: #ff0081;
+        color: #fff;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        padding: 10px 20px;
+        box-shadow: 0 2px 25px rgba(255, 0, 130, 0.5);
+    }
+
+    canvas {
+        background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+        margin-top: 20px;
+    }
+</style>
+
+<body>
+    <div>
+        <input id="txt" type="text">
+        <button id="btn">文字粒子</button>
+    </div>
+    <canvas id="canvas"></canvas>
+</body>
+
+</html>
+<script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext('2d');
+    var winWidth = 600;
+    var winHeight = 240;
+    var fontSize = 200;
+    var fontFamily = 'Helvetica Neue, Helvetica, Arial, sans-serif';
+
+    canvas.width = winWidth;
+    canvas.height = winHeight;
+
+    // 设置字体
+    ctx.font = fontSize + 'px ' + fontFamily;
+    ctx.textBaseline = "top";
+
+    var input = document.querySelector("#txt");
+    var btn = document.querySelector("#btn");
+
+    btn.onclick = function () {
+        init();
+    }
+
+    // 保存最后需要的Dot对象的数组
+    var dotList = [];
+
+    function init() {
+        var val = input.value ? input.value : "前端";
+        input.value = "";
+
+        // 先填充一个和 canvas 一样大的 白色矩形
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, winWidth, winHeight);
+        // 在再 canvas 上写红色的字
+        ctx.fillStyle = "red";
+        ctx.fillText(val, 0, 0);
+        // 获取整个 canvas 的像素信息
+        var imgData = ctx.getImageData(0, 0, winWidth, winHeight);
+        // 获取到像素信息之后清空画布
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 清空数组
+        dotList = [];
+
+        // 最后实现的效果每个点之间有一定的距离，gap 就是控制这个距离的
+        // gap 应该是大于等于1的值，值越大，最后点与点之间的距离就越远
+        var gap = 6;
+
+        // 通过 width 和 height 遍历 imgData 对象，每隔 gap 个点取一次像素，找到红色的像素，
+        // 每找到一个红色点，就创建一个 Dot 对象，并添加到 dotList 数组中 
+        for (var x = 0; x < imgData.width; x += gap) {
+            for (var y = 0; y < imgData.height; y += gap) {
+                var i = (y * imgData.width + x) * 4;
+                // 判断像素点是不是红色
+                if (imgData.data[i] == 255 && imgData.data[i + 1] == 0 && imgData.data[i + 2] == 0 && imgData.data[i + 3] == 255) {
+                    var dot = new Dot(x, y);
+                    dotList.push(dot);
+                }
+            }
+        }
+
+        // 画出最后的粒子效果
+        window.requestAnimationFrame(draw);
+    }
+
+    // 最后画的每个点的构造函数
+    function Dot(centerX, centerY, radius) {
+        // 结束时点的 x 坐标
+        this.x = centerX;
+        // 点的 y 坐标（始终不变）
+        this.y = centerY;
+        // 初始时点的 x 坐标（逐渐增加）
+        this.nowX = 0;
+    }
+
+    // 最后画的圆点的 x 坐标增加的速度 
+    var speed = 10;
+    function draw() {
+        // 判断所有点的 nowX 属性都不小于 x 属性
+        // 也就是判断动画效果是否完成
+        var flag = true;
+
+        // 画一个和 canvas 一样的大的 渐变色矩形
+        var gradient = ctx.createLinearGradient(0, winHeight / 2, winWidth, winHeight / 2);
+        gradient.addColorStop(0, "#4facfe");
+        gradient.addColorStop(1, "#00f2fe");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, winWidth, winHeight);
+
+        // 遍历 dotList 数组，根据数组里的元素画圆点
+        ctx.fillStyle = "#fff";
+        for (var i = 0; i < dotList.length; i++) {
+            if (dotList[i]['x'] > dotList[i]['nowX']) {
+                dotList[i]['nowX'] += speed;
+                flag = false;
+            } else {
+                dotList[i]['nowX'] = Math.floor(dotList[i]['x']);
+            }
+
+            ctx.beginPath();
+            ctx.arc(dotList[i]['nowX'], dotList[i]['y'], 2, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        if (flag) {
+            return;
+        }
+        window.requestAnimationFrame(draw);
+    }
+</script>
