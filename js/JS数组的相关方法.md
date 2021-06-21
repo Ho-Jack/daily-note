@@ -20,12 +20,12 @@ unshift()     （从前添加）与push()类似
 
 
 
-sort()         排序，需要传入callback函数  (**修改原数组**，返回数组的引用)  
+sort()         排序，需要传入 callback函数  (**修改原数组**，返回数组的引用)  
 
 > arr.sort( (a,b)=>(a-b) )   从小到大排序  
 > arr.sort( (a,b)=>(a-b) )   从大到小排序   
 
-reverse()      反转数组项的顺序。  
+reverse()      反转数组项的顺序。 (修改原数组) 
 concat()      将参数添加到原数组中。（参数可以是 单个值/数组）  
 
 截取字符串:  （3个中只有slice()可以用在数组的截取，**截取不会修改原来的**，返回截取的字符串）  
@@ -69,7 +69,7 @@ forEach() （ES5新增）
 map() （ES5新增）  
 filter() （ES5新增）  	
 find()   
-every() （ES5新增）  
+every() （ES5新增）  检测***\*所有元素\****是否满足条件，并***\*返回一个Boolean值\****。 
 some() （ES5新增）  
 reduce()和 reduceRight() （ES5新增）     callback=（tmp, item, index） tmp 上次结果，item当前数，index次数1开始
 （reduceRight ,从数组的末尾向前将数组中的数组项做累加)
