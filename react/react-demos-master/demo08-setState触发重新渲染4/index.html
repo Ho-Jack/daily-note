@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+      class LikeButton extends React.Component {
+        constructor(props) {
+          super(props)
+          //对象可以通过 this.state 属性读取
+          this.state = {
+            liked: false
+          } 
+          this.handleClick = this.handleClick.bind(this)
+        }
+        handleClick(event) {
+   //this.setState 方法就修改状态值,每次修改以后，自动调用 this.render 方法，再次渲染组件。
+          this.setState({ liked: !this.state.liked });
+        }
+        render() {
+          var text = this.state.liked ? 'like' : 'haven\'t liked';
+          return (
+            <p onClick={this.handleClick}>
+              You {text} this. Click to toggle.
+            </p>
+          );
+        }
+      }
+/* 
+this.props 表示那些一旦定义，就不再改变的特性，
+而 this.state 是会随着用户互动而产生变化的特性。 */
+      ReactDOM.render(
+        <LikeButton />,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>
+

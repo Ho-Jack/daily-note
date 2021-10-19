@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+      /**
+props.children
+通过上面的讲解，很容易理解 ​props.children​ 指向的是当前 ​react element​ 的子节点，
+这个子节点非常灵活，可以是字符串、函数、​react element​等等
+
+React.Children
+灵活的 ​props.children​ 为组件开发也带来了一定麻烦，比如要遍历子节点、限制子节点的种类和数量（细化到组件类型）、
+强制使用某一种子节点（比如 ​Col​ 组件必须做为 ​Row​ 组件的第一层子节点出现），
+基于这些考虑，React 提供了 ​React.Children​ 的一系列方法，方便开发者进行操作。
+
+React.Children.map(children, function[(thisArg)])
+在 ​children​ 里的每个直接子节点上调用一个函数，并将 ​this​ 设置为 ​thisArg​。
+如果 ​children​ 是一个数组，它将被遍历并为数组中的每个子节点调用该函数。
+如果子节点为 ​null​ 或是 ​undefined​，则此方法将返回 ​null​ 或是 ​undefined​，而不会返回数组。
+      **/
+      class NotesList extends React.Component {
+        render() {
+          console.log(React.Children)
+          console.log(this.props.children)
+          return (
+            <ol>
+              {
+                React.Children.map(this.props.children, function (child) {
+                  //this.props.children为全部子元素的数组，
+                  //child为this.props.children遍历的每个子节点的整个元素 如： <span>hello</span>
+                  console.log(child)
+                  return <li>{child}</li>;
+                })
+              }
+            </ol>
+          );
+        }
+      }
+
+      ReactDOM.render(
+        <NotesList>
+          <span>hello</span>
+          <span>world</span>
+        </NotesList>,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>
+

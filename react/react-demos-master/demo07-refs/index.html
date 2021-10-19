@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <!-- https://reactjs.org/docs/refs-and-the-dom.html#callback-refs -->
+    <script type="text/babel">
+    
+      class MyComponent extends React.Component {
+        constructor(props) {
+          super(props);
+          //React.createRef 创建一个能够通过 ref 属性附加到 React 元素的 ref。
+          this.myTextInput = React.createRef();
+          this.handleClick = this.handleClick.bind(this)
+        }
+        handleClick(event) {
+          console.log(event.type)         //click
+          console.log(event.value)        //undefinded
+          console.log(event.target)       //返回input元素本身
+          console.log(event.target.value) //Focus the text input
+          console.log(this.myTextInput.current)   //dom
+          this.myTextInput.current.focus();
+        }
+        render() {
+          return (
+            <div>
+              <input type="text" ref={this.myTextInput} />
+              <input type="button" value="Focus the text input" onClick={this.handleClick} />
+            </div>
+          );
+        }
+      }
+  
+      ReactDOM.render(
+        <MyComponent  />,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>

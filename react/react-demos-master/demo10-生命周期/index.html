@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+    /*组件的生命周期分成三个状态：
+     Mounting：挂载 已插入真实 DOM
+     Updating：更新 正在被重新渲染
+     Unmounting：卸载 已移出真实 DOM 
+     
+ React 为每个状态都提供了两种处理函数，
+ will 函数在进入状态之前调用，
+ did 函数在进入状态之后调用，三种状态共计五种处理函数。
+   componentWillMount()    在render方法之前执行
+   componentDidMount()     在render方法之后执行
+   componentWillUpdate(object nextProps, object nextState)
+   componentDidUpdate(object prevProps, object prevState)
+   componentWillUnmount()    组件的卸载
+此外，React 还提供两种特殊状态的处理函数。
+componentWillReceiveProps(object nextProps)：已加载组件收到新的参数时调用
+shouldComponentUpdate(object nextProps, object nextState)：组件判断是否重新渲染时调用
+     
+     */
+      class Hello extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = {
+            opacity: 1.0
+          };
+        }
+
+        componentDidMount() {
+          this.timer = setInterval(function () {
+            var opacity = this.state.opacity;
+            opacity -= .05;
+            if (opacity < 0.1) {
+              opacity = 1.0;
+            }
+            this.setState({
+              opacity: opacity
+            });
+          }.bind(this), 100);
+        }
+
+        render() {
+          return (
+            /*  React 组件样式是一个对象，所以第一重大括号表示这是 JavaScript 语法，第二重大括号表示样式对象。 */
+            <div style={{opacity: this.state.opacity}}>
+              Hello {this.props.name}
+            </div>
+          );
+        }
+      }
+        
+      ReactDOM.render(
+        <Hello name="world"/>,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>

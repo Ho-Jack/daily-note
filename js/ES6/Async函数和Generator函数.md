@@ -128,13 +128,13 @@ function C(){
 async function GO (){
   try{
       let result1= await A()
-      console.log(result1);
+      console.log(result1);   //函数A 成功
       
       let result2=await B()
-      console.log(result2);
+      console.log(result2);  //函数B 成功
 
       let result3=await C()
-      console.log(result3);
+      console.log(result3);  //普通函数
   }catch(error){
       console.log('被caech 捕获');     
       console.log(error); 
