@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+/**
+当需要处理多个 input 元素时，
+我们可以给每个元素添加 name 属性，
+并让处理函数根据 event.target.name 的值选择要执行的操作。
+**/
+    class Input extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          isGoing: true,
+          numberOfGuests: 2
+        };
+        this.handleInputChange = this.handleInputChange.bind(this);
+      }
+      handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+          [name]: value
+        });
+      }
+      render() {
+        return (
+          <form>
+            <label>
+              参与:
+              <input
+                name="isGoing"
+                type="checkbox"
+                checked={this.state.isGoing}
+                onChange={this.handleInputChange} />
+            </label>
+            <br />
+            <label>
+              来宾人数:
+              <input
+                name="numberOfGuests"
+                type="number"
+                value={this.state.numberOfGuests}
+                onChange={this.handleInputChange} />
+            </label>
+          </form>
+        );
+      }
+    }
+    ReactDOM.render(<Input />, document.getElementById('example'));
+  </script>
+</body>
+</html>

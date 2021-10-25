@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+        /**
+由 React 控制的事件处理过程 setState 不会同步更新 this.state！
+也就是说，
+在 React 控制之外的情况， setState 会同步更新 this.state！
+
+但大部份的使用情况下，我们都是使用了 React 库中的表单组件，
+例如 select、input、button 等等，它们都是 React 库中人造的组件与事件，
+是处于 React 库的控制之下，比如组件原色 onClick 都是经过 React 包装。
+在这个情况下，setState 就会以异步的方式执行。
+所以一般来说，其他答主会误认为 setState 就是异步执行。
+实际上，绕过 React 通过 JavaScript 原生 addEventListener 直接添加的事件处理函数，
+还有使用 setTimeout/setInterval 等 React 无法掌控的 APIs情况下，就会出现同步更新 state 的情况。
+        **/
+        class SomeComponent extends React.Component {
+
+            constructor(props) {
+                super(props)
+                this.state = {
+                    count: 0
+                }
+                // this.doClick = this.doClick.bind(this)
+            }
+            /**
+            组件状态的 count 值被增加了3次，
+            每次增加1，那最后 count 被增加了3。
+            但是，实际上的结果只给 state 增加了1。
+
+
+
+            setState 方法与包含在其中的执行是一个很复杂的过程，
+            从 React 最初的版本到现在，也有无数次的修改。
+            它的工作除了要更动 this.state 之外，还要负责触发重新渲染，
+            这里面要经过 React 核心 diff 算法，最终才能决定是否要进行重渲染，以及如何渲染。
+            而且为了批次与效能的理由，多个 setState 呼叫有可能在执行过程中还需要被合并，
+            所以它被设计以延时的来进行执行是相当合理的。
+            **/
+            doClick = () => {
+                  this.setState({ count: this.state.count + 1 });
+                  this.setState({ count: this.state.count + 1 });
+                  this.setState({ count: this.state.count + 1 });
+            }
+            render() {
+                return (
+                    <div>
+                        <div>
+                            {this.state.count}
+                            <button onClick={this.doClick}>Increment Raw</button>
+                        </div>
+                    </div>
+                )
+            }
+        }
+        ReactDOM.render(
+            <SomeComponent />
+            ,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>

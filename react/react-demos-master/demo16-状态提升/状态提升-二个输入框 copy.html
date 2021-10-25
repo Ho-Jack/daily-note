@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+        const scaleNames = {
+            c: '摄氏度',
+            f: '华氏度'
+        };
+        function toCelsius(fahrenheit) {
+            return (fahrenheit - 32) * 5 / 9;
+        }
+
+        function toFahrenheit(celsius) {
+            return (celsius * 9 / 5) + 32;
+        }
+        /**摄氏度输入框组件**/
+        class TemperatureInput extends React.Component {
+            constructor(props) {
+                super(props);
+
+            }
+            handleTemperature = (e) => {
+                let value = e.target.value
+                this.props.handleChange(this.props.scale,value)
+            }
+            render() {
+                const temperature = this.props.temperature;
+                const scale = this.props.scale;
+                const handleChange = this.props.handleChange
+                return (
+                    <fieldset>
+                        <legend>请输入 {scaleNames[scale]}:</legend>
+                        <input value={temperature}
+                            onChange={this.handleTemperature} />
+                    </fieldset>
+                );
+            }
+        }
+        /**提示框组件**/
+        function BoilingVerdict(props) {
+            if (props.celsius >= 100) {
+                return <p>水沸腾了.</p>;
+            }
+            return <p>水没沸腾.</p>;
+        }
+
+
+        class Calculator extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { celsius: '', fahrenheit: '' };
+            }
+            handleChange = (celsiusOrFahrenheit, value) => {
+                if (celsiusOrFahrenheit === 'c') {
+                    this.setState({ celsius: value })
+                    this.setState({ fahrenheit: toFahrenheit(value) })
+                    return
+                }
+                this.setState({ celsius: toCelsius(value) })
+                this.setState({ fahrenheit: value })
+            }
+
+            render() {
+                const celsius = this.state.celsius;
+                const fahrenheit = this.state.fahrenheit;
+
+                return (
+                    <fieldset>
+                        <legend>请输入温度:</legend>
+                        <TemperatureInput scale='c' handleChange={this.handleChange} temperature={celsius} />
+                        <TemperatureInput scale='f' handleChange={this.handleChange} temperature={fahrenheit} />
+                        <BoilingVerdict
+                            celsius={parseFloat(celsius)} />
+                    </fieldset>
+                );
+            }
+        }
+        ReactDOM.render(
+            <Calculator />
+            ,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>

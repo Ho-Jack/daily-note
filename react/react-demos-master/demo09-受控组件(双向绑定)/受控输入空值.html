@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+    /**
+    在受控组件上指定 value 的 prop 会阻止用户更改输入
+    如果将 value 设置为 undefined 或 null,但是都会报错
+
+
+    有时使用受控组件会很麻烦，
+    因为你需要为数据变化的每种方式都编写事件处理函数，
+    并通过一个 React 组件传递所有的输入 state。
+    **/
+    ReactDOM.render(<div>
+      <input value="hi" />
+      <input value={null} />
+    </div>, document.getElementById('example'));
+  
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+        function FnComponent(props) {
+            //在html中使用Hooks需要去源码中react和react-dom开启
+            //var enableHooks = true;
+            const [num, setNum] = React.useState(1)
+            function add() {
+                // setNum(num+1)
+                setNum(num => num + 1)
+            }
+            return (
+                <div>
+                    <p>函数组件</p>
+                    <p>当前数字:{num}</p>
+                    <button onClick={add}>+++</button>
+                </div>
+            )
+        }
+        ReactDOM.render(
+            <FnComponent />
+            ,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>

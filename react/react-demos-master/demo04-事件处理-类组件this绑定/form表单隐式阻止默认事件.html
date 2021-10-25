@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+    class FormEvent extends React.Component {
+      constructor(props) {
+        super(props)
+      }
+   //不能通过返回 false 的方式阻止默认行为
+   //必须显式的使用 preventDefault
+      handleSubmit=()=> {
+      console.log('You clicked submit.');
+      return false
+    }
+
+  render() {
+      return (
+        <form onSubmit={this.handleSubmit}>
+          <button type="submit">Submit</button>
+        </form>
+      )
+    }
+    }
+
+    ReactDOM.render(
+      <FormEvent />
+      ,
+      document.getElementById('example')
+    );
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+
+    class Select extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = ({
+          selectValue: ''
+        })
+      }
+
+      render() {
+        /**
+        由于 selected 属性的缘故，椰子选项默认被选中。但是select标签并没有值
+        React 并不会使用 selected 属性，
+        而是在根 select 标签上使用 value 属性。
+        这在受控组件中更便捷，因为您只需要在根标签中更新它。
+
+        为此,可以将select设为双向绑定数据流 
+        **/
+        return (
+          <div>
+            <p>select-Value:{this.state.selectValue}</p>
+            <select onChange={(e) => {
+              this.setState({
+                selectValue: e.target.value
+              })
+            }}>
+              <option value="grapefruit">葡萄柚</option>
+              <option value="lime">酸橙</option>
+              <option selected value="coconut">椰子</option>
+              <option value="mango">芒果</option>
+            </select>
+          </div>
+        );
+      }
+    }
+
+    ReactDOM.render(<Select />, document.getElementById('example'));
+  </script>
+</body>
+
+</html>
