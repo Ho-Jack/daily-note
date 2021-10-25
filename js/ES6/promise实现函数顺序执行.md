@@ -48,3 +48,23 @@ let  a= await A()
 }
 ```
 
+Vue项目中axios 返回布尔值的应用
+
+```javascript
+async function login() {
+  let isBol = ""
+  await axios.post("/login", {username:"100001", password:"123456"})
+    .then(function(response) {
+        console.log(response)
+        isBol = true
+    }, function(err){
+        console.log(err)
+        isBol  = false
+    })
+
+  return isBol
+}
+```
+
+
+

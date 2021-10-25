@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8" />
+<script src="../build/react.development.js"></script>
+<script src="../build/react-dom.development.js"></script>
+<script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+<div id="example"></div>
+<script type="text/babel">
+    class SomeComponent extends Component{
+
+        state = {
+            updatedByDiv: '',
+            updatedByBtn: '',
+            counter: 0
+        }
+        
+        divCountHandler = () => {
+            this.setState({
+            updatedByDiv: 'Div',
+            counter: this.state.counter + 1
+            });
+            console.log('divCountHandler executed');
+        }
+        
+        btnCountHandler = () => {
+            this.setState({
+            updatedByBtn: 'Button',
+            counter: this.state.counter + 1
+            });
+            console.log('btnCountHandler executed');
+        }
+        
+        
+        render(){
+            return (
+            
+            // a parent div
+            <div onClick={this.divCountHandler}>
+                // a child button
+                <button onClick={this.btnCountHandler}>Increment Count</button>
+            </div>
+            
+            )
+        }
+        }
+    ReactDOM.render(
+        <SomeComponent  />
+        ,
+        document.getElementById('example')
+    );
+</script>
+</body>
+
+</html>

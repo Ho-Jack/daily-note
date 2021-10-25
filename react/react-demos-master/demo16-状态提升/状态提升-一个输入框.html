@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+        function BoilingVerdict(props) {
+            if (props.celsius >= 100) {
+                return <p>水沸腾了.</p>;
+            }
+            return <p>水没沸腾.</p>;
+        }
+        class Calculator extends React.Component {
+            constructor(props) {
+                super(props);
+                this.handleChange = this.handleChange.bind(this);
+                this.state = { temperature: '' };
+            }
+
+            handleChange(e) {
+                this.setState({ temperature: e.target.value });
+            }
+
+            render() {
+                const temperature = this.state.temperature;
+                return (
+                    <fieldset>
+                        <legend>请输入温度:</legend>
+                        <input
+                            value={temperature}
+                            onChange={this.handleChange} />
+                        <BoilingVerdict
+                            celsius={parseFloat(temperature)} />
+                    </fieldset>
+                );
+            }
+        }
+        ReactDOM.render(
+            <Calculator />
+            ,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>

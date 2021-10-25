@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <!-- https://reactjs.org/docs/refs-and-the-dom.html#callback-refs -->
+    <script type="text/babel">
+
+        class MyComponent extends React.Component {
+            constructor(props) {
+                super(props);
+            }
+
+            render() {
+                return (
+                    <div>
+                        <p ref='titleRef'>通过操作dom传入text</p>
+                        <button onClick={()=>{
+                            this.refs.titleRef.innerHTML='ref操作dom方式1:传入字符串'
+                        }}>点击</button>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <MyComponent />,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>

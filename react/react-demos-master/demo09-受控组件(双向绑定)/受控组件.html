@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+    /* 用户在表单填入的内容，属于用户跟组件的互动，所以不能用 this.props 读取 */
+
+    /*  
+    受控组件
+    可变状态（mutable state）通常保存在组件的 state 属性中，并且只能通过使用 setState()来更新
+    把两者结合起来，使 React 的 state 成为“唯一数据源”
+
+    有时使用受控组件会很麻烦，
+    因为你需要为数据变化的每种方式都编写事件处理函数，
+    并通过一个 React 组件传递所有的输入 state。
+    */
+      class Input extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = {
+            value: 'Hello!'
+          }
+          //this.handleChange = this.handleChange.bind(this)
+        }
+      //  handleChange(event) {        
+      //    this.setState({ value: event.target.value });
+      //  }
+
+        render() {
+      //   var value = this.state.value;
+      //   var value='111'
+          return (
+            <div>
+              <input type="text" value={this.state.value} onChange={(event)=>{
+                this.setState({ value: event.target.value })}
+              }/>
+              <p>{this.state.value}</p>
+            </div>
+          );
+        }
+      }
+        
+      ReactDOM.render(<Input/>, document.getElementById('example'));
+    </script>
+  </body>
+</html>

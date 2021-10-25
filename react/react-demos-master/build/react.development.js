@@ -51,7 +51,7 @@ function getIteratorFn(maybeIterable) {
   return null;
 }
 
-var enableHooks = false;
+var enableHooks = true;
 // Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
 
 

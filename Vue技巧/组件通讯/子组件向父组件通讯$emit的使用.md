@@ -37,3 +37,8 @@ this.$emit('update:event',{   })
 
 
 
+
+
+注意：不能使用驼峰作为函数的名字
+
+HTML是大小写不敏感的，HTML中的属性@addList会被解析为@addlist，js再用@addList去找，是找不到的。

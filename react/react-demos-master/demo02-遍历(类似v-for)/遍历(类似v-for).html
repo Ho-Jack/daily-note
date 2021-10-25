@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+      var names = ['Alice', 'Emily', 'Kate'];
+    //当你创建一个元素时，必须包括一个特殊的 key 属性
+    //一个元素的 key 最好是这个元素在列表中拥有的一个独一无二的字符串。
+    //不建议使用索引来用作 key 值，因为这样做会导致性能变差，还可能引起组件状态的问题
+    
+      ReactDOM.render(
+        <div>
+        {
+          names.map( (name, index)=> {
+            return <div key={index}>Hello, {name}!</div>
+          })
+        }
+        </div>,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+        class EventFn extends React.Component {
+            constructor(props) {
+                super(props);
+            }
+            deleteRow(id, e) {
+                console.log(id)
+                console.log(e)
+            }
+            render() {
+                /**
+下述两种方式是等价的，分别通过箭头函数和 Function.prototype.bind 来实现。
+
+在这两种情况下，React 的事件对象 e 会被作为第二个参数传递。
+如果通过箭头函数的方式，事件对象必须显式的进行传递，
+而通过 bind 的方式，事件对象以及更多的参数将会被隐式的进行传递。
+                      **/
+                const id = 100
+                return (
+                    <div>
+                        <button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button>
+                        <button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <EventFn />
+            ,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>
