@@ -1,3 +1,5 @@
+## 普通函数的this
+
 ### this 永远指向最后调用它的那个对象
 
 ```js
@@ -82,6 +84,8 @@ f();  //以函数调用时 this 是window
 - 使用 `apply`、`call`、`bind`
 - new 实例化一个对象
 
+
+
 ## 箭头函数
 
 ES6 的箭头函数是可以避免 ES5 中使用 this 的坑的。**箭头函数的 this 始终指向`函数定义时`的 this，而非执行时。**，箭头函数需要记着这句话：“箭头函数中没有 this 绑定，必须通过查找作用域链来决定其值，如果箭头函数被非箭头函数包含，则 this 绑定的是最近一层非箭头函数的 this，否则，this 为 undefined”。
@@ -151,9 +155,9 @@ obj.apply(thisObj, [arg1, arg2, ...]);
 obj.bind(thisObj, arg1, arg2, ...)
 ```
 
-- 区别：   apply接受的是数组参数，call、bind接受的是连续参数，bind 创建一个新的函数，必须手动去调用
+- 区别：   apply接受的是数组参数，call、bind接受的是连续参数，**bind 创建一个新的函数，必须手动去调用**
 
-- 同:obj(即this)绑定到thisObj，这时候thisObj具备了obj的属性和方法。或者说thisObj『继承』了obj的属性和方法。绑定后会立即执行函数。 （bind不会立即执行，需手动执行）
+- 同:obj(即this)绑定到thisObj，这时候thisObj具备了obj的属性和方法。或者说thisObj『继承』了obj的属性和方法。绑定后会**立即执行**函数。 （bind不会立即执行，需手动执行）
 
 ```js
 function add(j, k){
@@ -182,17 +186,16 @@ sub.apply(add, [5, 3]); //2
     }
     function sub(j, k) {
         console.log(this);
-          this.add(1,1)   //2  这里没啥用。！！sub和add的this都是同样的window对象
-       
+        this.add(1,1)   //2  这里没啥用。！！sub和add的this都是同样的window对象   
         return j - k;
     }
 
     let that={
         A:1,
         B:2
-
     }
-   add(5, 3); //8 this为window对象  有个add的属性(废话，函数add定义在全局变量 肯定有add这个函数)   
+    
+    add(5, 3); //8 this为window对象  有个add的属性(废话，函数add定义在全局变量 肯定有add这个函数)   
     sub(2,1)
 
     add.call(sub, 5, 3); //8 this为sub这个函数      
