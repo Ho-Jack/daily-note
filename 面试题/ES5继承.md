@@ -55,7 +55,7 @@ function Person1(obj) {
     Person.call(this, obj)
     this.sex = obj.sex
 }
-// 这一步是继承的关键
+// 这一步是继承的关键   继承父构造函数的prototype
 Person1.prototype = Object.create(Person.prototype)
 Person1.prototype.play = function(value){
     console.log(value)

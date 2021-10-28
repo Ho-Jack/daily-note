@@ -11,7 +11,7 @@ tags: [面试]
 3.形状转换 transform
 4.选择器
 5.阴影 box-shadow
-6.边框
+6.边框 border-image\border-raduis
 7.背景
 8.颜色
 9.滤镜filter
