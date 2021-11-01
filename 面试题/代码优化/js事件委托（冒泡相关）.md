@@ -6,7 +6,7 @@ tags: [JS, ES6, 开发笔记]
 
 ## JS事件委托/事件代理（冒泡相关）
 
-![事件委托1](https://github.com/Ho-Jack/daily-note/raw/master/img/事件委托1.png)
+![事件委托1](../img/事件委托1.png)
 
 ### 事件传播分成三个阶段：
 

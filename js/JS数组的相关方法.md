@@ -57,7 +57,7 @@ str.search("正则/字符串")                       返回首次出现的索引
 #### indexOf()和includes()的区别
 
 - arr/str.indexOf() 返回首次出现索引，不存在返回-1   
-- （false   -1）
+- (false   -1）
 -   (true    !-1)
 - arr/str.includes()返回布尔值
 
@@ -73,3 +73,18 @@ every() （ES5新增）  检测***\*所有元素\****是否满足条件，并***
 some() （ES5新增）  
 reduce()和 reduceRight() （ES5新增）     callback=（tmp, item, index） tmp 上次结果，item当前数，index次数1开始
 （reduceRight ,从数组的末尾向前将数组中的数组项做累加)
+
+
+
+##### 数组扁平化 flatten
+
+>Array.isArray()   判断一个值是否数组，返回布尔
+
+```javascript
+function flatten(arr) {
+      return arr.reduce((result, item) => {
+        return result.concat(Array.isArray(item) ? flatten(item) : item);
+      }, []);
+}
+```
+

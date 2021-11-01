@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <script src="../build/react.development.js"></script>
-    <script src="../build/react-dom.development.js"></script>
-    <script src="../build/babel.min.js"></script>
-  </head>
-  <body>
-    <div id="example"></div>
-    <script type="text/babel">
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
     /*组件的生命周期分成三个状态：
      Mounting：挂载 已插入真实 DOM
      Updating：更新 正在被重新渲染
@@ -27,41 +29,45 @@ componentWillReceiveProps(object nextProps)：已加载组件收到新的参数�
 shouldComponentUpdate(object nextProps, object nextState)：组件判断是否重新渲染时调用
      
      */
-      class Hello extends React.Component {
-        constructor(props) {
-          super(props)
-          this.state = {
-            opacity: 1.0
-          };
-        }
+    class Hello extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          opacity: 1.0,
+        };
+      }
 
-        componentDidMount() {
-          this.timer = setInterval(function () {
+      componentDidMount() {
+        this.timer = setInterval(
+          function () {
             var opacity = this.state.opacity;
-            opacity -= .05;
+            opacity -= 0.05;
             if (opacity < 0.1) {
               opacity = 1.0;
             }
             this.setState({
-              opacity: opacity
+              opacity: opacity,
             });
-          }.bind(this), 100);
-        }
-
-        render() {
-          return (
-            /*  React 组件样式是一个对象，所以第一重大括号表示这是 JavaScript 语法，第二重大括号表示样式对象。 */
-            <div style={{opacity: this.state.opacity}}>
-              Hello {this.props.name}
-            </div>
-          );
-        }
+          }.bind(this),
+          100
+        );
       }
-        
-      ReactDOM.render(
-        <Hello name="world"/>,
-        document.getElementById('example')
-      );
-    </script>
-  </body>
+
+      render() {
+        return (
+          /*  React 组件样式是一个对象，所以第一重大括号表示这是 JavaScript 语法，第二重大括号表示样式对象。 */
+          <div style={{ opacity: this.state.opacity }}>
+            Hello {this.props.name}
+          </div>
+        );
+      }
+    }
+
+    ReactDOM.render(
+      <Hello name="world" />,
+      document.getElementById("example")
+    );
+  </script>
+</body>
+
 </html>
