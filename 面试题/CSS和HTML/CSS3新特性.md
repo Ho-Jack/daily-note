@@ -413,7 +413,7 @@ filter:drop-shadow(5px 5px 5px #000);    //阴影drop-shadow(5px 5px 5px #000)
 
 
 
-### 11..栅格布局 gird
+### 11..网格布局 gird   [ɡɜrd]
 
 
 
