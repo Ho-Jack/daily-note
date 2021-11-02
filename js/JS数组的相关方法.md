@@ -69,7 +69,7 @@ forEach() （ES5新增）
 map() （ES5新增）  
 filter() （ES5新增）  	
 find()   
-every() （ES5新增）  检测***\*所有元素\****是否满足条件，并***\*返回一个Boolean值\****。 
+every() （ES5新增）  检测**所有元素**是否满足条件，并***\*返回一个Boolean值\****。 
 some() （ES5新增）  
 reduce()和 reduceRight() （ES5新增）     callback=（tmp, item, index） tmp 上次结果，item当前数，index次数1开始
 （reduceRight ,从数组的末尾向前将数组中的数组项做累加)

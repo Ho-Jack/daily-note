@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+    /*
+    在构造函数调用 super 并将 props 作为参数传入的作用是啥？
+    在调用 super() 方法之前，子类构造函数无法使用this引用，ES6 子类也是如此。
+    将 props 参数传递给 super() 调用的主要原因是在子构造函数中能够通过this.props来获取传入的 props。
+     */
+    class Hello extends React.Component {
+      constructor(props) {
+        super();//super中不传递props,构造函数不继承props，不用this就直接使用props就能访问props
+        console.log(this.props) //undefined
+        console.log(props) //{name:'world'}
+      }
+
+      render() {
+        return (
+         // 构造函数外部不受影响,依旧可以通过this调用到props
+          <div>           
+            Hello {this.props.name}
+          </div>
+        );
+      }
+    }
+
+    ReactDOM.render(
+      <Hello name="world" />,
+      document.getElementById("example")
+    );
+  </script>
+</body>
+
+</html>

@@ -21,7 +21,7 @@ post请求： params 、data
 
 #### 最直观的区别get把参数包含在URL中，post通过request body传递参数，相对于get比较安全
 
-get请求URL传参有长度限制，post没有，要手动设置
+get请求URL传参有长度限制，post没有，要手动设置 (GET的最大长度显示是因为 浏览器和 web服务器限制了 URI的长度,HTTP协议并没用限制)
 
 get请求会被浏览器**主动缓存**，post不会
 
