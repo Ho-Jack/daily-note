@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+  <script src="../build/prop-types.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+
+    class Mouse extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          x: '',
+          y: ''
+        };
+      }
+      componentDidMount() {
+        window.addEventListener('mousemove', this.onMouseMove)
+      }
+      componentWillUnmount() {
+        window.removeEventListener('mousemove', this.onMouseMove)
+      }
+      onMouseMove = (event) => {
+        this.setState({
+          x: event.clientX,
+          y: event.clientY
+        })
+      }
+      //1、在子组件中，复用state（获取state和操作state）
+      // 2-1、在子组件中将要复用的状态，作为`props.render(state)`方法的参数，暴露到组件外部(父组件)
+      render() {
+        return (
+          this.props.render(this.state)  //事件通过监听
+        )
+      }
+    }
+    class Parent extends React.Component {
+      constructor(props) {
+        super(props)
+      }
+
+      render() {
+        return (
+
+          //2-2在使用组件时，添加一个`render`函数作为组件的props的值，通过函数来获取state（需要组件内部实现）
+          // 3、渲染任意UI ，在`子组件`中使用`props.render()`的返回值作为要渲染的内容
+          <Mouse render={
+            (mouse) => {
+              return (<div>
+                <p>X是:{mouse.x}</p>
+                <p>Y是:{mouse.y}</p>
+              </div>)
+            }
+          }></Mouse>
+        )
+      }
+    }
+
+
+
+    ReactDOM.render(
+      <Parent />,
+      document.getElementById("example")
+    );
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+  <script src="../build/prop-types.js"></script>
+
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+
+    class Mouse extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          x: '',
+          y: ''
+        };
+      }
+
+      onMouseMove = (event) => {
+        this.setState({
+          x: event.clientX,
+          y: event.clientY
+        })
+      }
+
+      render() {
+        return (
+          <div style={{ backgroundColor: '#3333', height: '300px' }} onMouseMove={this.onMouseMove}>
+            { this.props.children(this.state)}
+          </div>
+        );
+      }
+    }
+    //添加props校验
+    Mouse.propTypes = {
+      children: PropTypes.func.isRequired
+    }
+
+    class Parent extends React.Component {
+      constructor(props) {
+        super(props)
+
+      }
+
+      render() {
+        return (
+          //使用props.children实现
+          <Mouse>
+            {
+              mouse => {
+                return (<div>
+                  <p>X是:{mouse.x}</p>
+                  <p>Y是:{mouse.y}</p>
+                </div>)
+              }
+            }
+          </Mouse >
+        )
+      }
+    }
+
+
+
+    ReactDOM.render(
+      <Parent />,
+      document.getElementById("example")
+    );
+  </script>
+</body>
+
+</html>

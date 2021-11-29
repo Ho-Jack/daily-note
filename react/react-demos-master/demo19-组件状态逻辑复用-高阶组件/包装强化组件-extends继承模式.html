@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+
+    class Base extends React.Component {
+      constructor() {
+        super()
+        this.state = {
+          name: 'aaaaa'
+        }
+      }
+      say() {
+        console.log('父组件')
+      }
+      render() {
+        return <div> hello,world <button onClick={this.say.bind(this)} >点击</button>  </div>
+      }
+    }
+    class Index extends Base {
+      componentDidMount() {
+        console.log(this.state.name)
+      }
+      /* 会覆盖基类中的 say  */
+      say() { 
+        console.log('子组件')
+      }
+      //如果有render将覆盖父组件的所有render
+      // render() {
+      //   return <p>11</p>
+      // }
+    }
+
+
+    ReactDOM.render(
+      <Index />,
+      document.getElementById("example")
+    );
+  </script>
+</body>
+
+</html>

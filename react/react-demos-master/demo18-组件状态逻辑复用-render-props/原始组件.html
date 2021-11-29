@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+
+    class Mouse extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          x: '',
+          y: ''
+        };
+      }
+      onMouseMove = (event) => {
+        this.setState({
+          x: event.clientX,
+          y: event.clientY
+        })
+      }
+
+      render() {
+        return (
+          <div style={{ backgroundColor: '#3333', height: '300px' }} onMouseMove={this.onMouseMove}>
+            <p>X:{this.state.x}</p>
+            <p>Y:{this.state.y}</p>
+          </div>
+        );
+      }
+    }
+
+    ReactDOM.render(
+      <Mouse />,
+      document.getElementById("example")
+    );
+  </script>
+</body>
+
+</html>
