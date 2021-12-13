@@ -6,7 +6,7 @@ tags: [Vue]
 
 ## Vue中组件通讯props传递Object数据类型的注意事项
 
->Vue 组件通讯,其中父组件向子组件传递数据，用Props
+>Vue 组件通讯,其中**父组件向子组件**传递数据，用Props
 >较为特殊的是对象Object的传递
 >
 >```js

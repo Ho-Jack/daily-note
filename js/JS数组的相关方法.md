@@ -22,44 +22,44 @@ tags: [JS, ES6, 开发笔记]
 
 `sort()`        排序，需要传入 callback函数  (**修改原数组**，返回数组的引用)  
 
-> arr.sort( (a,b)=>(a-b) )   从小到大排序  
-> arr.sort( (a,b)=>(a-b) )   从大到小排序   
+> `arr.sort( (a,b)=>(a-b) )`   从小到大排序  
+> `arr.sort( (a,b)=>(a-b) ) `  从大到小排序   
 
-reverse()      反转数组项的顺序。 (修改原数组) 
-arr/str.concat()      将参数添加到原数组中。（参数可以是 单个值/数组）  
+`reverse() `     反转数组项的顺序。 (修改原数组) 
+`arr/str.concat() `     将参数添加到原数组中。（参数可以是 单个值/数组）  
 
 截取字符串:  （3个中只有slice()可以用在数组的截取，**截取不会修改原来的**，返回截取的字符串）  
-substr(start [, length ])                   返回一个从指定位置开始的指定长度的子字符串。  
-substring(开始索引，结束索引)     返回起始和结束位置之间的项（不包括结束位置的项）  
+`substr(start [, length ]) `                  返回一个从指定位置开始的指定长度的子字符串。  
+`substring(开始索引，结束索引) `    返回起始和结束位置之间的项（不包括结束位置的项）  
 
-arr/str.slice(开始索引，结束索引)               返回起始和结束位置之间的项（不包括结束位置的项）参数可以  是负数  
+`arr/str.slice(开始索引，结束索引)`               返回起始和结束位置之间的项（不包括结束位置的项）参数可以  是负数  
 
-arr.splice(索引，删除数量，插入元素)      数组增/删/改，返回被删除/替换的元素。  (**修改原数组**)
+`arr.splice(索引，删除数量，插入元素)`      数组增/删/改，返回被删除/替换的元素。  (**修改原数组**)
 
 查询字符串
-arr/str.indexOf()和arr/str.lastIndexOf() （ES5新增）  返回第一次/最后一次的索引，不存在返回-1
-arr/str.includes()    判断是否给定值，返回布尔  
-str.startWith()    判断是否以xx开始，返回布尔
-str.endWith()     判断是否以xx结束，返回布尔
+`arr/str.indexOf()`和`arr/str.lastIndexOf() `（ES5新增）  返回第一次/最后一次的索引，不存在返回-1
+`arr/str.includes()`    判断是否给定值，返回布尔  
+`str.startWith() `   判断是否以xx开始，返回布尔
+`str.endWith()`     判断是否以xx结束，返回布尔
 
-str.toUpperCase()                                  将一个字符串转换为大写并返回
-str.toLowerCase()                                  将一个字符串转换为小写并返回
-str.replace("正则/字符串","新内容")        将匹配的内容替换，返回新的字符串（不修改原字符串）
-str.match("正则/字符串")                        将匹配的内容封装到数组，返回数组
-str.search("正则/字符串")                       返回首次出现的索引，没有返回-1
+`str.toUpperCase()`                                  将一个字符串转换为大写并返回
+`str.toLowerCase() `                                 将一个字符串转换为小写并返回
+`str.replace("正则/字符串","新内容")`       将匹配的内容替换，返回新的字符串（不修改原字符串）
+`str.match("正则/字符串") `                       将匹配的内容封装到数组，返回数组
+`str.search("正则/字符串")`                       返回首次出现的索引，没有返回-1
 
-#### search()与indexOf()区别         includes？
-- str.search("正则/字符串")                       返回首次出现的索引，没有返回-1
-- arr/str.indexOf()（ES5新增） 返回首次出现的索引，没有返回-1  
-- arr/str.indexOf()是比search()更加底层，系统资源消耗更小，效率更高
-- search()能使用正则表达式，匹配复杂的数据源
+#### `search()`与`indexOf()`区别         includes？
+- `str.search("正则/字符串")  `                     返回首次出现的索引，没有返回-1
+- `arr/str.indexOf()（ES5新增）` 返回首次出现的索引，没有返回-1  
+- `arr/str.indexOf()`是比`search()`更加底层，系统资源消耗更小，效率更高
+- `search()`能使用正则表达式，匹配复杂的数据源
 
-#### indexOf()和includes()的区别
+#### `indexOf()`和`includes()`的区别
 
-- arr/str.indexOf() 返回首次出现索引，不存在返回-1   
+- `arr/str.indexOf() `返回首次出现索引，不存在返回-1   
 - (false   -1）
 -   (true    !-1)
-- arr/str.includes()返回布尔值
+- `arr/str.includes()`返回布尔值
 
 
 
@@ -90,7 +90,7 @@ var result = arr.forEach(item => console.log(item))
 
 - `Array.filter(callback)`     过滤器   （ES5新增）  
 
-  > 有返回值，返回新的数组
+  > 有返回值，返回新的数组 
   >
   > 保留返回值为true的项  
 
@@ -168,9 +168,9 @@ var result = arr.forEach(item => console.log(item))
 
   > 有返回值，返回最后一次遍历的值
   >
-  > initialValue （设置【上次结果】的初始值）
+  > `initialValue `（设置【上次结果】的初始值）
   >
-  >  callback =（tmp, item, index） tmp 上次结果，item当前数，index次数1开始
+  >  `callback =(tmp, item, index)` tmp 上次结果，item当前数，index次数1开始
   >
   > 用于 求总数，算个平均
 
