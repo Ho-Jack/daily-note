@@ -4,7 +4,7 @@
 
 - setState()是异步更新数据的
 
-- 注意：使用该语法时，后面的setState 不要依赖于前面的setState()
+- 注意：使用时，后面的setState 不要依赖于前面的setState()
 
 - 可以多次调用setState(),只会触发一次重新渲染
 
