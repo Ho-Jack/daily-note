@@ -14,6 +14,13 @@
         function FnComponent(props) {
             //通过js引入react，中使用Hooks需要去源码中react和react-dom开启
             //var enableHooks = true;
+
+
+// - useState 唯一的参数就是初始 state
+// - useState 会返回一个数组：[一个 state，一个更新 state 的函数]
+//   - 在初始化渲染期间，返回的状态 (state) 与传入的第一个参数 (initialState) 值相同
+//   - 你可以在事件处理函数中或其他一些地方调用这个函数。
+//     它类似 class 组件的 this.setState，但是它**不会把新的 state 和旧的 state 进行合并，而是直接替换**
             const [num, setNum] = React.useState(1)
             function add() {
                 // setNum(num+1)

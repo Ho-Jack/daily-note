@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+        const initialState ={ number:  1 };
+        function reducer(state, action) {
+            switch (action.type) {
+                case 'increment':
+                    return { number: state.number + 1 };
+                case 'decrement':
+                    return { number: state.number - 1 };
+                default:
+                    throw new Error();
+            }
+        }
+        function init(initialState) {
+            return { number: initialState };
+        }
+        function Counter() {
+            const [state, dispatch] = React.useReducer(reducer, initialState);
+            return (
+                <div>
+                    Count: {state.number}
+                    <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+                    <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+                </div>
+            )
+        }
+        ReactDOM.render(
+            <Counter />
+            ,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>

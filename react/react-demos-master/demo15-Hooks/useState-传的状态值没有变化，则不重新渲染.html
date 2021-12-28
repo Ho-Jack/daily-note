@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+
+
+
+
+
+//与 class 组件中的 setState 方法不同，如果你修改状态的时候，传的状态值没有变化，则不重新渲染
+
+function Counter(){
+    const [counter,setCounter] = React.useState({name:'计数器',number:0});
+    console.log('render Counter')
+    // 如果你修改状态的时候，传的状态值没有变化，则不重新渲染
+    return (
+        <div>
+            <p>{counter.name}:{counter.number}</p>
+            <button onClick={()=>setCounter({...counter,number:counter.number+1})}>+</button>
+            <button onClick={()=>setCounter(counter)}>++</button>
+        </div>
+    )
+}
+        ReactDOM.render(
+            <Counter/>
+            ,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>

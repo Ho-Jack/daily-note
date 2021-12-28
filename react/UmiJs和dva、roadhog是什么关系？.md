@@ -48,13 +48,13 @@ DVA 的 model 对象有几个基本的属性，需要大家了解。
 
 2. `state`：当前 model 状态的初始值，表示当前状态。
 
-3. `reducers`：用于处理**同步操作**，可以修改 `state`，由 `action` 触发。reducer 是一个纯函数，它接受当前的 state 及一个 action 对象。action 对象里面可以包含数据体（payload）作为入参，需要返回一个新的 state。
+3. `reducers`：用于处理**同步操作**，可以修改 `state`，**由 `action` 触发**。reducer 是一个纯函数，它接受当前的 state 及一个 action 对象。action 对象里面可以包含数据体（payload）作为入参，需要返回一个新的 state。
 
-4. `effects`：用于处理**异步操作**（例如：与服务端交互）和业务逻辑，也是由 action 触发。但是，它不可以修改 state，要通过触发 action 调用 reducer 实现对 state 的间接操作。
+4. `effects`：用于处理**异步操作**（例如：与服务端交互）和业务逻辑，也是**由 action 触发**。但是，它不可以修改 state，要通过触发 action 调用 reducer 实现对 state 的间接操作。
 
-   （call异步请求数据，put用于触发 action 。）
+   （**call**异步请求数据，**put**用于触发 action ,**select**获取state的数据。）
 
-5. `action`：是 reducers 及 effects 的触发器，一般是一个对象，形如`{ type: 'add', payload: todo }`，通过 type 属性可以匹配到具体某个 reducer 或者 effect，payload 属性则是数据体，用于传送给 reducer 或 effect。
+5. `action`：是 reducers 及 effects 的触发器，一般是一个对象，形如**`{ type: 'add', payload: todo }`**，通过 type 属性可以匹配到具体某个 reducer 或者 effect，payload 属性则是数据体，用于传送给 reducer 或 effect。
 
 ( action.type 的构造是 `namespace 名称` + `/` + `reducer 名称`，
 事实上 action.type 也可以是 `namespace 名称` + `/` + `effect 名`)

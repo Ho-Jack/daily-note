@@ -1,13 +1,13 @@
 ## generator函数
 ### generator函数的特点：
 
-1、generator函数又名生成器函数，与普通函数不同，普通函数一旦调用就会执行完，但generator函数中间可以**暂停**，执行一会歇一会。(函数遇见yield暂停，需要.next()来启动)
+- 1、generator函数又名生成器函数，与普通函数不同，普通函数一旦调用就会执行完，但generator函数中间可以**暂停**，执行一会歇一会。(函数遇见yield暂停，需要.next()来启动)
 
-2、函数声明时带上 * ，如 function *go(){}。函数内部使用 yield 关键字实现暂停。
+- 2、函数声明时带上 * ，如 function *go(){}。函数内部使用 yield 关键字实现暂停。
 
-3、generator函数函数执行并不会执行其代码，而是**返回一个迭代器对象**，之后调用迭代器的 next 方法，可以获得`yield`/`return`的返回值象。
+- 3、generator函数函数执行并不会执行其代码，而是**返回一个迭代器对象**，之后调用迭代器的 next 方法，可以获得`yield`/`return`的返回值象。
 
-![generator函数](F:\daily-note\js\ES6\generator函数.jpg)
+![generator函数](.\generator函数.jpg)
 
 ```js
 function *go(a){
@@ -22,7 +22,7 @@ function *go(a){
 }
  
 let iterator = go('aaa');
-let r1 = iterator.next();   //第一次next不用传参，没有意义
+let r1 = iterator.next();   //第一次next不用传参，没有意义，获取的是generator的参数
 console.log(r1);    //{ value: 'aaa', done: false }
 let r2 = iterator.next('bbb');
 console.log(r2)     //{ value: 'bbb', done: false }
@@ -32,10 +32,11 @@ console.log(r3)     //{ value: undefined, done: true }
 
 **注意：**
 
+- 第一次next()不用传参，没有意义，获取的是generator函数的参数
 - next()的返回值：  {value:xx, done:true/false}
-- yield语句只是个标识符，并没有返回值。
-- yield左边等于等于next()传来的参数值，没传参则为undefined。yield右边的是next()的返回值。
-- **第二次调用`next()`的参数**会被**第一次`yield`赋值的变量接收到**
+- yield语句只是个标识符，并没有返回值。（**yiled是一个界线**）
+- yield左边等于next()传来的参数值，没传参则为undefined。yield右边的是next()的返回值。
+- **第二次调用`next()`的参数会被第一次`yield`赋值的变量接收到**  （第一次next的参数来自generator的函数参数）
 - next()返回的对象中done属性值代表当前迭代是否完成
 
 ### 用作迭代器使用

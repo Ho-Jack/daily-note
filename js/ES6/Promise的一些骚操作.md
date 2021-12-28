@@ -6,7 +6,7 @@
 > new Promise(resolve => resolve('foo'))
 > ```
 
-在vue中的应用
+在vue中的应用:链式调用
 
 ```json
 axios.get(url) .then(res => {

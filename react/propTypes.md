@@ -51,7 +51,7 @@ customPropType: function(props, propName, componentName) {
 
 
 
-### 示例：
+### 示例1：
 
 ```react
 import PropTypes from 'prop-types';
@@ -68,5 +68,19 @@ Example.propTypes = {
     //PropTypes  大驼峰
   name: PropTypes.string.isRequired  
 };
+```
+### 示例2：
+```react
+import PropTypes from 'prop-types';
+
+class Example extends React.Component {
+    static propTypes = {
+          //PropTypes  大驼峰
+      name: PropTypes.string.isRequired,
+    }
+    render() {
+      return <h1> {this.props.name} </h1>;
+    }
+  }
 ```
 

@@ -2,13 +2,13 @@
 
 > 这种方式并不是react新的api，而是利用react自身提点的编码技巧的一种开发模式（设计模式)
 >
-> 如果一个组件不知道自己渲染什么东西，或者说一个组件的基础功能是提供”可变数据源“，**具体展示UI可以从外部(父组件)注入**，那么就可以用这个技术了。
+> 如果一个组件不知道自己渲染什么东西，或者说一个组件的基础功能是提供”可变数据源“，**具体展示UI可以从外部(父组件)注入到子组件中**，那么就可以用这个技术了。
 >
 > 类似Vue中的slot插槽思想
 
 ### 思路：
 
-> 将要复用的state和操作state的方法，封装到一个组件中，作为组件的props，传递到一个携带state参数的函数中
+> 将UI，封装到父组件的一个函数中，并作为子组件的props传递，在子组件中接收props函数并渲染（render props），最终传递state到该函数中
 
 - 1、在子组件中，复用state（获取state和操作state）
 
@@ -68,6 +68,13 @@ class Mouse extend React.Component{
   render () {
        //1、在子组件中，复用state（获取state和操作state）
       // 2-1、在子组件中将要复用的状态，作为`props.render(state)`方法的参数，暴露到组件外部(父组件)
+       // render={
+       //    (mouse) => {
+       //       return (<div>
+       //        <p>X是:{mouse.x}</p>
+       //        <p>Y是:{mouse.y}</p>
+       //      </div>) 
+       //    }
       return this.props.render(this.state)
   }
 }

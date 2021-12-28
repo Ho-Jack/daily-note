@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+
+
+
+
+
+        // 每次渲染都是独立的闭包
+        // - 每一次渲染都有它自己的 Props 和 State
+        // - 每一次渲染都有它自己的事件处理函数
+        // - 当点击更新状态的时候，函数组件都会重新被调用，那么每次渲染都是独立的，取到的值不会受后面操作的影响
+        class Counter2 extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    number: 1,
+                };
+            }
+            alertNumber = () => {
+                setTimeout(() => {
+                    // alert 只能获取到点击按钮时的那个状态
+                    alert(this.state.number);
+                }, 3000);
+            }
+
+            render() {
+                return (
+                    <div>
+                        <p>{this.state.number}</p>
+                        <button onClick={() => this.setState({number:this.state.number + 1})}>+</button>
+                        <button onClick={this.alertNumber}>alertNumber</button>
+                    </div>
+                );
+            }
+        }
+        ReactDOM.render(
+            <Counter2 />
+            ,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>

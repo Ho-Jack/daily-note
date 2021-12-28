@@ -50,6 +50,8 @@ let  a= await A()
 
 Vue项目中axios 返回布尔值的应用
 
+> axios是异步的，如果要同步返回布尔值，也就是在函数中return要在异步编程之后执行，需要使用async/await
+
 ```javascript
 async function login() {
   let isBol = ""
