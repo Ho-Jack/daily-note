@@ -189,7 +189,7 @@ import { Button, Select } from 'element-ui';
  Vue.use(Select)
 ```
 
-### 1.9、优化无限列表性能
+### 1.9、优化无限列表性能（虚拟滚动）
 
 如果你的应用存在非常长或者无限滚动的列表，那么需要采用 窗口化 的技术来优化性能，只需要渲染少部分区域的内容，减少重新渲染组件和创建 dom 节点的时间。你可以参考以下开源项目 vue-virtual-scroll-list 和 vue-virtual-scroller 来优化这种无限列表的场景的。
 
