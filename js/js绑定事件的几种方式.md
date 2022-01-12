@@ -43,7 +43,7 @@ alert(this.getAttribute("type")); // this 指当前发生事件的HTML元素，�
 | 参数          | 说明                                                         |
 | ------------- | ------------------------------------------------------------ |
 | elementObject | DOM对象（即DOM元素）。                                       |
-| eventName     | 事件名称。注意，这里的事件名称没有“ on ”，如鼠标单击事件 click ，鼠标双击事件 doubleclick ，鼠标移入事件 mouseover，鼠标移出事件 mouseout 等。 |
+| eventName     | 事件名称。注意，这里的事件名称没有“ on ”，如鼠标单击事件 `click `，鼠标双击事件` doubleclick `，鼠标移入事件 `mouseover`，鼠标移出事件` mouseout `等。 |
 | handle        | 事件句柄函数，即用来处理事件的函数。                         |
 | useCapture    | Boolean类型，是否在捕获阶段就触发事件，一般用false 。涉及到JavaScript事件流的概念 |
 

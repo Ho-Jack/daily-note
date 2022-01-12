@@ -10,8 +10,6 @@
 >
 >   - descriptor 要定义或修改的属性描述符。
 >
->   - 存取描述符还具有以下可选键值：
->
 >     - `get`
 >
 >       属性的 getter 函数，如果没有 getter，则为 `undefined`。（读取的时候obj.xx）**当访问该属性时，会调用此函数**。执行时不传入任何参数，但是会传入 `this` 对象（由于继承关系，这里的`this`并不一定是定义该属性的对象）。该函数的**返回值会被用作属性的值**。 **默认为 [`undefined`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/undefined)**。
@@ -20,6 +18,7 @@
 >
 >       属性的 setter 函数，如果没有 setter，则为 `undefined`。**当属性值被修改时，会调用此函数。**该方法接受一个参数（也就是被赋予的新值），会传入赋值时的 `this` 对象。 **默认为 [`undefined`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/undefined)**。
 >
+> 
 
 ```js
 let Person ={}

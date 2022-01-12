@@ -277,7 +277,8 @@ export default{
                 return this.$store.state.goods.AA;
             },
             set: function(val) {
-                this.$store.state.goods.AA = val;
+               // this.$store.state.goods.AA = val;
+             // this.$store.commit('goods', val)
             }
         },
     }

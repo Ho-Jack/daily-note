@@ -39,8 +39,8 @@ tags: [JS, ES6, 开发笔记]
 查询字符串
 `arr/str.indexOf()`和`arr/str.lastIndexOf() `（ES5新增）  返回第一次/最后一次的索引，不存在返回-1
 `arr/str.includes()`    判断是否给定值，返回布尔  
-`str.startWith() `   判断是否以xx开始，返回布尔
-`str.endWith()`     判断是否以xx结束，返回布尔
+`str.startsWith() `   判断是否以xx开始，返回布尔
+`str.endsWith()`     判断是否以xx结束，返回布尔
 
 `str.toUpperCase()`                                  将一个字符串转换为大写并返回
 `str.toLowerCase() `                                 将一个字符串转换为小写并返回
