@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+
+
+
+
+
+// - 推荐： setState( ( state) => {} )
+// - 参数state：表示最新的state
+        function Counter2() {
+            let [number, setNumber] = React.useState(0);
+            function lazy() {
+                setTimeout(() => {
+                    console.log(number)  //这里还是原来的值 0
+                    // setNumber(number+1);
+                    // 这样每次执行时都会去获取一遍 state，而不是使用点击触发时的那个 state
+                    setNumber(number => number + 1);
+                    console.log(number)  //这里还是原来的值 0
+
+                }, 3000);
+            }
+            return (
+                <div>
+                    <p>{number}</p>
+                    <button onClick={() => setNumber(number + 1)}>+</button>
+                    <button onClick={lazy}>lazy</button>
+                </div>
+            )
+        }
+        ReactDOM.render(
+            <Counter2 />
+            ,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>

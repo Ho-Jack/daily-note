@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+    //高阶组件
+    function withMouse(WrappedComponent) {
+      class Mouse extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            x: '',
+            y: ''
+          };
+        }
+        componentDidMount() {
+          window.addEventListener('mousemove', this.onMouseMove)
+        }
+        componentWillUnmount() {
+          window.removeEventListener('mousemove', this.onMouseMove)
+        }
+        onMouseMove = (event) => {
+          this.setState({
+            x: event.clientX,
+            y: event.clientY
+          })
+        }
+
+        render() {
+          return <WrappedComponent {...this.state}></WrappedComponent>
+        }
+      }
+      return Mouse
+    }
+
+
+
+    //创建一个函数子组件1
+    const child1 = props => {
+      return (<div>
+        <p>函数子组件1</p>
+        <p>X是:{props.x}</p>
+        <p>Y是:{props.y}</p>
+      </div>)
+    }
+     //创建一个函数子组件2
+     const child2 = props => {
+      return (<div>
+        <p>函数子组件2</p>
+        <p>XXXX是:{props.x}</p>
+        <p>YYYY是:{props.y}</p>
+      </div>)
+    }
+    //实例化高阶组件，生成增强后的组件
+    const Child1 = withMouse(child1)
+    const Child2 = withMouse(child2)
+
+    //渲染
+    ReactDOM.render(
+      <div><Child1 /><Child2 /></div>,
+      document.getElementById("example")
+    );
+  </script>
+</body>
+
+</html>

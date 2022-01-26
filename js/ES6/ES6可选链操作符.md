@@ -25,11 +25,13 @@ const obj={}
 
  应该并不能，为空对象时，还是会走后面的逻辑，需要注意一下
 
+### 总结： `obj?.name`  必须保证obj这个对象已定义！要不js将报错 
+
 ### ??
 
 >空值合并操作符,可以在使用可选链时设置一个默认值
 >
->只有当左侧为null和undefined时，才会返回右侧的数
+>只有当左侧为null和undefined时，才会返回右侧的默认值
 
 ```javascript
 let user = {name:'aaa'};

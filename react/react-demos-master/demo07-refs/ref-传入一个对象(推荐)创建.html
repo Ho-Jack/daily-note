@@ -24,7 +24,8 @@
                     <div>
                         <p ref={this.titleRef}>通过操作dom传入text</p>
                         <button onClick={()=>{
-                            this.titleRef.current.innerHTML='ref操作dom方式1:传入字符串'
+                            console.log(this.titleRef)
+                            this.titleRef.current.innerHTML='ref操作dom方式2:传入对象'
                         }}>点击</button>
                     </div>
                 );

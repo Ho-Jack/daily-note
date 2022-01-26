@@ -21,10 +21,12 @@
             render() {
                 return (
                     <div>
-                        <p ref={i=>this.titleRef=i}>通过操作dom传入text</p>
-                        <button onClick={()=>{
+                        <p ref={i => this.titleRef = i}>通过操作dom传入text</p>
+                        <button onClick={() => {
                             console.log(this.titleRef) //p元素这个DOM
-                            this.titleRef.innerHTML='ref操作dom方式1:传入字符串'
+                            //通过 React.createRef()创建的
+                            //this.titleRef.current.innerHTML='ref操作dom方式2:传入对象'
+                            this.titleRef.innerHTML = 'ref操作dom方式1:传入函数'
                         }}>点击</button>
                     </div>
                 );

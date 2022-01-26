@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+       
+        class SomeComponent extends React.Component {
+
+            constructor(props) {
+                super(props)
+                this.state = {
+                    count: 0
+                }
+            }
+            //推荐： setState( ( state, props ) => {}[ , callback ]  )
+            // 参数state：表示最新的state
+            // 参数props：表示最新的props
+            //参数callback：在状态更新（页面完成重新渲染）后立即执行某些操作
+            doClick = () => {
+                this.setState((newState,newProps)=>{
+                    return  {
+                        count:newState.count+1
+                    }
+                },
+                ()=>{
+                    console.log(`setState第二个参数：${this.state.count}`)
+                });
+               console.log(`同步：${this.state.count}`)
+            }
+            render() {
+                return (
+                    <div>
+                        <div>
+                            {this.state.count}
+                            <button onClick={this.doClick}>Increment Raw</button>
+                        </div>
+                    </div>
+                )
+            }
+        }
+        ReactDOM.render(
+            <SomeComponent />
+            ,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>

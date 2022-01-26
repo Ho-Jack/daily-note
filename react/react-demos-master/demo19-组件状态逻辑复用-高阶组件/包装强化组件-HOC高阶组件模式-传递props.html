@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+    //高阶组件
+    function withMouse(WrappedComponent) {
+      class Mouse extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            x: '',
+            y: ''
+          };
+        }
+        componentDidMount() {
+          window.addEventListener('mousemove', this.onMouseMove)
+        }
+        componentWillUnmount() {
+          window.removeEventListener('mousemove', this.onMouseMove)
+        }
+        onMouseMove = (event) => {
+          this.setState({
+            x: event.clientX,
+            y: event.clientY
+          })
+        }
+        render() {
+          //首先拿到参数组件传递过来的porps是在Mouse类组件中 
+          console.log(this.props)
+         //需要将props再传递到 参数组件 中才能在 参数组件 中拿到props
+          return <WrappedComponent {...this.state}   {...this.props}></WrappedComponent>
+        }
+      }
+      return Mouse
+    }
+
+
+
+    //创建一个函数子组件
+    const child = props => {
+      console.log(props)
+      return (<div>
+        <p>函数子组件</p>
+        <p>X是:{props.x}</p>
+        <p>Y是:{props.y}</p>
+      </div>)
+    }
+  
+    //实例化高阶组件，生成增强后的组件
+    const Child = withMouse(child)
+
+    //渲染
+    ReactDOM.render(
+      //向高阶组件内部传递props，实际是传递到高阶组件函数内部返回的类组件，
+      //如果要在参数组件中拿到props，需要在类组件中向参数组件再传递（需要在高阶组件内部再传递props）
+      <Child  a='组件参数传递的porps' />,
+      document.getElementById("example")
+    );
+  </script>
+</body>
+
+</html>

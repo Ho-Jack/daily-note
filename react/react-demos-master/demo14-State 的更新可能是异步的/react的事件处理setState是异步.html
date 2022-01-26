@@ -48,9 +48,10 @@
             所以它被设计以延时的来进行执行是相当合理的。
             **/
             doClick = () => {
-                  this.setState({ count: this.state.count + 1 });
-                  this.setState({ count: this.state.count + 1 });
-                  this.setState({ count: this.state.count + 1 });
+                this.setState({ count: this.state.count + 1 });
+                this.setState({ count: this.state.count + 1 });
+                this.setState({ count: this.state.count + 1 });
+                console.log(this.state.count) //这里是同步，但是setState是异步， 打印的值还是之前的
             }
             render() {
                 return (

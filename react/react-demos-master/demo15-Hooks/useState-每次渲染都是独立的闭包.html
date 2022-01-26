@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="../build/react.development.js"></script>
+    <script src="../build/react-dom.development.js"></script>
+    <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+
+        function preserveNum() {
+            let num = 0
+            setTimeout(() => {
+                num++
+            }, 1000)
+            return function () {
+                console.log(num)
+            }
+        }
+
+        const printNum = preserveNum()
+
+        setTimeout(() => {
+            console.log('执行定时器')
+            printNum() // 1
+            const newPrintNum = preserveNum() //重新执行一次
+            newPrintNum() //0
+        }, 2000)
+
+
+
+
+
+        // 每次渲染都是独立的闭包
+        // - 每一次渲染都有它自己的 Props 和 State
+        // - 每一次渲染都有它自己的事件处理函数
+        // - 当点击更新状态的时候，函数组件都会重新被调用，那么每次渲染都是独立的，取到的值不会受后面操作的影响
+        function Counter2() {
+            let [number, setNumber] = React.useState(0);
+            function alertNumber() {
+                setTimeout(() => {
+                    // alert 只能获取到点击按钮时的那个状态
+                    alert(number);
+                }, 3000);
+            }
+            return (
+                <div>
+                    <p>{number}</p>
+                    <button onClick={() => setNumber(number + 1)}>+</button>
+                    <button onClick={alertNumber}>alertNumber</button>
+                </div>
+            )
+        }
+        ReactDOM.render(
+            <Counter2 />
+            ,
+            document.getElementById('example')
+        );
+    </script>
+</body>
+
+</html>

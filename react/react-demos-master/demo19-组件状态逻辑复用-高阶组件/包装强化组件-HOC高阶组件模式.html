@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+
+    function HOC(Component) {
+      return class wrapComponent extends React.Component {
+        constructor() {
+          super()
+          this.state = {
+            name: 'alien'
+          }
+        }
+        render = () => <Component {...this.props} {...this.state} />
+      }
+    }
+
+
+    class Index extends React.Component {
+      say() {
+        const { name } = this.props
+        console.log(name)
+      }
+      render() {
+        return <div> hello,world <button onClick={this.say.bind(this)} >点击</button>  </div>
+      }
+    }
+
+    class Parent extends React.Component {
+      
+      render() {
+        return HOC(<Index/>)
+      }
+    }
+
+    ReactDOM.render(
+      <Parent />,
+      document.getElementById("example")
+    );
+  </script>
+</body>
+
+</html>

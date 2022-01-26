@@ -9,8 +9,12 @@ tags: [HTML, 样式]
 ### 关键标签：
 
 ```html
-<thead>   表头  <tbody> 主体   <tfoot>表尾
-<tr> 表格行，<th>表头（table head），<td> 单元格（table data）。
+<thead>   表头  
+<tbody>   主体   
+<tfoot>   表尾
+<tr>      表格行
+<th>      表头（table head）
+<td>      单元格（table data）
 ```
 
 ### 实例
@@ -111,4 +115,46 @@ all    - 为所有行列（单元格）加边框
 
 rules="all"   所以单元格加边框
 
- 
+
+
+
+
+### colgroup标签/col标签
+
+> 关联table所有行row中的某一`列col`
+
+- span:指定`col`元素横跨的列数，此属性值为正整数，默认值为1 (col属性影响的所有行row所横跨的列col)
+
+ ```html
+<table border="1">
+    <colgroup>
+        <col class="col-1">
+        <col span="2" class="col-23">  //span为2，影响横跨2列的所有行数
+    </colgroup>
+    <tr>
+        <th>Index</th>
+        <th>Language</th>
+        <th>Proportion</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>HTML</td>
+        <td>20.36%</td>
+    </tr>
+
+</table>
+
+ ```
+
+`align`：指定`col`元素关联的列的内容的水平对齐方式，包括`left`（左对齐）、`center`（居中对齐）、`right`（右对齐）、`char`等，注意此属性`HTML5`已废弃，仅`IE7`及以下等浏览器可用，绝大多数浏览器已不再支持
+
+`bgcolor`：指定`col`元素关联的列的背景色，其属性值可指定`rgba`、`rgb`、`hex`和颜色名称，注意此属性为非标准属性，不同浏览器对此属性支持度不一致
+
+`valign`：指定`col`元素关联的列的内容的垂直对齐方式，包括`top`（顶端对齐）、`middle`（居中对齐）、`bottom`（底部对齐）、`baseline`（基线对齐），注意此属性`HTML5`也已废弃，不同浏览器支持程度不一致
+
+`width`：指定`col`元素关联的列的宽度，值为`px`宽度或者百分比，注意`HTML5`已废弃，绝大多数浏览器支持
+
+`char`：`align`属性设置为`char`时生效，用于指定某列以某个字符对齐，注意`HTML5`不再支持此属性，且大部分浏览器不支持
+
+`charoff`：`align`属性设置为`char`时生效，规定内容相对于`char`属性指定的字符的偏移量
+
