@@ -4,7 +4,7 @@
 >
 > v-slot 属性只能在template 使用，只有`默认插槽`才能在组件标签上使用
 >
-> `v-slot:defalut ` = ` #defalut`  =   `v-slot` 
+> `v-slot:defalut ` = `v-slot`    =   ` #defalut`
 
 - #### 默认插槽 （父=>子）
 
@@ -16,7 +16,7 @@
 
   - 父组件：
 
-    `v-slot:defalut ` = ` #defalut`  =   `v-slot` 
+    `v-slot:defalut  `=   `v-slot`  = ` #defalut`  
     
     ```vue
     <子> 
@@ -25,8 +25,15 @@
         ②没有内容（显示子组件slot标签的内容）
       </template>
   </子>
+    
+  <子> 
+      <template #defalut>  
+        ①有内容（不显示子组件slot标签的内容）   可以插入组件、html
+        ②没有内容（显示子组件slot标签的内容）
+      </template>
+    </子>
     ```
-
+    
     父级模板里的所有内容都是在父级作用域中编译的，子模板里的所有内容都是在子作用域中编译的
     
     （父--->子）插槽插入的内容在子组件作用域中

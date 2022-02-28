@@ -11,8 +11,8 @@ tags: [JS, ES6, 开发笔记]
 >- **require**    特点： 1.运行时加载  2.拷贝到本页面   3.全部引入
 >- **import**     特点： 1.编译时加载  2.只引用定义     3.按需加载
 >
->- es6:         export  default            import 
->- commonjs:     module.exports/exports     require   
+>- es6(`ES6 Modules` 模块):         export  default            import 
+>- commonjs模块:     module.exports/exports     require   
 
 ### ES6的导出方法:
 

@@ -64,7 +64,7 @@ Webpack 会将任何一个异步模块与相同的块名称组合到相同的异
 
 
 
-#### 3. equire.ensure()
+#### 3. require.ensure()
 
 使用webpacke的[require.ensure](https://webpack.docschina.org/api/module-methods#require-ensure)也可以实现按需加载。
 

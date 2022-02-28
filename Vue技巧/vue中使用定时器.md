@@ -46,3 +46,27 @@ methods:{
 	},
 ```
 
+####  更好清除定时器的解决方案
+
+> ### [vm.$once( event, callback )](https://cn.vuejs.org/v2/api/#vm-once)
+>
+> - **参数**：
+>
+>   - `{string} event`
+>   - `{Function} callback`
+>
+> - **用法**：
+>
+>   监听一个自定义事件，但是只触发一次。一旦触发之后，监听器就会被移除。
+
+```vue
+<script>
+  export default {
+    mounted() {
+      const timer = setInterval(() => { ... }, 1000);
+      this.$once('hook:beforeDestroy', () => clearInterval(timer);)
+    }
+  };
+</script>
+```
+
