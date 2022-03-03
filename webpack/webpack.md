@@ -11,3 +11,34 @@
 >
 > 加载资源的路径, 写`./`   代表的就是你打包之后，会在`./`这个相对路径下找要加在的资源
 
+
+
+### webpack核心概念
+
+- **`Entry`**（入口）：指示 webpack 应该使用哪个模块，来作为构建其内部依赖图的开始。进入入口起点后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的。
+
+- **`Output`**（出口）：告诉 webpack 在哪里输出它所创建的结果文件，以及如何命名这些文件，默认值为./dist。
+
+- **`Loader`**（模块转换器）：webpack通过不同的loader，实现对不同格式的文件的处理，例如把scss转为css
+
+- **`Plugins`**（插件）：在 Webpack 构建流程中的特定时机注入扩展逻辑来改变构建结果或做你想要的事情。
+
+- **`Module`**(模块)：开发者将程序分解成离散功能块，并称之为模块
+
+### webpack执行流程
+
+> `module` 就是没有被编译之前的代码，通过 `webpack` 的根据文件引用关系生成 `chunk` 文件，webpack 处理好 `chunk` 文件后，生成运行在浏览器中的代码 `bundle`
+
+webpack启动后会在entry里配置的module开始递归解析entry所依赖的所有module，每找到一个module, 就会根据配置的loader去找相应的转换规则，对module进行转换后在解析当前module所依赖的module，这些模块会以entry为分组，**一个entry和所有相依赖的module也就是一个chunk**，最后webpack会把所有chunk转换成文件输出，在整个流程中webpack会在恰当的时机执行plugin的逻辑
+
+```javascript
+module.exports = {
+  mode: 'development', // 模式
+  entry: './src/index.js', // 打包入口地址
+  output: {
+    filename: 'bundle.js', // 输出文件名
+    path: path.join(__dirname, 'dist') // 输出文件目录
+  }
+}
+```
+
