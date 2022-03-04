@@ -16,13 +16,10 @@
 ### webpack核心概念
 
 - **`Entry`**（入口）：指示 webpack 应该使用哪个模块，来作为构建其内部依赖图的开始。进入入口起点后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的。
-
 - **`Output`**（出口）：告诉 webpack 在哪里输出它所创建的结果文件，以及如何命名这些文件，默认值为./dist。
+- **`Loader`**（模块转换器）：webpack通过不同的loader，实现对不同格式的文件的处理，转换为 webpack 能够处理的有效模块,例如把scss转为css
 
-- **`Loader`**（模块转换器）：webpack通过不同的loader，实现对不同格式的文件的处理，例如把scss转为css
-
-- **`Plugins`**（插件）：在 Webpack 构建流程中的特定时机注入扩展逻辑来改变构建结果或做你想要的事情。
-
+- **`Plugins`**（插件）：在 Webpack 构建流程中的特定时机注入扩展逻辑来改变构建结果或做你想要的事情。插件的范围包括,从打包优化和压缩,一直到重新定义环境中的变量。插件接口功能极其强大,可以用来处理各种各样的任务。
 - **`Module`**(模块)：开发者将程序分解成离散功能块，并称之为模块
 
 ### webpack执行流程
@@ -39,6 +36,48 @@ module.exports = {
     filename: 'bundle.js', // 输出文件名
     path: path.join(__dirname, 'dist') // 输出文件目录
   }
+}
+```
+
+# Loaders
+
+loaders是webpack最强大的功能之一，通过不同的loader，webpack有能力调用外部的脚本或工具，实现对不同格式的文件的处理，例如把scss转为css，将ES66、ES7等语法转化为当前浏览器能识别的语法，将JSX转化为js等多项功能。Loaders需要单独安装并且需要在webpack.comfig.js中的modules配置项下进行配置，Loaders的配置包括以下几方面：
+
+- test：一个用以匹配loaders所处理文件的拓展名的正则表达式（必须）
+- loader：loader的名称（必须）
+- include/exclude： 手动添加必须处理的文件（文件夹）或屏蔽不需要处理的文件（文件夹）（可选）
+- options： 为loaders提供额外的设置选项（可选）
+
+```javascript
+// webpack.config.js
+const path = require('path');
+module.exports = { 
+     module: {
+        rules: [
+          {
+            test: /\.css$/,   // 正则匹配以.css结尾的文件
+            use: ['style-loader', 'css-loader']  // 需要用的loader，一定是这个顺序，因为调用loader是从右往左编译的
+          }
+        ]
+      }
+ }
+```
+
+
+
+```javascript
+chainWebpack(config) {
+    config.module
+      .rule('icons')
+      .test(/\.svg$/)
+      .include.add(resolve('src/icons'))
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]'
+      })
+      .end()
 }
 ```
 
