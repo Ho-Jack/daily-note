@@ -29,10 +29,13 @@
 #### 6.断开连接：TCP 四次挥手
 
 关于第六步浏览器解析渲染页面又可以聊聊如果返回的是html页面
+
+> HTML /CSS /JS 三部分
+
 - 遇见HTML标记，浏览器调用HTML解析器，解析成Token并构建成dom树
 - 遇见style/link标记，浏览器调用CSS解析器，处理CSS标记并构建CSSOM Tree
 - 遇见script标记，调用JavaScript解析器，处理js代码（事件绑定，修改dom树/CSSOM Tree）
-- **将dom树和CSSOM Tree合并成 一个 渲染树**
+- **将dom树和CSSOM Tree合并成 一个 渲染树 render**
 - 根据渲染树来计算布局，计算每个节点的几何信息（布局）
 - 将各个节点颜色绘制到屏幕上（完成渲染）
 
