@@ -1,3 +1,30 @@
+## vue-router实现
+
+### hash模式的特点
+
+hash表示的是地址栏URL中#符号(也称作为锚点), hash虽然会出现在URL中, 但是不会被包含在Http请求中, 因此hash值改变不会重新加载页面.
+
+由于hash值变化不会引起浏览器向服务器发出请求, 而且hash改变会触发hashchange事件, 浏览器的进后退也能对其进行控制, 所以在HTML5之前, 基本都是使用hash来实现前端路由.
+
+###  history模式的特点
+
+利用了HTML5新增的`pushState()`和`replaceState()`两个api, 通过这两个api完成URL跳转不会重新加载页面
+
+同时history模式解决了hash模式存在的问题. hash的传参是基于URL的, 如果要传递复杂的数据, 会有体积限制, 而history模式不仅可以在URL里传参, 也可以将数据存放到一个特定的对象中
+
+
+
+| api     | hash                    | history                     |
+| ------- | ----------------------- | --------------------------- |
+| push    | window.location.assign  | window.history.pushState    |
+| replace | window.location.replace | window.history.replaceState |
+| go      | window.history.go       | window.history.go           |
+| back    | window.history.go(-1)   | window.history.go(-1)       |
+| forward | window.history.go(1)    | window.history.go(1)        |
+
+- push  添加新的路由，history.go()能正常返回上个路由
+- replace 替换当前路由，history.go()不能正常返回上个路由，返回的上上个路由
+
 ## vue-router和location.href的区别
 
 ①vue-router使用pushState进行路由更新，静态跳转，页面不会重新加载；location.href会触发浏览器，页面重新加载一次
