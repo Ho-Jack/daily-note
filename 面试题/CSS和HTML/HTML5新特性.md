@@ -1,5 +1,9 @@
 ### HTML5新特性
 
+> - 让人更容易读懂（增加代码可读性）。
+> - 让搜索引擎更容易读懂，有助于爬虫抓取更多的有效信息，爬虫依赖于标签来确定上下文和各个关键字的权重（SEO）。
+> - 在没有 CSS 样式下，页面也能呈现出很好地内容结构、代码结构。
+
 #### 1 语义标签
 
 | 标签                  | 描述                                                 |
@@ -47,7 +51,12 @@ HTML5 新增的表单属性
 - autofocus 属性，是一个 boolean 属性。规定在页面加载时，域自动地获得焦点。
 - multiple 属性 ，是一个 boolean 属性。规定<input> 元素中可选择多个值。
 
-
+```html
+<form>
+<input required="true" placeholder='请输入'/>
+<button type="submit">提交</button>
+</form>
+```
 
 
 

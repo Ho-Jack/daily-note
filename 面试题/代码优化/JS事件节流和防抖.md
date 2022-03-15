@@ -20,6 +20,8 @@ tags: [JS, 面试, 开发笔记]
 
 防抖debounce代码：
 
+> 重复触发覆盖定时器
+
 ```js
 //防抖函数，闭包使定时器常驻内存
 function debounce(fn, wait) {
@@ -79,7 +81,7 @@ window.addEventListener('scroll', debounce(handle, 1000));
 
 ### 函数节流（throttle）：
 
-> 多次触发，两次事件触发间隔是固定的，要记录上一次触发事件的时间
+> 多次触发，**两次事件触发间隔是固定的**，要记录上一次触发事件的时间
 
 当持续触发事件时，保证一定时间段内只调用一次事件处理函数。(也就是，2次事件触发间隔是固定的，像水龙头一样流出速率一样)。如下图，持续触发scroll事件时，并不立即执行handle函数，每隔1000毫秒才会执行一次handle函数。
 
@@ -100,7 +102,7 @@ window.addEventListener('scroll', debounce(handle, 1000));
                   var now = Date.now();   //现在时间
                   if (now - prev >= delay) {
                       func.apply(context, args);  //改变handler的this指向为当前函数this 并且立即执行
-                      prev = Date.now();
+                      prev = Date.now();//记录最后一次执行的时间
                   }
               }
           }
@@ -112,7 +114,9 @@ window.addEventListener('scroll', debounce(handle, 1000));
 
 
 
-- 时器
+- 定时器
+
+  > 重复触发，定时器盯梢（上一个定时器失效，立马顶上去）
 
   ```js
   var throttle = function(func, delay) {

@@ -8,7 +8,7 @@ tags: [面试]
 
 1.过渡 transition
 2.动画 animation
-3.形状转换 transform
+3.形状转换 transform  美: [trænsˈfɔrm] 
 4.选择器
 5.阴影 box-shadow
 6.边框 border-image\border-raduis
@@ -188,9 +188,9 @@ animation: logo2-line 2s linear alternate infinite;
 
 
 
-###  3.形状转换 transform
+###  3.形状转换 transform   美: [trænsˈfɔrm] 
 
-语法：
+语法： 
 
 ```css
 transform: none|transform-functions;
@@ -201,7 +201,7 @@ transform: none|transform-functions;
 | none                                                         | 定义不进行转换。                          |
 | matrix(*n*,*n*,*n*,*n*,*n*,*n*)                              | 定义 2D 转换，使用六个值的矩阵。          |
 | matrix3d(*n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*) | 定义 3D 转换，使用 16 个值的 4x4 矩阵。   |
-| **translate(x,y)**                                           | 定义 2D 转换。（单位px）                  |
+| **translate(x,y)**                                           | 平面移动x,y，定义 2D 转换。（单位px）     |
 | translate3d(*x*,*y*,*z*)                                     | 定义 3D 转换。                            |
 | translateX(*x*)                                              | 定义转换，只是用 X 轴的值。               |
 | translateY(*y*)                                              | 定义转换，只是用 Y 轴的值。               |
@@ -239,13 +239,13 @@ transform:scale(0.8)   //缩小0.8
 - [属性名*="属性值"]       选取属性值中包含指定内容的元素
 
 #### 子元素的伪类
-- E:first-of-type: 选择属于其父元素的首个E元素的每个E元素。
+- E:first-of-type: 选择属于其父元素的首个E元素的每个E元素(E元素的父元素下的第一个E元素)。
 
 - E:last-of-type: 选择属于其父元素的最后E元素的每个E元素。
 
-- E:only-of-type: 选择属于其父元素唯一的E元素的每个E元素。
+- E:only-of-type: 选择属于其父元素唯一的E元素的每个E元素（E元素的父元素下只有唯一的E元素生效）。
 
-- E:only-child: 选择属于其父元素的唯一子元素的每个E元素。
+- E:only-child: 选择属于其父元素的唯一子元素的每个E元素（E元素的父元素下只有唯一子元素，没其他元素）。
 
 - E:nth-child(n): 选择属于其父元素的第n个子元素的每个E元素。
 

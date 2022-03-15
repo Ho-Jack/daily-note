@@ -22,6 +22,8 @@ function  fun(){
 </script>
 ```
 
+> **onclick='fun()'    必须带（）**
+
 ###  2.在JS代码中绑定    elementObject.onXXX=function(){     // 事件处理代码    }
 
 >elementObject 为DOM对象( 例： document.getElementById()    ) 
