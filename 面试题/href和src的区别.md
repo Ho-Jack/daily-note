@@ -9,7 +9,7 @@
   **比如`script`元素、`img`元素、`iframe`元素、`video`元素**
 
   ```javascript
-  <script src="./test.js"></script>
+  <script src="./test.js" type="text/javascript"></script>
   
   <img src="./picture.jpg"  alt="example" />
   ```

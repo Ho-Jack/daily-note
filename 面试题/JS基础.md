@@ -11,7 +11,36 @@
 其中 `Symbol` 和 `BigInt` 是 ES6 新增的数据类型，可能会被单独问：
 
 - Symbol 代表独一无二的值，最大的用法是用来定义对象的唯一属性名。
-- BigInt 可以表示任意大小的整数。
+
+  > `Symbol()`函数只有一个参数，字符串`description`。这个字符串参数的唯一作用是辅助调试，也就是它的`toString()`值。但是请注意，两个具有相同`description`的`symbol`也是**不相等**的。
+  >
+  > ```javascript
+  > const symbol1 = Symbol('my symbol');
+  > const symbol2 = Symbol('my symbol');
+  > 
+  > symbol1 === symbol2; // false
+  > console.log(symbol1); // 'Symbol(my symbol)'
+  > ```
+  >
+  > 避免对象属性名重复导致覆盖问题
+  >
+  > ```javascript
+  > const name =Symbol('name')
+  > const object={
+  >     [name]:'objName'
+  > }
+  > ```
+  >
+  > 
+
+- BigInt 可以表示任意大小的**整数**。
+
+  ```
+  BigInt(安全存储、操作大整数)
+  Symbol(标记,永远不相等，解决属性名冲突问题)   Symbol('a')===Symbol('a')  //false
+  ```
+
+  
 
 **值类型的赋值变动过程如下：**
 

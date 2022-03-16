@@ -67,22 +67,117 @@ for (let value of oddGenerator()) {
 
 
 ##  async函数
-async函数顾名思义就是异步函数，可以理解为是**generator的语法糖**。现在应用中异步任务更多使用基于promise与async函数的解决方案。
+> async函数顾名思义就是异步函数，可以理解为是**generator的语法糖**。现在应用中异步任务更多使用基于promise与async函数的解决方案。
 
 ### async函数的几个特点:
 
-1、使用async关键字声明函数（如：async function fn(){}）.
+- 使用async关键字声明函数（如：async function fn(){}）.
 
-2、async函数默认返回一个已解决的promise对象，如果手动**return其他值**，函数会自动**return Promise.resolve**(其他值)
+- async函数默认返回一个已解决的promise对象，如果手动**return其他值**，函数会自动**return Promise.resolve**(其他值)
 
 
 ### await
 
-async await是天生一对，async函数中没有出现await那就跟普通函数没什么区别，而await也只能在async函数中使用。
+- async await是天生一对，async函数中没有出现await那就跟普通函数没什么区别，而await也只能在async函数中使用。
 
-await“等待”，await命令后是一个promise对象，如果不是，会被转成一个resolve的promise对象。如果await后面的promise状态是reject的话会抛出异常，所以可以将await语句写在**try catch**里。
+- await“等待”，await命令后是一个promise对象，如果不是，会被转成一个resolve的promise对象。如果await后面的promise状态是reject的话会抛出异常，所以可以将await语句写在**try catch**里。
 
-当async函数执行的时候，一旦遇到await就会先返回，**等到异步操作完成，再接着执行函数体内后面的语句**，所以调用async函数虽然有等待, 但是并不会导致阻塞, 因为他内部的所有阻塞都封装在promise对象中异步执行.。
+- 当async函数执行的时候，一旦遇到await就会先返回，**等到异步操作完成，再接着执行函数体内后面的语句**，所以调用async函数虽然有等待, 但是并不会导致阻塞, 因为他内部的所有阻塞都封装在promise对象中异步执行。
+
+### 同步：
+
+> **需要在有异步的地方一层层嵌套async/await，才能做到真正的同步**
+
+- 同步-外部函数return Promise
+
+  ```javascript
+      fun1 = () => {
+          console.log('进入函数：' + new Date().getSeconds());
+          return new Promise((resolve) => {
+              setTimeout(() => {
+                  console.log('定时器:' + new Date().getSeconds());
+                  resolve('最后执行吗')
+              }, 1000)
+          })
+      }
+      fun2 = async () => {
+          let res = await fun1()
+          console.log(res + + new Date().getSeconds())
+      }
+      fun2()
+      -------------------------------------------------------------
+  进入函数：    1
+  定时器:      2
+  最后执行吗    2
+  ```
+
+  总结：外部函数返回Promise对象,使用async/await 即可同步
+
+  
+
+- 同步-外部函数未返回Promise对象
+
+  ```javascript
+      fun1 = () => {
+          console.log('进入函数：' + new Date().getSeconds());
+          new Promise((resolve) => {
+              setTimeout(() => {
+                  console.log('定时器:' + new Date().getSeconds());
+                  resolve('最后执行吗')
+              }, 1000)
+          })
+      }
+      fun2 = async () => {
+          let res = await fun1()
+          console.log(res + + new Date().getSeconds())
+      }
+      fun2()
+  ---------------------------------------------------------------------------
+  进入函数： 1
+  NaN      
+  定时器:    2
+  ```
+
+  总结：外部函数**未**返回Promise对象，使用async/await 无法同步
+
+   （async函数默认返回一个已解决的promise对象）也就是，外部函数也使用async/await关键字应该就能解决同步问题
+
+
+
+- 同步-外部函数未返回Promise对象，外部函数使用async/await关键字
+
+  ```javascript
+              fun1 = async () => {
+                  console.log('进入函数：' + new Date().getSeconds());
+                  await new Promise((resolve) => {
+                      setTimeout(() => {
+                          console.log('定时器:' + new Date().getSeconds());
+                          resolve('最后执行吗')
+                      }, 1000)
+                  })
+              }
+              fun2 = async () => {
+                  let res = await fun1()
+                  console.log(res + + new Date().getSeconds())
+              }
+              fun2()
+  ---------------------------------------------------------------------------
+  进入函数： 1
+  定时器:    2
+  NaN       
+  ```
+
+  总结：外部函数未返回Promise对象，外部函数使用async/await关键字，能解决同步问题，但是外部函数由于没return值，无法使用  `let res = await fun1()` 接收外部函数Promise，resolve的值
+
+
+
+
+
+
+
+
+
+
 
 ```js
 function promiseFn(){
@@ -241,11 +336,30 @@ AAA
         console.log(res+ + new Date().getSeconds());
     })
 -----------------------------------------------------------------------------------------------
-   //个人理解 ：  async不太好进行  .then  控制 因为内部 不能主动  resove 或  reject 
-      
+   //个人理解 ：  async不太好进行  .then  控制 因为内部 不能主动  resove 或  reject (这个理解是错误的2022.03.16)
+      由于async函数默认返回一个已解决的promise对象，所以需要一层层添加 async await 才能做做到同步
 ```
 
-注意： 如果想 控制 前后 执行顺序，只能通过新建Promise对象，然后通过 then()链式调用来控制
+~~注意： 如果想 控制 前后 执行顺序，只能通过新建Promise对象，然后通过 then()链式调用来控制~~
+
+  **由于async函数默认返回一个已解决的promise对象，所以需要一层层添加 async await 才能做做到同步**
+
+```javascript
+do1().then(res => {
+    console.log(res+ + new Date().getSeconds());
+})
+-----------------------------------------------------------------------------------------------
+let res = await fun1()
+console.log(res + + new Date().getSeconds())
+```
+
+
+
+
+
+
+
+
 
 
 
@@ -287,3 +401,4 @@ AAA:35
 ```
 
 说明：settimeout 本身就是异步操作
+
