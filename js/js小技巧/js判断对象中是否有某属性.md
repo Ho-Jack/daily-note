@@ -13,6 +13,8 @@
 #### `obj.hasOwnProperty() `
 
 > 判断当前的对象是否包含某一个属性  `obj.hasOwnProperty("name")`
+>
+> 会向原型链上找
 
 #### in  
 
