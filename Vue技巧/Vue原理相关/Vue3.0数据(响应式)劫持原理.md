@@ -1,15 +1,33 @@
 
 
+## Vue3.0数据(响应式)劫持原理
+
 > Vue3.0使用Proxy替换`Object.defineProperty` 来实现数据响应式。
 >  Proxy 是 ES6 中新增的功能，在我们访问对象前添加了一层拦截，来对对象进行操作
 
-语法：
+
+
+### Proxy的作用
+
+对于代理模式`Proxy`的作用主要体现在三个方面:
+
+- 拦截和监视外部对对象的访问
+
+- 降低函数或类的复杂度
+
+- 在复杂操作前对操作进行校验或对所需资源进行管理
+
+### 语法：
+
+```javascript
+Object.defineProperty(obj, prop, descriptor)
+```
 
 ```js
 let p = new Proxy(target, handler)
 ```
 
-- p 是代理对象
+- **p 是代理对象**，如果有p对象，则 `let p = new Proxy(target, handler)`
 
 - traget:需要添加被代理(拦截)的对象
 
@@ -17,7 +35,13 @@ let p = new Proxy(target, handler)
 
   handler`本身就是ES6所新设计的一个对象.它的作用就是用来**自定义代理对象的各种可代理操作**。它本身一共有13中方法,每种方法都可以代理一种操作.其13种方法如下:
 
-  ```js
+  ```javascript
+  handler.get(target, key, value)
+  // 在读取代理对象的某个属性时触发该操作，比如在执行 proxy.foo 时。
+  
+  handler.set(target, key, value)
+  // 在给代理对象的某个属性赋值时触发该操作，比如在执行 proxy.foo = 1 时。
+  
   handler.getPrototypeOf()
   // 在读取代理对象的原型时触发该操作，比如在执行 Object.getPrototypeOf(proxy) 时。
   
@@ -39,12 +63,6 @@ let p = new Proxy(target, handler)
   handler.has()
   // 在判断代理对象是否拥有某个属性时触发该操作，比如在执行 "foo" in proxy 时。
   
-  handler.get()
-  // 在读取代理对象的某个属性时触发该操作，比如在执行 proxy.foo 时。
-  
-  handler.set()
-  // 在给代理对象的某个属性赋值时触发该操作，比如在执行 proxy.foo = 1 时。
-  
   handler.deleteProperty()
   // 在删除代理对象的某个属性时触发该操作，比如在执行 delete proxy.foo 时。
   
@@ -58,7 +76,8 @@ let p = new Proxy(target, handler)
   // 在给一个目标对象为构造函数的代理对象构造实例时触发该操作，比如在执行new proxy() 时。
   ```
 
-  
+
+### 示例：
 
 ```js
 const p = new Proxy(obj, {
@@ -89,21 +108,7 @@ p.name = '李白';        //修改对象的时候触发
 
 
 
-### Proxy的作用
-
-对于代理模式`Proxy`的作用主要体现在三个方面:
-
-1、 拦截和监视外部对对象的访问
-
-2、 降低函数或类的复杂度
-
-2、 在复杂操作前对操作进行校验或对所需资源进行管理
-
-
-
-
-
-数据响应实例:
+### 数据响应实例:
 
 ```js
 let onWatch = (obj, setBind, getLogger) => {

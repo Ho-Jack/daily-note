@@ -6,31 +6,67 @@ tags: [Vue]
 
 
 
-
-
 ##   **v-model**   只是 vue 的一个语法糖 （**Vue 是单项数据流**）
 
--  vue中的v-model指令实现了表单的双向绑定
+### v-model指令实现了表单的双向绑定
 
 ```vue
 <input type="text" v-model="message">
 <p>{{message}}</p>
 ```
 
-- v-model只是语法糖，真正的实现形式：
+### v-model只是语法糖,原理实现：
 
 ```vue
 <input type="text" :value="message" @input="message = $event.target.value">
 //$event  访问原始的 DOM 事件
 ```
 
-> 1.将输入框的值绑定到message变量上，这只是单向的，改变message的值可以改变input的value，但是改变input的输入不会改变message。
->
-> 2.监听input事件，当输入类内容时改变message变量，从而实现了双向绑定。
+- 1、vue是单向数据流，`：value='message'`只是将input的value值绑定到message上，修改message影响输入框value值，但修改输入框值，并不会改变message值
+- 2、通过监听输入框oninput事件，将输入值绑定到message值，从而实现双向绑定
+
+### 原生简单实现v-model：
+
+```html
+<body>
+    姓名：<span id="spanName"></span>
+    <br>
+    <input type="text" id="inpName">
+</body>
+
+<!-- IMPORT JS -->
+<script>
+    let obj = {
+        name: ''
+    };
+    let newObj = {
+        ...obj
+    };
+    //数据劫持
+    Object.defineProperty(obj, 'name', {
+        get() {
+            return newObj.name;
+        },
+        set(val) {
+            newObj.name = val;
+            observe(); //在修改obj的name属性的时候，修改dom，达到双向绑定目的
+        }
+    });
+    function observe() {
+        spanName.innerHTML = newObj.name;
+    }
+    //监听输入框的oninput事件，将输入值赋值到ojb上(触发数据劫持效果)
+    inpName.oninput = function () {
+        obj.name = this.value;
+    };
+</script>
+```
 
 
 
-类似react中的 受控组件
+
+
+### 类似react中的 受控组件
 
 ```react
 <input type="text"  value={this.state.message} 
@@ -49,7 +85,7 @@ tags: [Vue]
 > ### model
 > { prop?: string, event?: string }
 >
-> 允许一个自定义组件在使用 `v-model` 时定制 prop 和 event。默认情况下，一个组件上的 `v-model` 会把 `value` 用作 prop 且把 `input` 用作 event， 但是一些输入类型比如单选框和复选框按钮可能想使用 `value` prop 来达到不同的目的。使用 `model` 选项可以回避这些情况产生的冲突。
+> 允许一个自定义组件在使用 `v-model` 时定制 prop 和 event。默认情况下，一个组件上的 `v-model` 会把 `value` 用作 prop 且把 `oninput` 用作 event， 但是一些输入类型比如单选框和复选框按钮可能想使用 `value` prop 来达到不同的目的。使用 `model` 选项可以回避这些情况产生的冲突。
 >
 > v-model  = mode:{  prop:'  ',event:''}   
 
@@ -59,7 +95,7 @@ tags: [Vue]
 
 <template>
   <div>
-    <input type="text" :value="message" @input="updateVal($event.target.value)" />
+    <input type="text" :value="message" @input="$emit("changeXXX", $event.target.value);" />
   </div>
 </template>
 
@@ -79,11 +115,6 @@ export default {
       default: "tom"
     }
   },
-  methods: {
-    updateVal(val) {
-      this.$emit("changeXXX", val);
-    }
-  }
 };
 </script>
 
@@ -101,6 +132,8 @@ export default {
       <!-- <input  type="text" :value="message" @input="message =  $event.target.value "/> -->
      <myInput v-model="message"></myInput>
     <myInput :message='message' @changeXXX='val => {message = val}' ></myInput>
+    <myInput :message='message' @changeXXX='message = arguments[0]' ></myInput>
+  
       <p>{{message}}</p>
     </div>
   </template>
@@ -118,7 +151,7 @@ export default {
   }
   
   </script>
-  
-  ```
 
+  ```
+  
   
