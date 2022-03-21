@@ -1,10 +1,12 @@
 #### `typeof`
 
-> 判断类型 （有局限性，无法判断Array和Object）
+> 判断类型 （有局限性，无法判断Array和Object、null）
 >
 > `typeof []  === 'Object'`
 >
 > `typeof {}  === 'Object'`
+>
+> `typeof null === 'Object'`
 
 #### `instanceof  `
 
@@ -22,7 +24,15 @@
 
 
 
+`Object.prototype.toString.call()`
 
+>所有原始数据类型都是能判断的，还有 **Error 对象，Date 对象**等
+>
+>`Object.prototype.toString.call({})`===  '[object object]'
+>
+>`Object.prototype.toString.call([])` ===  '[object Array]'
+>
+>`Object.prototype.toString.call(null)` ===  '[object Null]'
 
 
 
