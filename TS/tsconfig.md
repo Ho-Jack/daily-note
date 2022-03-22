@@ -1,4 +1,22 @@
-初始化一个tsconfig.json配置文件tsc --init
+
+
+## vscode自动编译
+
+    1). 生成配置文件tsconfig.json
+        tsc --init
+    2). 修改tsconfig.json配置
+        "outDir": "./js",
+        "strict": false,    
+    3). 启动监视任务: 
+        终端 -> 运行任务 -> 监视tsconfig.json
+
+## 初始化一个tsconfig.json配置文件：
+
+```
+ tsc --init
+```
+
+
 
 信息配置信息：
 
