@@ -11,7 +11,7 @@
    2.可直接监听数组类型的数据变化
    3.Proxy代理整个对象，Object.defineProperty只代理对象上的某个属性
    4.可拦截apply、ownKeys、has等方法，而Object.defineProperty不行
-5.直接实现对象属性的新增/删除
+   5.直接实现对象属性的新增/删除
    ```
    
 2. 新增Composition API，更好的逻辑复用和代码组织
@@ -108,9 +108,11 @@ export default {
 
 
 
-#### reactive()
+#### reactive()    美: [riˈæktɪv] 反应
 
 >reactive 函数是用来创建一个响应式的数据对象，类似我们之前Vue2.x的data。
+>
+>响应型对象(reactive object) 一旦被销毁或展开(...state),其响应式特性(reactivity)就会丢失
 
 ```vue
 <template>
@@ -224,7 +226,7 @@ console.log(newAge) // ObjectRefImpl {_object: 20, _key: undefined, __v_isRef: 
 
 - ### toRefs()
 
-> 将传入的对象里所有的属性的值都转化为响应式数据对象，解决上面reactive展开后丢失响应式问题
+> 将传入的对象里所有的属性的值都转化为响应式数据对象，**解决上面reactive展开后丢失响应式问题**
 >
 > 基本是在setup函数返回值里面使用的
 
