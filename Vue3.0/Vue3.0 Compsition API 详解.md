@@ -40,8 +40,8 @@
 | mounted       | onMounted()            |
 | beforeUpdate  | onBeforeUpdate()       |
 | updated       | onUpdated()            |
-| beforeUnmount | onBeforeUnmount()      |
-| unmounted     | onUnmounted()          |
+| beforeDestroy | onBeforeUnmount()      |
+| destroyed     | onUnmounted()          |
 | data          | ref()、reactive()      |
 | watch         | watch()、watchEffect() |
 | computed      | computed()             |
@@ -58,6 +58,7 @@
 >
 > 1. props: 用来接收父组件传入的值
 > 2. { attrs, emit, slots } = context
+> 3. **注意 ： `setup` 中不能使用 `this`**, `this` 指向 `undefined`
 
 ```vue
 <template>
