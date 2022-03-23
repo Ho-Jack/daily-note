@@ -49,3 +49,8 @@ function fnB() {}
 </script>
 ```
 
+###  功能A和功能B 相互依赖的数据 解决方案：
+
+const { a } = useComposableA(b)
+const { b } = useComposableB(a)
+我现在的处理方式为：全局 composable 尽量为纯函数，复杂业务组件内将耦合状态提升为通用状态（相当于初始化，或者用 Provide），然后再传入对应的 composable。
