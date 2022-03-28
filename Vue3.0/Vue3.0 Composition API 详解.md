@@ -1,4 +1,4 @@
-## Vue3.0 Compsition API 详解
+## Vue3.0 Composition API 详解
 
 - ### 3.0 & 2.0 区别
 
@@ -48,6 +48,24 @@
 | this.$store   | useStore()             |
 | this.$router  | useRouter()            |
 | this.$route   | useRoute()             |
+
+Option API vs Composition API
+
+| 选项式 API        | Hook inside `setup` |
+| ----------------- | ------------------- |
+| `beforeCreate`    | Not needed*         |
+| `created`         | Not needed*         |
+| `beforeMount`     | `onBeforeMount`     |
+| `mounted`         | `onMounted`         |
+| `beforeUpdate`    | `onBeforeUpdate`    |
+| `updated`         | `onUpdated`         |
+| `beforeUnmount`   | `onBeforeUnmount`   |
+| `unmounted`       | `onUnmounted`       |
+| `errorCaptured`   | `onErrorCaptured`   |
+| `renderTracked`   | `onRenderTracked`   |
+| `renderTriggered` | `onRenderTriggered` |
+| `activated`       | `onActivated`       |
+| `deactivated`     | `onDeactivated`     |
 
 
 
@@ -189,7 +207,7 @@ export default {
 问题：点击按钮后，name的值变成了BB，但是视图并没有更新，还是AA，但是ref的age却更新了。
 当然，这并不是bug，原因在于一个响应型对象(reactive object) 一旦被销毁或展开(...state),其响应式特性(reactivity)就会丢失。
 
-#### 解决reactive展开后丢失响应式特效呢，下面会介绍 toRef、toRefs
+#### 解决reactive参数展开后丢失响应式 toRef、toRefs
 
 #### ` isref()` 、  `unref()` 、`toRef()` 、 `toRefs()`
 
