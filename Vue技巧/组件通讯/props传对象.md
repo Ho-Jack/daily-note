@@ -7,42 +7,24 @@ tags: [Vue]
 ## Vue中组件通讯props传递Object数据类型的注意事项
 
 >Vue 组件通讯,其中**父组件向子组件**传递数据，用Props
->较为特殊的是对象Object的传递
->
->```js
->props：{
->    type:Object,
->    myObject:()=>{}
->}
->```
->
+>较为特殊的是对象Object的传
 
-```js
-myObject：{
-}
-//父组件中创建对象必须完整结构(接口获取的数据也需要，先在data中定义好Object的结构)
-data：{
-    return{
-       myObject：{
-         AA:'',
-         BB:''
-     }
-    }
-}
-//子组件中接收对象
+### props接收对象格式：
+
+```javascript
 props: {
   myObject: {
     type: Object,
     default: () => ({
-     AA:'',
-     BB:''
-    }),
+
+     }),
   },
 },
-watch: {
-  'myObject.AA'(n) {
-    console.log(n);
-  },
 ```
 
-watch 需要监听object内部属性 才能监听到，直接 监听整个 object 是无效的
+
+
+### watch监听器无法监听Object的增删
+
+> ES5已经舍弃了`Object.observe`方法，`Vue`无法监听对象属性删除和新增，故即使使用`deep`方法监听对象`prop`也没有用。
+
