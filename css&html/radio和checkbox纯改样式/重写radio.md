@@ -1,5 +1,4 @@
-###  uni app重写radio
-> > 最近在模仿 饿了么 用到 radio  发现没有现成的 就自己写了一个
+> 最近在模仿 饿了么 用到 radio  发现没有现成的 就自己写了一个
 
 ```html
 <view class="pay_radio" 
