@@ -31,7 +31,7 @@ DOM ：Document Objet Model 文档对象模型
   代表的当前浏览器的信息，通过该对象可以来识别不同的浏览器 
   
   ```
-  userAgent 会详细的显示浏览器的版本信息
+  navigator.userAgent 会详细的显示浏览器的版本信息
   ```
 
 

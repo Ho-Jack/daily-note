@@ -53,3 +53,18 @@ var info= JSON.parse(sessionStorage.getItem(key))
 
 
 
+### sessionStorage在谷歌和Edege浏览器上表现不一致
+
+> 页面会话在浏览器打开期间一直保持，并且重新加载或恢复页面仍会保持原来的页面会话。
+> 在新标签或窗口打开一个页面时会**复制**顶级浏览会话的上下文作为新会话的上下文，这点和 session cookies 的运行方式不同。
+> 打开多个相同的URL的Tabs页面，会**创建各自**的sessionStorage。
+> 关闭对应浏览器窗口（Window）/ tab，会清除对应的sessionStorage。
+
+经过实践：+
+
+谷歌/Edege浏览器上通过window.open打开新同源窗口能共享sessionStorage，手工打开的窗口复制同源url不能共享sessionStorage
+
+Edege浏览器上使用`<a href="" target="_blank"><a/>` 不能共享，但是谷歌浏览却可以
+
+sessionStorage在各种浏览器上应该默认为**作用于一个窗口（当前窗口）**
+

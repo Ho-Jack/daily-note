@@ -6,7 +6,7 @@
 
 ### Composition Api 好！
 
-> 谢谢 [`大帅老猿`](https://juejin.cn/post/6890545920883032071) 老师做的动图，`Composition Api VS Option Api` 的优缺点十分明了展示了
+> 谢谢 [`大帅老猿`](https://juejin.cn/post/6890545920883032071) 老师做的动图，`Composition Api VS Option Api` 的优缺点十分明了展示在了动画上！
 
 #### `Option Api`代码量少好，代码量多容易导致高耦合！
 
@@ -20,7 +20,7 @@
 
 ![](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d05799744a6341fd908ec03e5916d7b6~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp)
 
-说明：如果是`Composition Api`在功能复杂、代码量巨大的组件下，我们配合自定义Hook，将代码通过功能分块写，变量和方法在一起定义和调用，这样后期我们改功能A只需要关注功能A块下的代码，不会像Vue2在`Option Api`需要同时关注methos和data。
+说明：如果是`Composition Api`在功能复杂、代码量巨大的组件下，我们配合自定义Hook，将代码**按功能分块写，变量和方法在一起定义和调用**，比如A功能下集成了响应式变量和方法，我们后期维护只需要改动A功能模块下的代码，不会像Vue2在`Option Api`需要同时关注methos和data。
 
 ## `getCurrentInstance`
 
