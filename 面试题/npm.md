@@ -26,3 +26,4 @@ npm update -g
 npm install --registry=https://registry.npm.taobao.org   
 ```
 
+npm get  获取node环境
