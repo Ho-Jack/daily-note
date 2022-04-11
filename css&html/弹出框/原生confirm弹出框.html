@@ -1,0 +1,23 @@
+<html>
+<head>
+<script type="text/javascript">
+function show_confirm()
+{
+var r=confirm("你打开了一个弹出框");
+if (r==true)
+  {
+  alert("You pressed OK!");
+  }
+else
+  {
+  alert("You pressed Cancel!");
+  }
+}
+</script>
+</head>
+<body>
+
+<input type="button" onclick="show_confirm()" value="展示一个confirm弹出框" />
+
+</body>
+</html>
