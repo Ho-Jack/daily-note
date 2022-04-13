@@ -10,15 +10,15 @@ tags: [CSS, 样式]
 
 2、百分比,一般宽泛的讲是相对于**父元素**，自适应网页布局越来越多，百分比也经常用到了。
 
-
 3、Viewport
     viewport：可视窗口，也就是浏览器。
     vw Viewport宽度， 1vw 等于viewport宽度的1%
     vh Viewport高度， 1vh 等于viewport高的的1%
     
 
+CSS3使用`Calc`     
 
-CSS3使用`Calc`
+> calculate 美: [ˈkælkjəˌleɪt]
 
 `calc()`使用通用的数学运算规则，但是也提供更智能的功能：
 
