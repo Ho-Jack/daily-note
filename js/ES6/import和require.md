@@ -4,47 +4,62 @@ date: 2020-05-22  11:31:38
 tags: [JS, ES6, 开发笔记]
 ---
 
+# import和require
 
 
-## import和require
 
->- **require**    特点： 1.运行时加载  2.拷贝到本页面   3.全部引入
->- **import**     特点： 1.编译时加载  2.只引用定义     3.按需加载
->
->- es6(`ES6 Modules` 模块):         export  default            import 
->- commonjs模块:     module.exports/exports     require   
+- es6(`ES6 Modules` 模块):         export  default/export            import 
+- commonjs模块:                       module.exports/exports        require   
 
-### ES6的导出方法:
+
+
+### import
+
+> 特点： 1.运行时加载  2.拷贝到本页面   3.全部引入
+
+### require
+
+> 特点： 1.编译时加载  2.只引用定义     3.按需加载
+
+## ES6的导出方法:
 
 > import 语句用于导入由另一个模块导出的绑定。无论是否声明了 strict mode，导入的模块都运行在严格模式下。import语句不能在嵌入式脚本中使用。
 
-import的几种写法：
+### import的几种写法：
 
-- 导入默认值:   
+- 导入**默认值**:   
+
+  > defaultExport 随便设，可以设置任意字面量，但不推荐
 
   ```js
    import  defaultExport  from “module-name”;
   ```
 
-- 导入整个模块的内容:  
+- **导入整个模块的内容**:  
+
+  > 将 es6 模块的所有命名输出以及defalut输出打包成一个对象赋值给**重命名变量**
+  >
+  > 使用范围广，export和export default均适应
+  >
+  > 默认导出需要，xxx.default，往里拿default才能使用
 
   ```js
    import * as name from “module-name”;
   ```
 
-- 导入单个导出:        
   
-  ```js
-     import { AA } from “module-name”;   
-    
-    //使用: 
-     AA.xx
-  ```
+
 - 导入多个导出:     
 
+   > 只能用于`export`导出多个，对`export default `无效
+   >
+   > 需要用几个就解构几个，也可以单个导出 `import { export1 } from “module-name”; `
+   
    ```js
    import { export1 , export2 } from “module-name”; 
    ```
+
+
 
 
 - 导入时重命名导出:   
@@ -70,6 +85,7 @@ import的几种写法：
     //（运行模块中的全局代码）
     //(模块设置了一些可供其他模块使用的全局状态,这些模块可能没有任何出口)
   ```
+  
 - （返回一个 Promise 对象。）
   
   ```js
@@ -96,86 +112,232 @@ import的几种写法：
 
  
 
-export的几种方法：
-1. ```js
-   export default {}
-   ```
+### export的几种方法：
 
-2.  ```js
-   const XX={}       
-   export default XX
-   ```
+#### 默认导出export default
 
-3. ```js
-   export const XX ={}
-   ```
+> 导入限制：
+>
+> 1、默认导入：` import  defaultExport  from “module-name”;`   
+>
+>   `defaultExport `可以随意取名（这是个问题，也可以不是问题，养成好的编程习惯就ok）
+>
+> 2、导入整个模块并重命名： `improt * as X from 'module-name'`  但是需要` X.defualet`来访问
 
-4. ```js
-   const XX=()=>{ }   
-   export default XX
-   ```
+- 对象
 
-5.  ```js
-   export function  XX(){ }
-   ```
+  ```javascript
+  export default {}
+  ```
 
-6. ```js
-   //可能有多个函数
-   function xx1 (){   }  
-   function xx2 (){   }  
-   export default{  xx1,xx2   }
-   //使用
-   import  XX form ' '
-      XX.xx1    
-      XX.xx2
-   ```
+- 变量
+
+  ```javascript
+  //对象
+  const XX={}   
+  //函数表达式
+  const XX=()=>{ }   
+  
+  export default XX
+  ```
+
+#### 命名导出 export   
+
+> 命名导出，对导入有限制：
+>
+> 1、多个导入：`import { export1 , export2 } from “module-name”; `   导出文件必须有多个导出
+>
+> 2、导入整个模块并重命名： `improt * as X from 'module-name'`    需要对`X`解构
+
+- 对象
+
+  ```javascript
+  export{}
+  ```
+
+- 变量
+
+  ```javascript
+  export const XX ={}
+  ```
+
+- 函数
+
+  ```javascript
+  export function  XX(){ }
+  ```
+
 
 例：
-①导出的内容组合成一个对象返回  
 
-```js
-  import  * as  XX  from  ‘xx’  
+##### 命名导出-单个
+
+```javascript
+//导出1
+export  const  x={}  
+//导出2
+const  x={} 
+export{ x } 
 ```
 
-   在xx.js下               
+- 单个导出在引用的时候只能通过 `* as XX ` 来导入
+
+```javascript
+//单个导出只能用这种形式
+import *as One from './exportOne.js'
+
+//以下三种均无效
+import {exportOne} from './exportOne.js' //无效
+import exportOne from './exportOne.js'   //无效
+import './exportOne.js'                  //无效
+```
 
 
-   ```js
+
+##### 命名导出-多个对象集合
+
+在xx.js下
+
+```javascript
+//导出形式1（推荐）
 export  const  x1={}  
 export  const  x2={}
-   ```
-
-
-
-②导出这个默认 xx 的对象作为一个对象    
-
-```js
-import xx from ' xx'
-```
-在xx.js下   
-
-```js
-const xx ={}  
-export default xx
+//导出形式2
+ const  x1={} 
+ const  x2={}
+ export{
+  x1,
+  x2   
+}
 ```
 
- ③默认导出
-
-在xx文件下
+- 多个导出，以下2种形式都可以导入
 
 ```js
-export default{  }
-```
-
-引入
-
-```js
-import xx  from 'xx的路径'
+//引入形式1
+import  * as  X  from  'xx'  
+//使用
+X.x1
+//引入形式2-解构
+import {x1,x2}  from  'xx'  
+//使用
+x1
 ```
 
 
 
-## commonjs的导出方法
+##### 默认导出-单个变量
+
+```javascript
+const x ={}  
+export default x
+
+//以下这种会报错
+export default const x = {}   //错误
+//命名导出单个 就能实现上面这种，，但引入方式得改调整
+export  const  x={}  
+```
+
+导入名称可以随便设,`x`和`xx是同一值
+
+```javascript
+import x from './xx.js'
+
+import xx from './xx.js'
+```
+
+导入整个模块重名,需要通过 `xx.default`获取模块
+
+```javascript
+import * as xxx from './xx.js'
+//使用
+xxx.default === const x ={}  
+```
+
+##### 默认导出-单个函数
+
+```javascript
+//形式1
+export default function Fn(){
+
+}
+//形式2-函数表达式
+const Fn =()=>{
+    
+}
+export default Fn
+
+//错误导出函数表达式
+export default const Fn =()=>{
+    
+}
+//只能用命名导出，但引入方式得改调整
+export const Fn =()=>{
+    
+}
+```
+
+##### 默认导出-类
+
+```javascript
+export default class xx {}
+//错误
+export default const xx = {}
+```
+
+
+
+##### 默认导出-对象（导出Vue组件）
+
+> 形如： `export default {}`
+
+- 导出
+
+  ```javascript
+  //可能有多个函数
+  //函数声明
+  function Fn1 (){   }  
+  //函数表达式
+  const Fn2 = () => {   }  
+  
+  export default{  Fn1,Fn2   }
+  
+  //实际是ES6对象简写
+  export default{  
+      Fn1: function (){   }  ,
+      Fn2: Fn2 
+  }
+  ```
+
+- 引入
+
+  ```javascript
+  //引入形式1
+  import  XX form ' '
+  XX.Fn1()    
+  XX.Fn2()
+  //引入形式2
+  import * as XX form ' '
+  XX.default.Fn1()    
+  XX.default.Fn2()
+  ```
+
+总结：
+
+由于Vue组件是默认导出，所以在引入组件的时候就可以进行重新命名组件名称(不推荐)
+
+```
+import Acomponent  from 'myComponent.vue'
+import Bcomponent  from 'myComponent.vue'
+```
+
+##### webpack+import()   懒加载-实现异步组件
+
+> Webpack会处理在代码中所有被import()的模块，都将打成一个单独的包，放在chunk存储的目录下。在浏览器运行到这一行代码时，就会自动请求这个资源，实现异步加载
+
+
+
+## Commonjs的导出方法
 
 > commonjs:  require   export/module.export
 
@@ -209,16 +371,19 @@ import xx  from 'xx的路径'
 
 ###  exports： 模块导出
 
-- #### 导出多个成员:
+#### 导出多个成员:
 
-①      
+#####  `module.exports.xx`
+
 ```js
   module.exports.a = 123
   module.exports.b = 456
   module.exports.c = 789
 ```
 
-②（推荐）  console.log(exports === module.exports) // => true
+##### `exports.x`            （推荐）  
+
+>  **`exports === module.exports`**
 
 ```js
 exports.a = 123
@@ -227,9 +392,9 @@ exports.c = 789
 exports.fn = function () { }
 ```
 
+#### 导出单个成员（唯一的写法）：
 
-
-- ##### 导出单个成员（唯一的写法）：
+##### `module.expoets=xx` 
 
 ```js
  module.exports = function (x, y) {  return x + y  }
@@ -242,18 +407,31 @@ exports.fn = function () { }
 
 例：
 
-//dep.js
+- dep.js
 
-  ```js
-    module.exports={
-            foo:function(){}
-            bar:‘a’ 
-            }
+  ```javascript
+  module.exports = {
+          foo: function () { },
+          bar: 'a'
+      }
   ```
 
- //app.js
+-  app.js
 
-   ```js
-   var dep = require(‘dep’)
-   ```
+  ```javascript
+   var dep = require('dep')
+  ```
+
+  
+
+
+### 问题探讨：
+
+组件库按需加载是什么原理
+
+webpack打包的js如何被ES6 import和commontjs 引入
+
+
+
+
 

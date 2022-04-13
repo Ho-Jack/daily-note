@@ -34,6 +34,9 @@ tags: [Vue, 开发笔记]
 ####  2. Vue异步组件 + 动态import语法：
 
 > 在 Webpack 2 中，我们可以使用[动态 import](https://github.com/tc39/proposal-dynamic-import)语法来定义代码分块点 (split point):
+>
+> 在代码中所有被import()的模块，都将打成一个单独的包，放在chunk存储的目录下。在浏览器运行到这一行代码时，就会自动请求这个资源，实现异步加载
+>
 > ```js
 > import('组件路径')   // 返回一个 Promise 对象。
 > ```
