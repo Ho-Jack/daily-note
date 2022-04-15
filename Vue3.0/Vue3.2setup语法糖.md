@@ -58,7 +58,7 @@
   </template>
   ```
 
-  总结：`<script setup>`语法糖里面的代码会被编译成组件 `setup()` 函数的内容，不需要通过return暴露  声明的变量、函数以及import引入的内容，即可在`<template/>`使用，并且不需要写`export default{}`
+  总结：`<script setup>`语法糖里面的代码会被编译成组件 `setup()` 函数的内容，不需要通过return暴露  声明的变量、函数以及import引入的内容，即可在`<template/>`使用，并且**不需要写`export default{}`**
   
   `<script setup>`语法糖里面的代码会被编译成组件 `setup()` 函数的内容。这意味着与普通的 `<script>` 只在组件被首次引入的时候执行一次不同，`<script setup>` 中的代码会在**每次组件实例被创建的时候执行**
   
