@@ -26,10 +26,11 @@ tags: [JS, ES6, 开发笔记]
 
 ### import的几种写法：
 
+> 下面会用到的几个伪代码名词解释
+>
 > - defaultExport： 将引用模块默认导出的名称。
 > - module-name：要导入的模块。这通常是包含模块的 .js 文件的相对或绝对路径名，可以不包括 .js 扩展名。某些打包 工具可以允许或要求使用该扩展；检查你的运行环境，只允许单引号和双引号的字符串。
 > - name：引用时将用作一种命名空间的模块对象的名称。
-> - export，exportN： 要导入的导出名称
 > - alias，aliasN： 将引用指定的导入的名称。
 
 - 导入**默认值**:   
@@ -44,7 +45,7 @@ tags: [JS, ES6, 开发笔记]
    import  defaultExport  from “module-name”;
   ```
 
-- **导入整个模块的内容**:  
+- 导入**整个**模块的内容:  
 
   > 将 es6 模块的所有命名输出以及defalut输出打包成一个对象赋值给**重命名变量**
   >
@@ -58,7 +59,7 @@ tags: [JS, ES6, 开发笔记]
 
   
 
-- 导入多个导出:     
+- 导入**多个**导出:     
 
    > 只能用于`export`导出多个，对`export default `无效
    >
@@ -87,13 +88,37 @@ tags: [JS, ES6, 开发笔记]
   
 - 仅为副作用导入模块:   
   
+  > 模块仅为副作用（中性词、无贬义含义）而导入，而不是导入模块中的任何内容，这将**运行模块中的全局代码**，但实际上不导入任何值
+  
   ```js
     import “module-name”; 
     //（运行模块中的全局代码）
     //(模块设置了一些可供其他模块使用的全局状态,这些模块可能没有任何出口)
   ```
   
-- （返回一个 Promise 对象。）
+  例：
+  
+  ```html
+  //外部js文件（没有任何export导出出口）
+  // var  myModule='这是副作用'  //无效
+  window.myModule='这是副作用'
+  
+  //vue中导入副作用模块
+  <script>
+  import './myModule.js'  //导入副作用模块
+  export default{
+   mounted(){
+      console.log(myModule)   //打印 -'这是副作用'
+   }
+  }
+  </script>
+  ```
+  
+  
+  
+- 异步导入（返回一个 Promise 对象。）
+  
+  > 可以在函数内动态导入，由于异步有时候需要配合async/await使用
   
   ```js
   import()    
@@ -102,21 +127,17 @@ tags: [JS, ES6, 开发笔记]
   例：  
   
   ```js
-  if(x === 2){
-      import('myModual').then(  MyModual=>{ 
-          new MyModual(); 
-      }) 
-  }
+   import('./myModule.js').then(  res=>{ 
+          //res 就是要导入的内容
+   }) 
   ```
   
-  （引擎处理import语句是在编译时，这时不会去分析或执行if语句，所以import语句放在if代码块之中毫无意义，因此会报句法错误，而不是执行时错误。没办法像require样根据条件动态加载。 于是[提案](https://link.juejin.im?target=https://github.com/tc39/proposal-dynamic-import)引入import()函数，编译时分析if语句,完成动态加载。）
-
-
+  
 
 ### export的几种方法：
 
-> - 默认导出export default  （单个导出，但对象能导出多个）
-> - 命名导出export   （多个导出）
+> - **默认**导出export default  （单个导出，但对象能导出多个）
+> - **命名**导出export   （多个导出）
 
 #### 默认导出export default
 
@@ -232,7 +253,7 @@ tags: [JS, ES6, 开发笔记]
 >
 > 1、多个导入：`import { export1 , export2 } from “module-name”; `   导出文件必须有多个导出
 >
-> 2、导入整个模块并重命名： `improt * as X from 'module-name'`    需要对`X`解构
+> 2、导入整个模块并重命名： `improt * as X from 'module-name'`    X是导出内容打包成一个对象,需要对X解构
 
 - 对象
 
@@ -435,24 +456,9 @@ exports.fn = function () { }
 
 
 
-例：
 
-- dep.js
 
-  ```javascript
-  module.exports = {
-          foo: function () { },
-          bar: 'a'
-      }
-  ```
 
--  app.js
-
-  ```javascript
-   var dep = require('dep')
-  ```
-
-  
 
 ### 问题探讨：
 
@@ -538,13 +544,38 @@ import Bcomponent  from 'myComponent.vue'
 
 ### 6、组件库按需加载是什么原理
 
-> 原理：组件库将不同组件打包时拆分不同JS文件并暴露install方法，提供外部应用通过Vue.use单独引入
+- 1、涉及组件库打包
 
-这涉及了webpack打包知识，正常webpack打包出来的JS 是无法被其他应用导入，需要更改配置
+  原理：组件库将不同组件打包时拆分不同JS文件并暴露install方法，提供外部应用通过Vue.use单独引入
+
+  这涉及了webpack打包知识，正常webpack打包出来的JS 是无法被其他应用导入，需要更改配置
+
+  
+
+  
+
+- 2、涉及外部应用引入的方式和 [babel-plugin-import]插件的使用
 
 
 
-### 7、webpack打包的js如何被ES6 import和commontjs 引入
+### 7、webpack打包后的Js如何被ES6 import和commontjs 引入
 
+> 为什么同样是webpack打包，Element-UI等组件库的可以被其他引用引入，而自己项目的js却不行？
+>
+> 涉及到webpack打包output模块的`library`和`libraryTarget` 属性设置
 
+默认情况下，webpack打包的js 是可以看作是一个**自执行函数**，是无法被ES6 import和commontjs 引入的，只能通过挂在**srcript标签**的形式引入
+
+如果想支持被ES6 import和commontjs 引入，需要修改webpack打包output模块的`library`和`libraryTarget` 属性设置，设置为commonjs、commonjs2、umd等都能被ES6 import和commontjs 引入
+
+| libraryTarget配置 | 作用                            | 使用范围                                                     |
+| ----------------- | ------------------------------- | ------------------------------------------------------------ |
+| var               | 分配给一个library设置的变量     | 只能在browser环境                                            |
+| this              | 产生一个this的变量              | 只能在browser环境                                            |
+| window            | 分配给this的一个属性            | 可以在浏览器环境、node环境                                   |
+| global            | 分配给global一个属性            | node、需要配置target为node保证在node环境，不然还是设置带window对象上 |
+| commonjs          | 分配给exports一个属性           | 用于CommonJS环境                                             |
+| commonjs2         | 分配给module.exports一个属性    | 用于CommonJS环境，output.library会被忽略                     |
+| AMD               | 将library暴露为一个AMD模块      | node环境无法使用                                             |
+| umd               | 保证library在全部环境都可以使用 | 所有模式下，通常乾坤微应用就是这种模式                       |
 

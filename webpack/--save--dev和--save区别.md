@@ -5,3 +5,11 @@
 当你使用--save-dev安装依赖的时候就会放在package.json的devDependencies对象下面，相反的，当你使用--save安装依赖的时候就会出现在dependencies对象下面。
 
 总结：--save-dev 是你开发时候依赖的东西，--save 是你发布之后还依赖的东西。
+
+```
+// install    可简写为i,
+// --global   可简写为-g
+// --save     可简写为-S
+// --save-dev 可简写为-D
+```
+
