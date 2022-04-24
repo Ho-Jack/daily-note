@@ -190,9 +190,9 @@ const childFn=(e)=>{
 
 
 
-### 4.  `<script setup>`需主动暴露组件属性 ：defineExpose 
+### 4.  `<script setup>`需主动向父组件暴露子组件属性 ：defineExpose 
 
-> 使用 `<script setup>` 的组件是**默认关闭**的，也即通过模板 ref 或者 `$parent` 链获取到的组件的公开实例，不会暴露任何在 `<script setup>` 中声明的绑定。 
+> 使用 `<script setup>` 的组件，父组件是无法通过ref 或者 `$parent` 获取到子组件的ref等响应数据，需要通过defineExpose 主动暴露
 
 子组件代码：
 
@@ -202,7 +202,7 @@ import { ref } from 'vue'
 
 const a = 1
 const b = ref(2)
-//主动暴露组件属性
+//子组件主动暴露组件属性
 defineExpose({
   a,
   b
