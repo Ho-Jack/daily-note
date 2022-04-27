@@ -118,13 +118,21 @@ let computedNum = computed(() => num.value + 1, {
 
 ## `watchEffect` 
 
+语法：
+
+- 参数1-触发监听回调函数，回调函数可传入一个onInvalidate函数作为参数！
+
+- 可选参数2-对象，包含3个可选属性flush、onTrack、onTrigger
+
 > **立即执行**传入的一个函数，同时响应式追踪其依赖，并在其依赖变更时重新运行该函数。
 >
-> 1、会立即执行一次
+> 1、会立即执行一次（和watch的immediate属性效果一致）
 >
 > 2、关联的响应式数据**被修改**时触发
 >
 > 3、会自动感知代码依赖，和watch不一样，watchEffect会主动绑定监听数据
+>
+> 局限性：不能监听对象(但可以监听对象的属性)，只能监听类似ref基本数据类型的响应式数据
 
 ```html
 <script setup>
@@ -142,6 +150,8 @@ watchEffect(() => {
     <button @click="num++">num++</button>
 </template>
 ```
+
+
 
 ### 停止`watchEffect` 
 
@@ -201,11 +211,20 @@ watchEffect((onInvalidate ) => {
 
 ### `watchPostEffect` 和 `watchSyncEffect`
 
-> Vue3.2新增,是watchEffect的简写？或者说是类似语法糖的东西
+> `watchPostEffect` 和 `watchSyncEffect`在Vue3.2新增,是watchEffect类似语法糖的东西,
+>
+> 是`watchEffect`可选参数对象`{ flush?: 'pre' | 'post' | 'sync'}`中post和sync的语法糖，pre是默认值
 
 - `watchPostEffect` 
 
+  > `watchPostEffect` 是watchEffect可选参数对象`{flush:'post'}`的语法糖
+  >
+  > 推迟watchEffect触发时机！组件更新前触发！也就是在生命周期`onBeforeUpdate`和 `onUpdated`之间触发
+
+  语法：
+
   ```javascript
+  //推迟触发watchEffect
   watchEffect(
     () => {
       /* ... */
@@ -214,36 +233,113 @@ watchEffect((onInvalidate ) => {
       flush: 'post'
     }
   )
-  ```
-
-- `watchSyncEffect`
-
-  ```
-  watchEffect(
-    () => {
-      /* ... */
-    },
-    {
-      flush: 'sync'
-    }
-  )
+  //Vue3.2语法糖watchPostEffect
+  watchPostEffect(()=>{
+    /* ... */
+  })
   ```
 
   
 
+  实例：
+
+  ```javascript
+  //实验watchEffect第二参数 flush: 'post'属性
+  watchEffect(() => {
+      console.log("实验watchEffect第二参数 {flush: 'post'}属性");
+      console.log(obj.age);
+  },{
+     flush:'post' 
+  })
+  watchEffect(() => {
+      console.log("watchEffect正常时机触发");
+      console.log(obj.age);
+  })
+  //生命周期onUpdated
+  onUpdated(()=>{
+      console.log('onUpdated()');  
+  })
+  //生命周期onBeforeUpdate
+  onBeforeUpdate(()=>{
+      console.log('onBeforeUpdate()');
+  })
+  ```
+
+  修改`obj.age`时，执行结果：
+
+  ```
+  watchEffect正常时机触发
+  onBeforeUpdate()
+  实验watchEffect第二参数 {flush: 'post'}属性
+  onUpdated()
+  ```
+
+  
+
+- `watchSyncEffect`
+
+  > `watchSyncEffect` 是watchEffect可选参数对象`{flush:'sync'}`的语法糖
+  >
+  > 强制效果始终**同步触发**！效率低！也就是默认watchEffect之前触发
+  
+  语法：
+  
+  ```javascript
+  watchEffect(
+    () => {
+      /* ... */
+  },
+    {
+      flush: 'sync'
+    }
+  )
+  //Vue3.2语法糖watchSyncEffect
+  watchSyncEffect(()=>{
+    /* ... */
+  })
+  ```
+  
+
+### `watchEffect`不能监听对象
+
+```javascript
+
+//假设修改了对象的属性值-修改了obj.age
+const obj = reactive({ name: '小明', age: 18 })
+//watchEffect不能监听对象变化
+watchEffect(() => {
+    console.log('watchEffect监听对象变化');
+    console.log(obj);
+})
+//watchEffect可以监听对象属性变化
+watchEffect(() => {
+    console.log('watchEffect监听对象属性变化');
+    console.log(obj.age);
+})
+//watch监听对象变化
+watch(obj, (obj) => {
+    console.log('watch监听对象变化');
+    console.log(obj);
+})
+```
+
+总结：`watchEffect`用来监听能监听基本数据类型，不能监听对象，但能监听对象的属性;watch能监听基本数据类型和对象！
+
+
+
 ## `watch`
+
+语法：
+
+- 参数1-被监听数据（形式：单个数据、数组、带返回值的回调函数）
+- 参数2-触发监听的回调函数，无返回值
+- 可选参数3-对象`{immediate: true,deep:true} `，对象含2个可选参数和Vue2参数效果一致
 
 > Vue3的watch和Vue2的watch是基本一样的
 >
 > 1、需要指定监听数据
 >
-> 2、惰性，只在被监听数据变化时才触发
->
-> 语法：
->
-> - 参数1-被监听数据（形式：单个数据、数组、带返回值的回调函数）
-> - 参数2-触发监听的回调函数
-> - 参数3-传入`{immediate: true,deep:true} `对象
+> 2、惰性，只在被监听数据变化时才触发（immediate属性可以设置在初始化的时候触发）
 
 - 监听单个数据
 
@@ -277,14 +373,81 @@ watchEffect((onInvalidate ) => {
 
 
 
+## 官方文档拓展：
+
+> 以下代码截取官方文档，从TS代码可以看出很多关于watch和watchEffect函数参数和返回值的细节！
+
+watchEffect:
+
+- 参数1-触发监听回调函数，回调函数可传入一个onInvalidate函数作为参数！
+- 可选参数2-对象，包含3个可选属性flush、onTrack、onTrigger
+
+```typescript
+function watchEffect(
+  effect: (onInvalidate: InvalidateCbRegistrator) => void,
+  options?: WatchEffectOptions
+): StopHandle
+
+interface WatchEffectOptions {
+  flush?: 'pre' | 'post' | 'sync' // 默认：'pre'
+  onTrack?: (event: DebuggerEvent) => void
+  onTrigger?: (event: DebuggerEvent) => void
+}
+
+interface DebuggerEvent {
+  effect: ReactiveEffect
+  target: any
+  type: OperationTypes
+  key: string | symbol | undefined
+}
+
+type InvalidateCbRegistrator = (invalidate: () => void) => void
+
+type StopHandle = () => void
+```
 
 
 
+watch：
+
+- 参数1-被监听数据（形式：单个数据、数组、带返回值的回调函数）
+- 参数2-触发监听的回调函数，无返回值
+- 参数3-传入`{immediate: true,deep:true} `对象和Vue2参数效果一致
+
+```typescript
+// 侦听单一源
+function watch<T>(
+  source: WatcherSource<T>,
+  callback: (
+    value: T,
+    oldValue: T,
+    onInvalidate: InvalidateCbRegistrator
+  ) => void,
+  options?: WatchOptions
+): StopHandle
+
+// 侦听多个源
+function watch<T extends WatcherSource<unknown>[]>(
+  sources: T
+  callback: (
+    values: MapSources<T>,
+    oldValues: MapSources<T>,
+    onInvalidate: InvalidateCbRegistrator
+  ) => void,
+  options? : WatchOptions
+): StopHandle
+
+type WatcherSource<T> = Ref<T> | (() => T)
+
+type MapSources<T> = {
+  [K in keyof T]: T[K] extends WatcherSource<infer V> ? V : never
+}
+
+// 参见 `watchEffect` 共享选项的类型声明
+interface WatchOptions extends WatchEffectOptions {
+  immediate?: boolean // 默认：false
+  deep?: boolean
+}
+```
 
 
-
-[响应式计算和侦听 | Vue.js (vuejs.org)](https://v3.cn.vuejs.org/guide/reactivity-computed-watchers.html#调试-computed)
-
-
-
-[Computed 与 watch | Vue.js (vuejs.org)](https://v3.cn.vuejs.org/api/computed-watch-api.html#watchsynceffect)
