@@ -23,12 +23,12 @@ tags: [开发笔记, 移动端]
     var docEl = document.documentElement;  //html根标签
       //orientationchange 设备旋转的时候，会触发这个事件
     var resize = 'orientationchange' in window ? 'orientationchange' :'resize';
-            var setRem = function () {
+          var setRem = function () {
                 //获取屏幕的宽度
-           var screenWidth = docEl.clientWidth || window.screen.width || 375;
+                var screenWidth = docEl.clientWidth || window.screen.width || 375;
                 //1000是设计稿的宽度
                 //设计稿上的宽度/100 就能转为rem
-               // 100 * screenWidth / 设计稿宽度=1rem
+                // 100 * screenWidth / 设计稿宽度=1rem
                 docEl.style.fontSize = (100 * screenWidth / 1000) + 'px';
             };
             // 屏幕大小变化后重新设置rem字号
@@ -40,7 +40,7 @@ tags: [开发笔记, 移动端]
  
 
 ```js
-（function(doc, win) {
+(function(doc, win) {
 	var docEl = doc.documentElement,
         //判断resize事件还是设备旋转事件
 		resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
@@ -61,10 +61,6 @@ tags: [开发笔记, 移动端]
 	doc.addEventListener('DOMContentLoaded', recalc, false);
 })(document, window);
 ```
-
-
-
-
 
  总结： 用JS设置，比较方便，现在大部分网站采用这种方式。
 
@@ -146,10 +142,10 @@ main.js入口文件引入
 import 'lib-flexible'  // 引入适配包
 ```
 
-- 在html的head中添加一个meta name="viewport"的标签
+- 在html的head中添加一个`<meta name="viewport"/>`的标签
 
 -  自动设置html的font-size为屏幕宽度除以10
-      
+   
       ```
           设计稿div宽度/设计稿宽度*10  =rem的值  = 屏幕宽度/10
           10rem就是屏幕的总宽度 
@@ -181,7 +177,7 @@ module.exports={
               require('postcss-plugin-px2rem')({
                   rootValue: 75, //换算基数， 默认100  ，这样的话把根标签的字体规定为1rem为50px,这样就可以从设计稿上量出多少个px直接在代码中写多上px了。
                   // unitPrecision: 5, //允许REM单位增长到的十进制数字。
-                  //propWhiteList: [],  //默认值是一个空数组，这意味着禁用白名单并启用所有属性。
+                  // propWhiteList: [],  //默认值是一个空数组，这意味着禁用白名单并启用所有属性。
                   // propBlackList: [], //黑名单
                   exclude: /(node_module)/, //默认false，可以（reg）利用正则表达式排除某些文件夹的方法，例如/(node_module)\/如果想把前端UI框架内的px也转换成rem，请把此属性设为默认值
                   // selectorBlackList: [], //要忽略并保留为px的选择器

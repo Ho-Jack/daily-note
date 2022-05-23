@@ -11,7 +11,7 @@
 | AMD               | 将library暴露为一个AMD模块      | node环境无法使用                                             |
 | umd               | 保证library在全部环境都可以使用 | 所有模式下，通常乾坤微应用就是这种模式                       |
 
-
+`UMD (Universal Module Definition)`，就是一种`javascript`通用模块定义规范，让你的模块能在`javascript`所有运行环境中发挥作用。(主流`javascript`模块规范了，如`CommonJS`, `AMD`, `CMD`等)
 
 
 

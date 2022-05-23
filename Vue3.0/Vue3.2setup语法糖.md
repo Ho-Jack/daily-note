@@ -327,5 +327,72 @@ const getChildData =()=>{
 
    大部分人是[SFC模式]([SFC 语法规范 | Vue.js (vuejs.org)](https://v3.cn.vuejs.org/api/sfc-spec.html))开发，在`<template/>`通过`<slot/>`标签就可以渲染插槽，这种JSX 的写法应该是很少人会使用的
 
+### 6.在setup访问路由
+
+- 访问路由实例信息：route和router
+
+> `setup` 里不能访问 `this`，不能再直接访问 `this.$router` 或 `this.$route`。（getCurrentInstance可以替代this但不推荐）
+>
+> 推荐：使用`useRoute` 函数和`useRouter`函数替代`this.$route` 和 `this.$router`
+
+```html
+<script setup>
+import { useRouter, useRoute } from 'vue-router'
+    const route = useRoute()
+    const router = useRouter()
+    
+    function pushWithQuery(query) {
+      router.push({
+        name: 'search',
+        query: {
+          ...route.query,
+        },
+      })
+    }
+  <script/>
+
+```
+
+- 导航守卫
+
+  仍然可以使用路由实例组件的导航守卫
+
+  ```js
+  import router from './router'
+  router.beforeEach((to,from,next)=>{
+  
+  })
+  ```
+
+  也可以使用组合式api的导航守卫`onBeforeRouteLeave, onBeforeRouteUpdate`
+
+  ```html
+  <script setup>
+  import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
+  
+      // 与 beforeRouteLeave 相同，无法访问 `this`
+      onBeforeRouteLeave((to, from) => {
+        const answer = window.confirm(
+          'Do you really want to leave? you have unsaved changes!'
+        )
+        // 取消导航并停留在同一页面上
+        if (!answer) return false
+      })
+  
+      const userData = ref()
+  
+      // 与 beforeRouteUpdate 相同，无法访问 `this`
+      onBeforeRouteUpdate(async (to, from) => {
+        //仅当 id 更改时才获取用户，例如仅 query 或 hash 值已更改
+        if (to.params.id !== from.params.id) {
+          userData.value = await fetchUser(to.params.id)
+        }
+      })
+  
+   <script/>
+  ```
+
+  组合式 API 守卫也可以用在任何由 `<router-view>` 渲染的组件中，它们不必像组件内守卫那样直接用在路由组件上。
+
 总结：setup的语法糖作为Vue3的补充，让Vue3更加丰满，让我们写Vue3更爽。如果觉得写得还不错不吝啬给点给赞再走吧！
 

@@ -36,11 +36,11 @@
 
 - `--port=NUMBER`‎- 选择要使用的端口，默认：端口 env var 或 8080‎
 - `--host=ADDRESS`‎- 选择要绑定到的主机地址，默认值：IP env var 或 0.0.0.0（"任何地址"）‎
+- `--open=PATH`‎- 启动浏览器到PATH而不是服务器根目录
 - `--no-browser`‎- 抑制自动网页浏览器启动‎
 - `--browser=BROWSER`‎- 指定要使用的浏览器而不是系统默认值‎
 - `--quiet | -q`‎- 抑制日志记录‎
-- `--verbose | -V`‎- 更多日志记录（记录所有请求，显示所有侦听IPv4接口等）‎
-- `--open=PATH`‎- 启动浏览器到PATH而不是服务器根目录‎
+- `--verbose | -V`‎- 更多日志记录（记录所有请求，显示所有侦听IPv4接口等）‎‎
 - `--watch=PATH`‎- 以逗号分隔的路径字符串，用于专门监视更改（默认：监视所有内容）‎
 - `--ignore=PATH`‎- 要忽略的以逗号分隔的路径字符串（‎[‎任意匹配‎](https://link.zhihu.com/?target=https%3A//github.com/es128/anymatch)‎兼容的定义）‎
 - `--ignorePattern=RGXP`‎- 要忽略的文件的正则表达式（即）（‎**‎弃用‎**‎以支持‎`.*\.jade``--ignore`)

@@ -12,7 +12,7 @@
 
 - 一、首先新建一个`<canvas>`网页元素。
 
-```
+```html
 <canvas id="myCanvas" width="400" height="200">
 你的浏览器不支持canvas!
 </canvas>
@@ -22,7 +22,7 @@
 
 - 每个**canvas**节点都有一个对应的**context**对象（上下文对象），Canvas API定义在这个**context**对象上面，所以需要获取这个对象，方法是使用**getContext**方法。
 
-```
+```js
 var canvas = document.getElementById('myCanvas');
 
 if (canvas.getContext) {
@@ -42,7 +42,7 @@ if (canvas.getContext) {
 
 > `beginPath`方法表示开始绘制路径，`moveTo(x, y)`方法设置线段的起点，`lineTo(x, y)`方法设置线段的终点，`stroke`方法用来给透明的线段着色。
 
-```
+```js
 ctx.beginPath(); // 开始路径绘制
 ctx.moveTo(20, 20); // 设置路径起点，坐标为(20,20)
 ctx.lineTo(200, 20); // 绘制一条到(200,20)的直线
@@ -55,9 +55,13 @@ moveto和lineto方法可以多次使用。最后，还可以使用closePath方�
 
 ### （2）绘制矩形
 
-> `fillRect(x, y, width, height)`方法用来绘制矩形，它的四个参数分别为矩形左上角顶点的x坐标、y坐标，以及矩形的宽和高。fillStyle属性用来设置矩形的填充色。
+> rectangle  [ˈrekˌtæŋɡ(ə)l] 矩形
 
-```
+`fillRect(x, y, width, height)`方法用来绘制矩形
+
+> 它的四个参数分别为矩形左上角顶点的x坐标、y坐标，以及矩形的宽和高。fillStyle属性用来设置矩形的填充色。
+
+```js
 ctx.fillStyle = 'yellow';
 ctx.fillRect(50, 50, 200, 100); 
 ```
@@ -78,7 +82,7 @@ ctx.clearRect(100,50,50,50);
 
 > `fillText(string, x, y)` 用来绘制文本，它的三个参数分别为文本内容、起点的x坐标、y坐标。使用之前，需用font设置字体、大小、样式（写法类似与CSS的font属性）。与此类似的还有`strokeText`方法，用来添加空心字。
 
-```
+```js
 // 设置字体
 ctx.font = "Bold 20px Arial"; 
 // 设置对齐方式
@@ -88,8 +92,7 @@ ctx.fillStyle = "#008600";
 // 设置字体内容，以及在画布上的位置
 ctx.fillText("Hello!", 10, 50); 
 // 绘制空心字
-ctx.strokeText("Hello!", 10, 100); 
-
+ctx.strokeText("Hello!", 10, 100);
 ```
 
 fillText方法不支持文本断行，即所有文本出现在一行内。所以，如果要生成多行文本，只有调用多次fillText方法。
@@ -98,62 +101,57 @@ fillText方法不支持文本断行，即所有文本出现在一行内。所以
 
 > `arc`方法用来绘制扇形
 
-```
+```javascript
 ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
-
 ```
 
 arc方法的x和y参数是圆心坐标，radius是半径，startAngle和endAngle则是扇形的起始角度和终止角度（以弧度表示），anticlockwise表示做图时应该逆时针画（true）还是顺时针画（false）。
 
 下面是如何绘制实心的圆形。
 
-```
+```js
 ctx.beginPath(); 
 ctx.arc(60, 60, 50, 0, Math.PI*2, true); 
 ctx.fillStyle = "#000000"; 
 ctx.fill();
-
 ```
 
 绘制空心圆形的例子。
 
-```
+```javascript
 ctx.beginPath(); 
 ctx.arc(60, 60, 50, 0, Math.PI*2, true); 
 ctx.lineWidth = 1.0; 
 ctx.strokeStyle = "#000"; 
 ctx.stroke();
-
 ```
 
 ### （5）设置渐变色
 
 > createLinearGradient方法用来设置渐变色。
+>
+> createLinearGradient(x1, y1, x2, y2)，其中x1和y1是起点坐标，x2和y2是终点坐标。通过不同的坐标值，可以生成从上至下、从左到右的渐变等等。
 
-```
+```js
 var myGradient = ctx.createLinearGradient(0, 0, 0, 160); 
 
 myGradient.addColorStop(0, "#BABABA"); 
 
 myGradient.addColorStop(1, "#636363");
-
 ```
-
-createLinearGradient方法的参数是(x1, y1, x2, y2)，其中x1和y1是起点坐标，x2和y2是终点坐标。通过不同的坐标值，可以生成从上至下、从左到右的渐变等等。
 
 使用方法如下：
 
-```
+```js
 ctx.fillStyle = myGradient;
 ctx.fillRect(10,10,200,100);
-
 ```
 
 ### （6）设置阴影
 
 > 一系列与阴影相关的方法，可以用来设置阴影。
 
-```
+```js
 ctx.shadowOffsetX = 10; // 设置水平位移
 ctx.shadowOffsetY = 10; // 设置垂直位移
 ctx.shadowBlur = 5; // 设置模糊度
@@ -161,7 +159,6 @@ ctx.shadowColor = "rgba(0,0,0,0.5)"; // 设置阴影颜色
 
 ctx.fillStyle = "#CC0000"; 
 ctx.fillRect(10,10,200,100);
-
 ```
 
 ------
@@ -171,19 +168,29 @@ ctx.fillRect(10,10,200,100);
 ### drawImage方法
 
 > Canvas API 允许将图像文件插入画布，做法是读取图片后，使用`drawImage`方法在画布内进行重绘。
+>
+> ```js
+> context.drawImage(image, dx, dy);
+> context.drawImage(image, dx, dy, dWidth, dHeight);
+> context.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+> //sx，sy，sWidth和sHeight对原始图片的提前剪裁,新图放在dx，dy，dWidth和dHeight这个Canvas画布区域中
+> ```
 
-```
+```js
 var img = new Image();
 img.src = 'image.png';
 ctx.drawImage(img, 0, 0); // 设置对应的图像对象，以及它在画布上的位置
-
+//以上代码由于图片加载需要时间，导致图片没显示在画布上，drawImage需要使用onload函数内
+img.onload = function () {
+        ctx.drawImage(img, 0, 0)
+}
 ```
 
-上面代码将一个PNG图像载入画布。drawImage()方法接受三个参数，第一个参数是图像文件的DOM元素（即`<img>`节点），第二个和第三个参数是图像左上角在画布中的坐标，上例中的(0, 0)就表示将图像左上角放置在画布的左上角。
+
 
 由于图像的载入需要时间，drawImage方法只能在图像完全载入后才能调用，因此上面的代码需要改写。
 
-```
+```js
 var image = new Image();
 
 image.onload = function() {
@@ -197,56 +204,78 @@ image.onload = function() {
 }
 
 image.src = 'image.png';
-
 ```
 
 ### getImageData方法，putImageData方法
 
+- 跨域问题： ` live-server --cors`
+
 > getImageData方法可以用来读取Canvas的内容，返回一个对象，包含了每个像素的信息。
 
-```
+```js
 var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-
 ```
 
-imageData对象有一个data属性，它的值是一个一维数组。该数组的值，依次是每个像素的红、绿、蓝、alpha通道值，因此该数组的长度等于 图像的像素宽度 x 图像的像素高度 x 4，每个值的范围是0–255。这个数组不仅可读，而且可写，因此通过操作这个数组的值，就可以达到操作图像的目的。修改这个数组以后，使用`putImageData`方法将数组内容重新绘制在Canvas上。
+imageData对象有一个data属性，它的值是一个一维数组。该数组的值，依次是每个像素的红、绿、蓝、alpha通道值，因此该`数组的长度= 图像的像素宽度 x 图像的像素高度 x 4`，每个值的范围是0–255。这个数组不仅可读，而且可写，因此通过操作这个数组的值，就可以达到操作图像的目的。修改这个数组以后，使用`putImageData`方法将数组内容重新绘制在Canvas上。
 
-```
+```js
 context.putImageData(imageData, 0, 0);
-
 ```
 
 ### toDataURL方法
 
 > 对图像数据做出修改以后，可以使用`toDataURL`方法，将Canvas数据重新转化成一般的图像文件形式。
+>
+> toDataURL方法生成base64图片
 
-```
+```js
 function convertCanvasToImage(canvas) {
   var image = new Image();
   image.src = canvas.toDataURL('image/png');
   return image;
 }
-
 ```
 
 上面的代码将Canvas数据，转化成PNG data URI。
 
+#### 使用toDataURL导出图片
+
+> 向HTML 插入img标签，提示用户长按保存（PC端右键导出）
+
+```js
+    let canvas = document.getElementById('canvas')
+    var ctx = canvas.getContext("2d");
+    let img = new Image()
+    img.crossOrigin = '';
+    img.onload = function () {
+        ctx.drawImage(img, 0, 0)
+        let imageData = new Image();
+        imageData.src = canvas.toDataURL('image/png');
+        document.body.appendChild(imageData) // 长按图片保存
+    }
+    img.src = './girl.png'
+```
+
+
+
 ### save方法，restore方法
 
-> save方法用于保存上下文环境，restore方法用于恢复到上一次保存的上下文环境。
+- save方法用于保存上下文环境，
 
-```
-ctx.save();
+- restore方法用于恢复到上一次保存的上下文环境。
 
+```js
+ctx.save();//保存
+//添加阴影和颜色
 ctx.shadowOffsetX = 10;
 ctx.shadowOffsetY = 10;
 ctx.shadowBlur = 5;
 ctx.shadowColor = 'rgba(0,0,0,0.5)';
 
 ctx.fillStyle = '#CC0000';
-ctx.fillRect(10,10,150,100);
+ctx.fillRect(10,10,150,100);//绘制带有阴影的矩形
 
-ctx.restore();
+ctx.restore(); //恢复到save之前（ctx不带阴影）
 
 ctx.fillStyle = '#000000';
 ctx.fillRect(180,10,150,100);
@@ -261,7 +290,7 @@ ctx.fillRect(180,10,150,100);
 
 > 利用JavaScript，可以在canvas元素上很容易地产生动画效果。
 
-```
+```js
 var posX = 20,
     posY = 100;
 

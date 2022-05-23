@@ -1,84 +1,92 @@
-# 说人话系列之Vue3中的Computed 与 watch
+# Vue3说人话系列之Computed 与 watch
 
 ## `computed`
 
-- computed只接收一个`getter函数`
+### `computed`只接收一个`getter函数`
 
-  > getter触发形式：1、computed返回值首次被读取时 2、getter绑定的响应式变量被修改时
-  >
-  > 1、getter必须有返回值
-  >
-  > 2、computed返回一个**只读**响应式ref对象   （只读、响应式、对象）
-  >
-  > 注意：omputed只接收一个getter函数时，返回的只读对象，也就是不能修改他的值！
+> 1、getter必须有返回值
+>
+> 2、computed返回一个**只读**响应式ref对象   （只读、响应式、对象）
+>
+> 注意：omputed只接收一个getter函数时，返回的只读对象，也就是不能修改他的返回值！
 
-  ```html
-  <script setup>
-  import { ref,computed } from 'vue'
-  const num = ref(1)
-  //computed返回一个只读响应式ref对象computedNum
-  //computedNum是只读属性
-  let computedNum = computed(() => num.value + 1)
-  </script>
-  
-  <template>
-      <p> num:{{ num }} </p>
-      <p>computedNum:{{ computedNum }}</p>
-      <!-- 修改响应式变量num 触发与之绑定的computed的getter-->  
-      <button @click="num++">num++</button>
-      <!-- computedNum是只读属性-->  
-      <button @click="computedNum++">computedNum++</button>
-  </template>
-  ```
+#### getter触发条件：
 
-- computed同时接收`getter函数对象`和`setter函数对象`
+- 1、computed返回值首次被读取时 
 
-  > setter触发形式：computed返回值被修改时
-  >
-  > 1、setter函数对象没有返回值
-  >
-  > 2、computed返回一个**可读可写**响应式对象
-  >
-  > 3、setter函数对象有个参数，是getter的返回值，也是computed的值
-  >
-  > 4、修改computed返回值，触发setter函数对象执行，但不会真正修改computed返回值（setter内改变getter计算值就会改变computed返回值）
+- 2、getter绑定的响应式变量被修改时
 
-  
+```html
+<script setup>
+import { ref,computed } from 'vue'
+const num = ref(1)
+//computed返回一个只读响应式ref对象computedNum
+//computedNum是只读属性
+let computedNum = computed(() => num.value + 1)
+</script>
 
-  ```html
-  <script setup>
-  import { ref, computed } from 'vue'
-  const num = ref(1)
-  //getter（只读）
-  let computedNum = computed(() => num.value + 1)
-  //getter和setter （可读可写）
-  let computedNum2 = computed({
-      get: () => num.value + 1,
-      set: (val) => {
-           console.log(val);
-          //setter中修改ref响应式变量num，将触发关联的num的getter计算
-          //computedNum和computedNum2的getter同时触发
-           num.value++
-            }
-  })
-  </script>
-  
-  <template>
-      <p> num:{{ num }} </p>
-      <p>computedNum:{{ computedNum }}</p>
-      <p>computedNum2:{{ computedNum2 }}</p>
-      <button @click="num++">num++</button>
-      <!-- computedNum是只读属性，会有警告提醒 Write operation failed: computed value is readonly-->  
-      <button @click="computedNum++">computedNum++</button>
-       <!-- computedNum2是可读可写属性-->  
-      <button @click="computedNum2++">computedNum2++</button>
-  </template>
-  ```
+<template>
+    <p> num:{{ num }} </p>
+    <p>computedNum:{{ computedNum }}</p>
+    <!-- 修改响应式变量num 触发与之绑定的computed的getter-->  
+    <button @click="num++">num++</button>
+    <!-- computedNum是只读属性-->  
+    <button @click="computedNum++">computedNum++</button>
+</template>
+```
+
+###  `computed`同时接收`getter函数对象`和`setter函数对象`
+
+> 1、setter函数对象没有返回值
+>
+> 2、computed返回一个**可读可写**响应式对象
+>
+> 3、setter函数对象有参数，是getter的返回值，也是computed的值
+>
+> 4、修改computed返回值，触发setter函数对象执行，但不会真正修改computed返回值（setter内改变getter计算值就会改变computed返回值）
+
+#### setter触发条件：
+
+- computed返回值被修改时
 
   
 
+实例：
 
-## `调试 Computed`
+```html
+<script setup>
+import { ref, computed } from 'vue'
+const num = ref(1)
+//getter（只读）
+let computedNum = computed(() => num.value + 1)
+//getter和setter （可读可写）
+let computedNum2 = computed({
+    get: () => num.value + 1,
+    set: (val) => {
+         console.log(val);
+        //setter中修改ref响应式变量num，将触发关联的num的getter计算
+        //computedNum和computedNum2的getter同时触发
+         num.value++
+          }
+})
+</script>
+
+<template>
+    <p> num:{{ num }} </p>
+    <p>computedNum:{{ computedNum }}</p>
+    <p>computedNum2:{{ computedNum2 }}</p>
+    <button @click="num++">num++</button>
+    <!-- computedNum是只读属性，会有警告提醒 Write operation failed: computed value is readonly-->  
+    <button @click="computedNum++">computedNum++</button>
+     <!-- computedNum2是可读可写属性-->  
+    <button @click="computedNum2++">computedNum2++</button>
+</template>
+```
+
+
+
+
+### `调试 Computed`
 
 > 使用范围：仅开发模式生效
 >
@@ -120,9 +128,9 @@ let computedNum = computed(() => num.value + 1, {
 
 语法：
 
-- 参数1-触发监听回调函数，回调函数可传入一个onInvalidate函数作为参数！
+- 参数1：触发监听回调函数，回调函数可传入一个onInvalidate函数作为参数！
 
-- 可选参数2-对象，包含3个可选属性flush、onTrack、onTrigger
+- 可选参数2：对象，包含3个可选属性flush、onTrack、onTrigger
 
 > **立即执行**传入的一个函数，同时响应式追踪其依赖，并在其依赖变更时重新运行该函数。
 >
@@ -133,6 +141,8 @@ let computedNum = computed(() => num.value + 1, {
 > 3、会自动感知代码依赖，和watch不一样，watchEffect会主动绑定监听数据
 >
 > 局限性：不能监听对象(但可以监听对象的属性)，只能监听类似ref基本数据类型的响应式数据
+
+### 立即执行，监听基本数据类型
 
 ```html
 <script setup>
@@ -172,19 +182,20 @@ watchEffect(() => {
 
 ### 清理watchEffect
 
-> 语法： `  watchEffect( onInvalidate=>{    onInvalidate(()=>{ })    })`
->
-> onInvalidate 是一个函数！优先触发！
->
+- 语法： `  watchEffect( onInvalidate=>{    onInvalidate(()=>{ })    })`
+
+- onInvalidate 是一个函数！优先触发！
+
+
 > onInvalidate 执行时机:
 >
-> 1、watchEffect   被重新触发时
+> 1、watchEffect被重新触发时
 >
 > 2、组件卸载时
 >
 > 注意：关联的响应式数据**首次被修改**时不会触发onInvalidate函数！
 >
-> 作用： 清理定时器、事件监听removeEventListener 
+> 作用： 清理定时器、事件监听removeEventListener 。。。
 
 ```javascript
 import { ref, watchEffect } from 'vue'
@@ -215,90 +226,89 @@ watchEffect((onInvalidate ) => {
 >
 > 是`watchEffect`可选参数对象`{ flush?: 'pre' | 'post' | 'sync'}`中post和sync的语法糖，pre是默认值
 
-- `watchPostEffect` 
+#### 推迟触发`watchPostEffect` 
 
-  > `watchPostEffect` 是watchEffect可选参数对象`{flush:'post'}`的语法糖
-  >
-  > 推迟watchEffect触发时机！组件更新前触发！也就是在生命周期`onBeforeUpdate`和 `onUpdated`之间触发
+> `watchPostEffect` 是watchEffect可选参数对象`{flush:'post'}`的语法糖
+>
+> 推迟watchEffect触发时机！组件更新前触发！也就是在生命周期`onBeforeUpdate`和 `onUpdated`之间触发
 
-  语法：
+语法：
 
-  ```javascript
-  //推迟触发watchEffect
-  watchEffect(
-    () => {
-      /* ... */
-    },
-    {
-      flush: 'post'
-    }
-  )
-  //Vue3.2语法糖watchPostEffect
-  watchPostEffect(()=>{
+```javascript
+//推迟触发watchEffect
+watchEffect(
+  () => {
     /* ... */
-  })
-  ```
-
-  
-
-  实例：
-
-  ```javascript
-  //实验watchEffect第二参数 flush: 'post'属性
-  watchEffect(() => {
-      console.log("实验watchEffect第二参数 {flush: 'post'}属性");
-      console.log(obj.age);
-  },{
-     flush:'post' 
-  })
-  watchEffect(() => {
-      console.log("watchEffect正常时机触发");
-      console.log(obj.age);
-  })
-  //生命周期onUpdated
-  onUpdated(()=>{
-      console.log('onUpdated()');  
-  })
-  //生命周期onBeforeUpdate
-  onBeforeUpdate(()=>{
-      console.log('onBeforeUpdate()');
-  })
-  ```
-
-  修改`obj.age`时，执行结果：
-
-  ```
-  watchEffect正常时机触发
-  onBeforeUpdate()
-  实验watchEffect第二参数 {flush: 'post'}属性
-  onUpdated()
-  ```
-
-  
-
-- `watchSyncEffect`
-
-  > `watchSyncEffect` 是watchEffect可选参数对象`{flush:'sync'}`的语法糖
-  >
-  > 强制效果始终**同步触发**！效率低！也就是默认watchEffect之前触发
-  
-  语法：
-  
-  ```javascript
-  watchEffect(
-    () => {
-      /* ... */
   },
-    {
-      flush: 'sync'
-    }
-  )
-  //Vue3.2语法糖watchSyncEffect
-  watchSyncEffect(()=>{
+  {
+    flush: 'post'
+  }
+)
+//Vue3.2语法糖watchPostEffect
+watchPostEffect(()=>{
+  /* ... */
+})
+```
+
+
+
+实例：
+
+```javascript
+//实验watchEffect第二参数 flush: 'post'属性
+watchEffect(() => {
+    console.log("实验watchEffect第二参数 {flush: 'post'}属性");
+    console.log(obj.age);
+},{
+   flush:'post' 
+})
+watchEffect(() => {
+    console.log("watchEffect正常时机触发");
+    console.log(obj.age);
+})
+//生命周期onUpdated
+onUpdated(()=>{
+    console.log('onUpdated()');  
+})
+//生命周期onBeforeUpdate
+onBeforeUpdate(()=>{
+    console.log('onBeforeUpdate()');
+})
+```
+
+修改`obj.age`时，执行结果：
+
+```
+watchEffect正常时机触发
+onBeforeUpdate()
+实验watchEffect第二参数 {flush: 'post'}属性
+onUpdated()
+```
+
+
+
+#### 同步触发`watchSyncEffect`
+
+> `watchSyncEffect` 是watchEffect可选参数对象`{flush:'sync'}`的语法糖
+>
+> 强制效果始终**同步触发**！效率低！也就是默认watchEffect之前触发
+
+语法：
+
+```javascript
+watchEffect(
+  () => {
     /* ... */
-  })
-  ```
-  
+},
+  {
+    flush: 'sync'
+  }
+)
+//Vue3.2语法糖watchSyncEffect
+watchSyncEffect(()=>{
+  /* ... */
+})
+```
 
 ### `watchEffect`不能监听对象
 
@@ -341,43 +351,94 @@ watch(obj, (obj) => {
 >
 > 2、惰性，只在被监听数据变化时才触发（immediate属性可以设置在初始化的时候触发）
 
-- 监听单个数据
+### 监听单个数据
 
-  ```javascript
-  // 侦听一个 getter
-  //被监听数据传入一个带返回值的回调函数
-  const state = reactive({ count: 0 })
-  watch(
-    () => state.count,
-    (count, prevCount) => {
-      /* ... */
-    }
-  )
-  
-  // 直接侦听一个 ref
-  const count = ref(0)
-  watch(count, (count, prevCount) => {
+> 参数1被监听数据的形式： 
+>
+> 1、单个基本数据类型；
+>
+> 2、回调函数：返回值为单个基本数据类型；
+
+```javascript
+// 侦听一个 getter
+//被监听数据传入一个带返回值的回调函数
+const state = reactive({ count: 0 })
+watch(
+  () => state.count,
+  (count, prevCount) => {
     /* ... */
-  })
-  ```
+  }
+)
 
-- 监听多个数据(传入数组)
+// 直接侦听一个 ref
+const count = ref(0)
+watch(count, (count, prevCount) => {
+  /* ... */
+})
+```
 
-  ```javascript
-  watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
-    /* ... */
-  })
-  ```
+### 监听多个数据(传入数组)
 
-  
+```javascript
+watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
+  /* ... */
+})
+```
 
 
 
-## 官方文档拓展：
+
+
+## 官方文档总结：
 
 > 以下代码截取官方文档，从TS代码可以看出很多关于watch和watchEffect函数参数和返回值的细节！
 
-watchEffect:
+### computed
+
+- `computed`只接收一个`getter函数`
+
+  `getter`触发条件：
+  
+  1、computed返回值首次被读取时 
+  
+  2、getter绑定的响应式变量被修改时
+  
+  
+  
+- `computed`同时接收`getter函数对象`和`setter函数对象`
+
+  `setter`触发条件：computed返回值被修改时
+
+```typescript
+// 只读的
+function computed<T>(
+  getter: () => T,
+  debuggerOptions?: DebuggerOptions
+): Readonly<Ref<Readonly<T>>>
+
+// 可写的
+function computed<T>(
+  options: {
+    get: () => T
+    set: (value: T) => void
+  },
+  debuggerOptions?: DebuggerOptions
+): Ref<T>
+interface DebuggerOptions {
+  onTrack?: (event: DebuggerEvent) => void
+  onTrigger?: (event: DebuggerEvent) => void
+}
+interface DebuggerEvent {
+  effect: ReactiveEffect
+  target: any
+  type: OperationTypes
+  key: string | symbol | undefined
+}
+```
+
+
+
+### watchEffect:
 
 - 参数1-触发监听回调函数，回调函数可传入一个onInvalidate函数作为参数！
 - 可选参数2-对象，包含3个可选属性flush、onTrack、onTrigger
@@ -408,7 +469,7 @@ type StopHandle = () => void
 
 
 
-watch：
+### watch：
 
 - 参数1-被监听数据（形式：单个数据、数组、带返回值的回调函数）
 - 参数2-触发监听的回调函数，无返回值
