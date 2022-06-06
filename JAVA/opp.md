@@ -461,6 +461,38 @@ class Student extends Person {
 
 
 
+伪代码实现：
+
+```java
+public interface ProductService{
+  List <Product> listProducts()
+}
+//实现类1
+public class ProductServiceImpl1 implements ProductService{
+   public List <Product> listProducts(){
+          //查询热销商品
+      }
+}
+//实现类2
+public class ProductServiceImpl2 implements ProductService{
+    public List <Product> listProducts(){
+          //查询好评商品
+      }
+}
+
+//控制层
+public class ProductListServlet extends HttpServlet{
+//多态
+  //在servlet中使用new关键字创建ProductServiceImpl1对象，增加了servlet和service的耦合度  
+private ProductService productService =new ProductServiceImpl1()
+productService.listProducts()    //查询热销商品
+private ProductService productService =new ProductServiceImpl2()    
+productService.listProducts()    //查询好评商品     
+}
+```
+
+
+
 #### 好处：
 
 - 减少类中的代码量
