@@ -151,7 +151,6 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
         <!--  对于一个xml文件如果作为框架的配置文件，需要遵守框架的配置规则  -->
         <!--  通常一个框架为了让开发者能够正确的配置，都会提供xml的规范文件（dtd\xsd）  -->
-        
 </beans>
 ```
 
@@ -171,7 +170,6 @@ public class Student {
     private String stuGender;
     private int stuAge;
     private Date enterenceTime; //入学日期
-
 }
 ```
 
@@ -208,8 +206,8 @@ Student student2 = (Student) context.getBean("stu");
 
 #### 2.3 IoC和DI
 
-- IoC (Inverse of Control) 控制反转，通过Spring对象工厂完成对象的创建
-- DI (Dependency Injection)依赖注入，在Spring完成对象创建的同时依赖Spring容器完成对象属性的赋值
+- IoC (Inverse of Control) 控制反转，通过Spring对象工厂完成对象的创建（new 对象）
+- DI (Dependency Injection)依赖注入，在Spring完成对象创建的同时依赖Spring容器完成**对象属性的赋值**
 
 ###### 2.3.1 IoC
 
@@ -247,9 +245,9 @@ Student student2 = (Student) context.getBean("stu");
 > - 构造器注入
 > - 接口注入（不常用）
 
-###### 2.4.2 set方法注入
+###### 2.4.2 set方法注入（实体类必须有setter）
 
-> 在bean标签中通过配置property标签给属性属性赋值，实际上就是通过反射调用set方法完成属性的注入
+> 在bean标签中通过**配置property标签给属性属性赋值**，实际上就是通过反射调用set方法完成属性的注入
 
 **简单类型及字符串**
 
@@ -266,9 +264,9 @@ Student student2 = (Student) context.getBean("stu");
 </bean>
 ```
 
-**日期类型**
+**日期类型**（不能常规赋值）
 
-- 方式1：在property标签中通过ref引用Spring容器中的一个对象
+- 方式1：在property标签中通过**ref**引用Spring容器中的一个对象
 
 ```xml
 <bean id="date" class="java.util.Date"></bean>
@@ -279,7 +277,7 @@ Student student2 = (Student) context.getBean("stu");
 </bean>
 ```
 
-- 方式2：在property标签中添加子标签bean来指定对象
+- 方式2：在property标签中添加**子标签bean**来指定对象
 
 ```xml
 <bean id="stu" class="com.qfedu.ioc.bean.Student" >
@@ -324,7 +322,7 @@ Student student2 = (Student) context.getBean("stu");
 
 - List
 
-  - List<String>  List中的元素是字符串或者简单类型的封装类
+  - List<String>  List中的元素是**字符串或者简单类型**的封装类
 
   ```xml
   <property name="hobbies" value="旅游,电影"/>
@@ -340,7 +338,7 @@ Student student2 = (Student) context.getBean("stu");
   </property>
   ```
 
-  - List<Object> List中的元素是对象类型
+  - List<Object> List中的元素是**对象类型**
 
   ```xml
   <property name="hobbies" >
@@ -404,7 +402,7 @@ Student student2 = (Student) context.getBean("stu");
   </property>
   ```
 
-###### 2.4.3 构造器注入
+###### 2.4.3 构造器注入(实体类有构造器)
 
 **简单类型、字符串、对象**
 
@@ -509,19 +507,29 @@ public class Student{
 > - scope="singleton"  表示当前bean是单例模式（默认饿汉模式，Spring容器**初始化阶段就会完成此对象的创建**；当在bean标签中设置 lazy-init="true"变为懒汉模式）
 > - scope="prototype" 表示当前bean为非单例模式，每次通过Spring容器**获取此bean的对象时**都会创建一个新的对象
 
-##### 单例模式
+##### 单例模式（生成同一个实例）
 
->不管获取对象几次，每次getBean都是同一个实例
+>`scope="singleton"`
 >
->- 饿汉模式(默认)：在加载对象时候，对象就会创建实例，为所有spring配置文件中定义的bean都是生成的一个实例，天生线程安全的，多线程的情况下也不会出现问题。
+>不管获取对象几次，每次getBean都是**同一个实例**
 >
->- 懒汉模式：在获取对象第一次请求的时候，才会创建实例。本身是线程不安全的，但有几种实现线程安全的写法。
+>单例模式含有饿汉模式和懒汉模式
+
+- 饿汉模式(默认)：
+
+  > **在加载对象时候，对象就会创建实例**，为所有spring配置文件中定义的bean都是生成的一个实例，天生线程安全的，多线程的情况下也不会出现问题。
+
+- 懒汉模式`lazy-init="true"`：
+
+  > 在**获取对象第一次请求**的时候，才会创建实例。本身是线程不安全的，但有几种实现线程安全的写法。
 
 ```xml
 <bean id="book" class="com.qfedu.ioc.bean.Book" scope="singleton" lazy-init="true"></bean>
 ```
 
 ##### 多例模式
+
+> `scope="prototype"`
 
 ```xml
 <bean id="book" class="com.qfedu.ioc.bean.Book" scope="prototype"></bean>
@@ -531,7 +539,9 @@ public class Student{
 
 #### 2.6 Bean的声明周期方法
 
-> 在bean标签中通过**init-method**属性指定当前bean的初始化方法，初始化方法在构造器执行之后执行，通过**destroy-method**属性指定当前bean的销毁方法，销毁方法在对象销毁之前执行-->
+> - **init-method**属性指定当前bean的初始化方法，初始化方法在构造器执行之后执行
+>
+> - **destroy-method**属性指定当前bean的销毁方法，销毁方法在对象销毁之前执行
 
 - Bean类
 
@@ -556,23 +566,24 @@ public class Student{
 - Spring配置文件
 
   ```xml
-  <bean id="book" class="com.qfedu.ioc.bean.Book" scope="prototype"init-method="init" destroy-method="destory" ></bean>
+  <bean id="book" class="com.qfedu.ioc.bean.Book" scope="prototype" init-method="init" destroy-method="destory" ></bean>
   ```
 
-#### 2.7 自动装配
+#### 2.7 自动装配`autowire`
 
-> 自动装配：Spring在实例化当前bean的时候从Spring容器中找到匹配的实例赋值给当前bean的属性
+> 自动装配：Spring在实例化当前bean的时候从**Spring容器(其他bean/实体类)**中找到匹配的实例赋值给当前bean的属性
 >
 > 自动装配策略有两种：
 >
-> - byName  根据当前Bean的属性名在Spring容器中寻找匹配的对象 ，如果根据name找打了bean但是类型不匹配则抛出异常
-> - byType  根据当前Bean的属性类型在Spring容器中寻找匹配的对象，如果根据类型找到了多个bean也会抛出异常
+> - byName  根据当前Bean的**属性名**在Spring容器中寻找匹配的对象 ，如果根据name找打了bean但是类型不匹配则抛出异常（private Clazz clazz 是找clazz 这个属性）
+> - byType  根据当前Bean的**属性类型**在Spring容器中寻找匹配的对象，如果根据类型找到了多个bean也会抛出异常（private Clazz clazz 是找Clazz这个类型）
 
 - byName
 
 ```xml
 <bean id="clazz" class="com.qfedu.ioc.bean.Clazz"></bean>
 
+<!-- Student类中有clazz这个属性，会自动匹配到clazz这个bean的实例类-->
 <bean id="stu2" class="com.qfedu.ioc.bean.Student" autowire="byName"></bean>
 ```
 
@@ -581,6 +592,7 @@ public class Student{
 ```xml
 <bean id="clazz2" class="com.qfedu.ioc.bean.Clazz"></bean>
 
+<!-- Student类中有private Clazz clazz这个属性， 找到Clazz这个类型-->
 <bean id="stu2" class="com.qfedu.ioc.bean.Student" autowire="byType"></bean>
 ```
 
@@ -594,7 +606,7 @@ public class Student{
 
 > SpringIoc的使用，需要我们通过XML将类声明给Spring容器进行管理，从而通过Spring工厂完成对象的创建及属性值的注入；
 >
-> Spring除了提供基于XML的配置方式，同时提供了基于注解的配置：直接在实体类中添加注解声明给Spring容器管理，以简化开发步骤。
+> Spring除了提供基于XML的配置方式，同时提供了基于注解的配置：直接**在实体类中添加注解声明**给Spring容器管理，以简化开发步骤。
 
 #### 3.1 Spring框架部署
 
@@ -614,7 +626,9 @@ public class Student{
 
 ###### 3.2.3 创建Spring配置文件
 
-- 因为Spring容器初始化时，只会加载applicationContext.xml文件，那么我们在实体类中添加的注解就不会被Spring扫描，所以我们需要`在applicationContext.xml声明Spring的扫描范围`，以达到Spring初始化时扫描带有注解的实体类并完成初始化工作
+- 创建`applicationContext.xml`文件
+- 声明使用注解配置
+- 声明Spring工厂注解的扫描范围
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -639,9 +653,15 @@ public class Student{
 
 ###### 3.2.1 `@Component`
 
-- 类注解，声明此类被Spring容器进行管理，相当于bean标签的作用
-- `@Component(value="stu")` value属性用于指定当前bean的id，相当于bean标签的id属性；value属性也可以省略，如果省略当前类的id默认为类名首字母改小写
-- 除了@Component之外 @Service、@Controller、@Repository这三个注解也可以将类声明给Spring管理，他们主要是语义上的区别
+> 类注解，声明此类被Spring容器进行管理，**相当于bean标签的作用**
+
+- `@Component(value="stu")` 
+
+  > value属性用于指定当前bean的id，相当于**bean标签的id属性**；
+  >
+  > value属性也可以省略，如果省略当前类的id默认为**类名首字母改小写**
+
+- 除了@Component之外 @Service、@Controller、@Repository这三个注解也可以将类声明给Spring管理，他们主要是**语义上的区别**
   - @Controller 注解主要声明将控制器类配置给Spring管理，例如Servlet
   - @Service 注解主要声明业务处理类配置Spring管理，Service接口的实现类
   - @Repository 直接主要声明持久化类配置给Spring管理，DAO接口
@@ -650,12 +670,15 @@ public class Student{
 ###### 3.2.2 `@Scope`
 
 - 类注解，用于声明当前类单例模式还是 非单例模式，相当于bean标签的scope属性
-- @Scope("prototype") 表示声明当前类为非单例模式（**默认单例模式**）
+- @Scope("prototype") 表示声明当前类为非单例模式（**默认单例模式**,类生成同一个实例）
 
 ###### 3.2.3 `@Lazy`
 
 - 类注解，用于声明一个**单例模式**的Bean是否为懒汉模式
-- @Lazy(true) 表示声明为懒汉模式，默认为饿汉模式
+
+- @Lazy(true) 表示声明为懒汉模式，在**获取对象第一次请求**的时候，才会创建实例
+
+  (默认为饿汉模式,bean在加载对象时候，对象就会创建实例)
 
 ###### 3.2.4 `@PostConstruct`
 
@@ -667,15 +690,16 @@ public class Student{
 
 ###### 3.2.6 `@Autowired`
 
-- 属性注解、方法注解（set方法），声明当前属性自动装配，默认byType
+- **1、属性注解、2、方法注解（set方法）**，声明当前**属性自动装配，默认byType**
 
--  @Autowired(required = false)  通过requried属性设置当前自动装配是否为必须（默认必须——如果没有找到类型与属性类型匹配的bean则抛出异常）
+-  **@Autowired(required = false)**  通过requried属性设置当前自动装配是否为必须（默认必须——如果没有找到类型与属性类型匹配的bean则抛出异常）
 
-  - byType
+  - byType  →→  @Autowired
 
-  - ref引用
+  - ref引用  →→  @Qualifier("bean的id")
 
   ```java
+  //方法注解用在set方法
   @Autowired
   public void setClazz(@Qualifier("c2") Clazz clazz) {
       this.clazz = clazz;
@@ -684,8 +708,8 @@ public class Student{
 
 ###### 3.2.7 `@Resource`
 
-- 属性注解，也用于声明属性自动装配
-- 默认装配方式为byName，如果根据byName没有找到对应的bean，则继续根据byType寻找对应的bean，根据byType如果依然没有找到Bean或者找到不止一个类型匹配的bean,则抛出异常。
+- 属性注解，也用于声明**属性自动装配，默认byName**
+- 默认装配方式为byName，如果根据byName没有找到对应的bean，则**继续根据byType**寻找对应的bean，根据byType如果依然没有找到Bean或者找到不止一个类型匹配的bean,则抛出异常。
 
 ## 四、代理设计模式
 
