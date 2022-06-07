@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="bookDAO" class="com.qfedu.dao.BookDAOImpl"></bean>
+    <bean id="studentDAO" class="com.qfedu.dao.StudentDAOImpl"></bean>
+    <bean id="bookServiceImpl" class="com.qfedu.service.BookServiceImpl"></bean>
+
+
+    <bean id="txManager" class="com.qfedu.utils.TxManager"></bean>
+    <bean id="logManager" class="com.qfedu.utils.LogManager"></bean>
+    <bean id="myAspect" class="com.qfedu.utils.MyAspect"></bean>
+    <aop:config>
+
+
+        <!--BookDAOImpl类中所有无参数无返回值的方法-->
+        <aop:pointcut id="book_pc1" expression="execution(void com.qfedu.dao.BookDAOImpl.*())"/>
+
+        <!--BookDAOImpl类中所有无返回值的方法-->
+        <aop:pointcut id="book_pc2" expression="execution(void com.qfedu.dao.BookDAOImpl.*(..))"/>
+
+        <!--BookDAOImpl类中所有无参数的方法-->
+        <aop:pointcut id="book_pc3" expression="execution(* com.qfedu.dao.BookDAOImpl.*())"/>
+
+        <!--BookDAOImpl类中所有方法-->
+        <aop:pointcut id="book_pc4" expression="execution(* com.qfedu.dao.BookDAOImpl.*(..))"/>
+
+        <!--dao包中所有类中的所有方法-->
+        <aop:pointcut id="pc5" expression="execution(* com.qfedu.dao.*.*(..))"/>
+
+        <!--dao包中所有类中的insert方法-->
+        <aop:pointcut id="pc6" expression="execution(* com.qfedu.dao.*.insert(..))"/>
+
+        <!--dao包中所有类中的insert方法-->
+        <aop:pointcut id="pc7" expression="execution(* *(..))"/>
+
+        <!--使用aop:pointcut标签声明切入点：切入点可以是一个方法-->
+        <aop:pointcut id="book_insert" expression="execution(* com.qfedu.dao.BookDAOImpl.insert())"/>
+
+        <!--声明txManager为切面类-->
+<!--        <aop:aspect ref="txManager">-->
+            <!--AOP的通知策略-->
+<!--            <aop:before method="begin" pointcut-ref="pc7"/>-->
+<!--            <aop:after method="commit" pointcut-ref="pc7"/>-->
+<!--        </aop:aspect>-->
+
+        <aop:aspect ref="myAspect">
+
+            <!--aop:before 前置通知，切入到指定切入点之前-->
+            <aop:before method="method1" pointcut-ref="book_insert"/>
+
+            <!--aop:after 后置通知，切入到指定切入点之后-->
+            <aop:after method="method2" pointcut-ref="book_insert"/>
+
+            <!--aop:after-throwing 异常通知，切入点抛出异常之后-->
+            <aop:after-throwing method="method3" pointcut-ref="book_insert"/>
+
+            <!--aop:after-returning 方法返回值返回之后，对于一个Java方法而言return返回值也是方法的一部分
+             因此“方法返回值返回之后”和“方法执行结束”是同一个时间点，随意after 和 after-returning根据配置的顺序决定执行顺序-->
+            <aop:after-returning method="method4" pointcut-ref="book_insert"/>
+
+            <aop:around method="method5" pointcut-ref="book_insert"/>
+
+         </aop:aspect>
+
+    </aop:config>
+
+</beans>

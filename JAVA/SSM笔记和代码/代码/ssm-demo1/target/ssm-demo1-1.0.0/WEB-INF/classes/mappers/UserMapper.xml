@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.dao.UserDAO">
+
+    <resultMap id="userMap" type="User">
+        <id column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_pwd" property="userPwd"/>
+        <result column="user_realname" property="userRealname"/>
+        <result column="user_img" property="userImg"/>
+    </resultMap>
+
+
+    <select id="queryUserByName" resultMap="userMap">
+        select user_id,user_name,user_pwd,user_realname,user_img
+        from users
+        where user_name=#{userName}
+    </select>
+
+</mapper>

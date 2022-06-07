@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.dao.MemberDAO">
+
+    <cache/>
+
+    <resultMap id="memberMap" type="Member">
+        <id column="member_id" property="memberId"/>
+        <result column="member_nick" property="memberNick"/>
+        <result column="member_gender" property="memberGender"/>
+        <result column="member_age" property="memberAge"/>
+        <result column="member_city" property="memberCity"/>
+    </resultMap>
+
+    <select id="searchMember" resultMap="memberMap">
+        select member_id,member_nick,member_gender,member_age,member_city
+        from members
+        where 1=1
+        <if test="gender != null">  <!--gender 就是参数对象的属性/参数Map的key-->
+            and member_gender=#{gender}
+        </if>
+        <if test="minAge != null">
+            and member_age &gt;= #{minAge}   <!-- &gt; -->
+        </if>
+        <if test="maxAge != null">
+            and member_age &lt;= #{maxAge}  <!-- &lt; -->
+        </if>
+        <if test="city != null">
+            and member_city = #{city}
+        </if>
+    </select>
+
+    <select id="searchMemberByCity" resultMap="memberMap">
+        select member_id,member_nick,member_gender,member_age,member_city
+        from members where member_city in
+        <foreach collection="list" item="cityName" separator="," open="(" close=")">
+           #{cityName}
+        </foreach>
+    </select>
+
+    <select id="searchMemberByNick" parameterType="java.lang.String" resultMap="memberMap">
+        select member_id,member_nick,member_gender,member_age,member_city
+        from members
+        where member_nick like '%${keyWord}%'
+    </select>
+    <!--  ${key} 表示获取参数，先获取参数的值拼接到SQL语句中，再编译执行SQL语句;可能引起SQL注入问题  -->
+    <!--  #{key} 表示获取参数，先完成SQL编译(预编译)，预编译之后再将获取的参数设置到SQL与中 ，可以避免SQL注入问题 -->
+
+    <select id="queryMemberById" resultMap="memberMap" useCache="false">
+        select member_id,member_nick,member_gender,member_age,member_city
+        from members
+        where member_id=#{mid}
+    </select>
+
+    <update id="updateMember" flushCache="true">
+        update members set member_age=#{age} where member_id=#{mid}
+    </update>
+
+</mapper>

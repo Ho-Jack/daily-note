@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper文件相当于DAO接口的‘实现类’，namespace属性要指定`实现`DAO接口的全限定名-->
+<mapper namespace="com.qfedu.dao.StudentDAO">
+
+
+
+    <!-- useGeneratedKeys 设置添加操作是否需要回填生成的主键 -->
+    <!-- keyProperty 设置回填的主键值赋值到参数对象的哪个属性 -->
+    <insert id="insertStudent" >
+        <selectKey keyProperty="stuId" resultType="java.lang.Integer">
+            select last_insert_id()
+        </selectKey>
+        insert into tb_students(stu_num, stu_name, stu_gender, stu_age)
+        values (#{stuNum}, #{stuName}, #{stuGender}, #{stuAge})
+    </insert>
+
+    <delete id="deleteStudent">
+        delete
+        from tb_students
+        where stu_num = #{stuNum}
+    </delete>
+
+    <update id="updateStudent">
+        update tb_students
+        set stu_name=#{stuName},
+            stu_gender=#{stuGender},
+            stu_age=#{stuAge}
+        where stu_num = #{stuNum}
+    </update>
+
+    <!--  resultType 指定查询结果封装的对象的实体类  -->
+    <!--  resultSets 指定当前操作返回的集合类型（可省略）  -->
+    <!--
+    <select id="listStudents" resultType="Student" resultSets="java.util.List">
+        select sid stuId, stu_num stuNum, stu_name stuName, stu_gender stuGender, stu_age stuAge
+        from tb_students
+    </select>
+    -->
+
+    <!-- resultMap标签用于定义实体类与数据表的映射关系（ORM） -->
+    <resultMap id="studentMap" type="Student">
+        <id column="sid" property="stuId"/>
+        <result column="stu_num" property="stuNum"/>
+        <result column="stu_name" property="stuName"/>
+        <result column="stu_gender" property="stuGender"/>
+        <result column="stu_age" property="stuAge"/>
+    </resultMap>
+
+    <sql id="wanglaoji">sid , stu_num , stu_name , stu_gender , stu_age</sql>
+
+    <!-- resultMap 用于引用一个实体的映射关系，当配置了resultMap之后 resultType就可以省略 -->
+    <select id="listStudents" resultMap="studentMap">
+        select <include refid="wanglaoji"/> from tb_students
+    </select>
+
+    <select id="queryStudent" resultMap="studentMap">
+        select <include refid="wanglaoji"/> from tb_students
+        where stu_num=#{aaa}
+    </select>
+
+
+    <select id="listStudentsByGender" resultMap="studentMap">
+        select <include refid="wanglaoji"/> from tb_students where stu_gender=#{gender}
+    </select>
+
+</mapper>
+

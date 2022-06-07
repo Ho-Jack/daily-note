@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties resource="jdbc.properties"></properties>
+
+    <typeAliases>
+        <typeAlias type="com.qfedu.pojo.User" alias="User"></typeAlias>
+        <typeAlias type="com.qfedu.pojo.Detail" alias="Detail"></typeAlias>
+        <typeAlias type="com.qfedu.pojo.Clazz" alias="Clazz"></typeAlias>
+        <typeAlias type="com.qfedu.pojo.Student" alias="Student"></typeAlias>
+        <typeAlias type="com.qfedu.pojo.Course" alias="Course"></typeAlias>
+    </typeAliases>
+
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <mappers>
+        <mapper resource="mappers/UserMapper.xml"></mapper>
+        <mapper resource="mappers/DetailMapper.xml"></mapper>
+        <mapper resource="mappers/ClassMapper.xml"></mapper>
+        <mapper resource="mappers/StudentMapper.xml"></mapper>
+        <mapper resource="mappers/CourseMapper.xml"></mapper>
+    </mappers>
+</configuration>

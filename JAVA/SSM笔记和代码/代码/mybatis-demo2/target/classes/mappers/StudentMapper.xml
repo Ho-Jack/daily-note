@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.dao.StudentDAO">
+
+    <!--
+    <resultMap id="studentMap" type="Student">
+        <id column="sid" property="stuId"/>
+        <result column="sname" property="stuName"/>
+        <result column="sage" property="stuAge"/>
+        <result column="scid" property="stuCid"/>
+    </resultMap>
+
+    <select id="listStudentsByCid" resultMap="studentMap">
+        select sid,sname,sage,scid from students where scid=#{cid}
+    </select>
+    -->
+
+<!--
+  <resultMap id="studentMap" type="Student">
+        <id column="sid" property="stuId"/>
+        <result column="sname" property="stuName"/>
+        <result column="sage" property="stuAge"/>
+        <result column="cid" property="clazz.classId"/>
+        <result column="cname" property="clazz.className"/>
+        <result column="cdesc" property="clazz.classDesc"/>
+    </resultMap>
+
+    <select id="queryStudentBySid" resultMap="studentMap">
+        select sid,sname,sage,scid,cid,cname,cdesc
+        from students s INNER JOIN classes c
+        ON s.scid = c.cid
+        where s.sid=#{sid}
+    </select>
+ -->
+
+
+    <resultMap id="studentMap" type="Student">
+        <id column="sid" property="stuId"/>
+        <result column="sname" property="stuName"/>
+        <result column="sage" property="stuAge"/>
+        <association property="clazz" select="com.qfedu.dao.ClassDAO.queryClass" column="scid"/>
+    </resultMap>
+
+    <select id="queryStudentBySid" resultMap="studentMap">
+        select sid,sname,sage,scid  from students where sid=#{sid}
+    </select>
+
+<!--  根据课程id查询选择了这门课的学生信息  -->
+    <resultMap id="studentMap2" type="Student">
+        <id column="sid" property="stuId"/>
+        <result column="sname" property="stuName"/>
+        <result column="sage" property="stuAge"/>
+    </resultMap>
+    <select id="queryStudentsByCourseId" resultMap="studentMap2">
+        select s.sid,sname,sage from students s INNER JOIN grades g
+        ON s.sid = g.sid where g.cid=#{courseId}
+    </select>
+
+</mapper>

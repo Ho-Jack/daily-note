@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.dao.ClassDAO" >
+
+    <resultMap id="classMap" type="Clazz">
+        <id column="cid" property="classId"/>
+        <result column="cname" property="className"/>
+        <result column="cdesc" property="classDesc"/>
+        <collection property="stus" select="com.qfedu.dao.StudentDAO.queryStudentsByCid" column="cid" fetchType="lazy"/>
+    </resultMap>
+
+    <select id="queryClassByCid" resultMap="classMap">
+        select cid,cname,cdesc
+        from classes
+        where cid=#{cid}
+    </select>
+
+</mapper>

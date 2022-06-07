@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.dao.DetailDAO">
+
+    <insert id="insertDetail">
+        insert into details(user_addr,user_tel,user_desc,uid)
+        values(#{userAddr},#{userTel},#{userDesc},#{userId})
+    </insert>
+
+    <resultMap id="detailMap" type="Detail">
+        <id column="detail_id" property="detailId"/>
+        <result column="user_addr" property="userAddr"/>
+        <result column="user_tel" property="userTel"/>
+        <result column="user_desc" property="userDesc"/>
+    </resultMap>
+    <select id="queryDetailByUid" resultMap="detailMap">
+        select detail_id,user_addr,user_tel,user_desc
+        from details where uid=#{uid}
+    </select>
+
+</mapper>

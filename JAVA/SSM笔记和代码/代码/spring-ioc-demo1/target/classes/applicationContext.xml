@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--在bean标签中通过init-method属性指定当前bean的初始化方法，初始化方法在构造器执行之后执行-->
+    <!--           通过destroy-method属性指定当前bean的销毁方法，销毁方法在对象销毁之前执行-->
+    <bean id="book" class="com.qfedu.ioc.bean.Book" scope="prototype"
+          init-method="init" destroy-method="destory" ></bean>
+
+
+    <bean id="date" class="java.util.Date"></bean>
+    <bean id="clazz1" class="com.qfedu.ioc.bean.Clazz"></bean>
+
+    <!--
+    <bean id="stu" class="com.qfedu.ioc.bean.Student">
+        <property name="stuNum" value="10001"/>
+        <property name="stuAge" value="12"/>
+        <property name="weight" value="62.3"/>
+        <property name="enterenceTime">
+            <bean class="java.util.Date"/>
+        </property>
+        <property name="clazz">
+            <bean class="com.qfedu.ioc.bean.Clazz">
+                <property name="classId" value="2010"/>
+                <property name="className" value="Java2010"/>
+            </bean>
+        </property>
+        <property name="hobbies" >
+            <list>
+                <value>旅游</value>
+                <value>电影</value>
+                <value>Java</value>
+            </list>
+        </property>
+        <property name="sets">
+            <set>
+                <value>111</value>
+                <value>222</value>
+            </set>
+        </property>
+        <property name="maps">
+            <map>
+                <entry>
+                    <key>
+                        <value>k1</value>
+                    </key>
+                    <value>123</value>
+                </entry>
+                <entry>
+                    <key>
+                        <value>k2</value>
+                    </key>
+                    <value>456</value>
+                </entry>
+            </map>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="k1">aaa</prop>
+                <prop key="k2">bbb</prop>
+            </props>
+        </property>
+    </bean>
+        -->
+
+    <bean id="stu" class="com.qfedu.ioc.bean.Student">
+        <constructor-arg index="0" value="10001"/>       <!--字符串类型-->
+        <constructor-arg index="2" value="女"/>
+        <constructor-arg index="1" value="张三"/>
+        <constructor-arg index="3" value="21"/>       <!--简单类型-->
+        <constructor-arg index="4" value="62.5"/>
+        <constructor-arg index="5" ref="date"/>       <!--对象类型-->
+        <constructor-arg index="6">                  <!--对象类型-->
+            <bean class="com.qfedu.ioc.bean.Clazz"></bean>
+        </constructor-arg>
+    </bean>
+
+    <bean id="stu1" class="com.qfedu.ioc.bean.Student">
+        <constructor-arg index="0">
+            <list>
+                <value>11</value>
+                <value>22</value>
+                <value>33</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <set>
+                <value>aa</value>
+                <value>bb</value>
+                <value>cc</value>
+            </set>
+        </constructor-arg>
+        <constructor-arg index="2">
+            <map>
+                <entry>
+                    <key><value>key1</value></key>
+                    <value>value1</value>
+                </entry>
+                <entry>
+                    <key><value>key2</value></key>
+                    <value>value2</value>
+                </entry>
+            </map>
+        </constructor-arg>
+        <constructor-arg index="3">
+            <props>
+                <prop key="k1">v1</prop>
+                <prop key="k2">v2</prop>
+            </props>
+        </constructor-arg>
+    </bean>
+
+    <!--自动装配：Spring在实例化当前bean的时候从Spring容器中找到匹配的实例赋值给当前bean的属性-->
+    <!-- byName  根据当前Bean的属性名在Spring容器中寻找匹配的对象 ，如果根据name找打了bean但是类型不匹配则抛出异常-->
+    <!-- byType  根据当前Bean的属性类型在Spring容器中寻找匹配的对象，如果根据类型找到了多个bean也会抛出异常-->
+    <bean id="stu2" class="com.qfedu.ioc.bean.Student" autowire="byType"></bean>
+
+
+    <bean id="productService1" class="com.qfedu.ioc.service.impl.ProductServiceImpl"></bean>
+    <bean id="productService" class="com.qfedu.ioc.service.impl.ProductServiceImpl2"></bean>
+
+    <bean id="testServlet" class="com.qfedu.ioc.servlets.TestServlet" autowire="byName"></bean>
+
+
+</beans>
