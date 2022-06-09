@@ -717,25 +717,42 @@ public class Student{
 
 ![1616999162162](imgs/1616999162162.png)
 
-代理设计模式的优点：将通用性的工作都交给代理对象完成，被代理对象只需专注自己的核心业务。
+代理设计模式的优点：
+
+- 代理对象：通用性工作
+- 被代理对象：专注核心业务
 
 #### 4.2 静态代理
 
-> 静态代理，代理类只能够为特定的类生产代理对象，不能代理任意类
+> 静态代理，代理类只能够为**特定的类**生产代理对象，不能代理任意类
+
+##### 步骤：
+
+代理类和被代理类必须和接口关联，所以代理类只能为特定类所用
+
+1. 创建接口（规范必须实现的通用方法）
+
+2. **代理类**，将接口作为属性并为其创建构造器（**传入被代理类的实例，实现通用业务，并增强业务能力**）
+
+3. 被代理类，实现接口 （用来实现核心业务，也就是**实现接口规范的通用方法**）
+
+   
+
+   ​			
 
 ![1617001027208](imgs/1617001027208.png)
 
 **使用代理的好处**
 
-1.被代理类中只用关注核心业务的实现，将通用的**管理型逻辑**（事务管理、日志管理）和**业务逻辑**分离
+1.被代理类：实现**核心业务的代码**，将通用的**管理型逻辑**（事务管理、日志管理）和**业务逻辑**分离
 
-2.将通用的代码放在代理类中实现，提供了**代码的复用性**
+2.代理类：实现**通用的代码**，提供了代码的复用性
 
 3.通过在代理类添加业务逻辑，实现对原有业务逻辑的扩展（**增强**）
 
 #### 4.3 动态代理
 
-> 动态代理，几乎可以为所有的类产生代理对象
+> 动态代理，几乎可以为**所有的类**产生代理对象
 >
 > 动态代理的实现方式有2种：
 >
@@ -744,15 +761,16 @@ public class Student{
 
 ###### 4.3.1 JDK动态代理
 
-- JDK动态代理类实现：
+- JDK动态代理：是通过**被代理对象的类实现的接口**产生其代理对象的
+
+  1.创建一个类，实现InvocationHandler接口，重写invoke方法
+
+  2.在类种定义一个**Object类型的变量**，并提供这个变量的有参构造器，用于将**被代理对象**传递进来
+
+  3.定义getProxy方法，用于**创建并返回代理对象**
 
 ```java
-/***
- * JDK动态代理：是通过被代理对象实现的接口产生其代理对象的
- * 1.创建一个类，实现InvocationHandler接口，重写invoke方法
- * 2.在类种定义一个Object类型的变量，并提供这个变量的有参构造器，用于将被代理对象传递进来
- * 3.定义getProxy方法，用于创建并返回代理对象
- */
+
 public class JDKDynamicProxy implements InvocationHandler {
     //被代理对象
     private Object obj;
@@ -772,7 +790,7 @@ public class JDKDynamicProxy implements InvocationHandler {
         Object proxy = Proxy.newProxyInstance(classLoader, interfaces,this);
         return proxy;
     }
-
+  //重写invoke方法 (InvocationHandler接口的方法)
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         begin();
         Object returnValue = method.invoke(obj,args);  //执行method方法（insert）
@@ -803,16 +821,16 @@ JDKDynamicProxy jdkDynamicProxy = new JDKDynamicProxy(studentDAO);
 //proxy就是产生的代理对象:产生的代理对象可以强转成被代理对象实现的接口类型
 GenaralDAO proxy = (GenaralDAO)jdkDynamicProxy.getProxy();
 
-//使用代理对象调用方法，并不会执行调用的方法，而是进入到创建代理对象时指定的InvocationHandler类种的invoke方法
+//使用代理对象调用方法，并不会执行调用的方法，而是进入到创建代理对象时指定的InvocationHandler类中的invoke方法
 //调用的方法作为一个Method参数，传递给了invoke方法
 proxy.insert(student);
 ```
 
 ###### 4.3.2 CGLib动态代理
 
-> 由于JDK动态代理是通过被代理类实现的接口来创建代理对象的，因此JDK动态代理只能代理实现了接口的类的对象。如果一个类没有实现任何接口，该如何产生代理对象呢？
+> 由于JDK动态代理是通过被代理类实现的接口来创建代理对象的，因此JDK动态代理只能代理实现了接口的类的对象。如果一个**类没有实现任何接口**，该如何产生代理对象呢？
 >
-> CGLib动态代理，是通过创建被代理类的子类来创建代理对象的，因此即使没有实现任何接口的类也可以通过CGLib产生代理对象
+> CGLib动态代理，是通过**创建被代理类的子类**来创建代理对象的，因此即使没有实现任何接口的类也可以通过CGLib产生代理对象
 >
 > CGLib动态代理不能为final类创建代理对象
 
@@ -828,6 +846,14 @@ proxy.insert(student);
 ```
 
 - CGLib动态代理实现：
+
+  1.添加cglib依赖
+
+  2.创建一个类，实现MethodInterceptor接口，同时实现接口中的intercept方法
+
+  3.在类中定义一个Object类型的变量，并提供这个变量的有参构造器，用于传递被代理对象
+
+  4.定义getProxy方法创建并返回代理对象（代理对象是通过创建被代理类的子类来创建的）
 
 ```java
 /**
@@ -891,9 +917,20 @@ proxy.update();
 
 > Aspect Oriented Programming 面向切面编程，是一种利用“横切”的技术（底层实现就是动态代理），对原有的业务逻辑进行拦截，并且可以在这个拦截的横切面上添加特定的业务逻辑，对原有的业务进行增强。
 >
-> 基于动态代理实现在不改变原有业务的情况下对业务逻辑进行增强
+> **基于动态代理实现在不改变原有业务的情况下对业务逻辑进行增强**
 
 ![1617008695615](imgs/1617008695615.png)
+
+- 连接点：程序中的方法
+- 切入点：被Spring横切的方法
+- 通知/增强： 配置新增的业务的配置方法（定义新增的业务方法是放在切入点的前面\后面）
+
+
+
+- 切点：**新增的业务方法**添加到切入点
+- 切面：定义**包含切点新增方法的类**
+
+AOP面向切面编程：就是在切面类上编程
 
 #### 5.2 Spring AOP框架部署
 
@@ -940,7 +977,7 @@ proxy.update();
 
 > 在DAO的方法添加开启事务和提交事务的逻辑
 
-###### 5.3.1 创建一个类，定义要添加的业务逻辑
+###### 5.3.1 创建一个`切面类`，定义要添加的业务逻辑
 
 ```java
 public class TxManager {
@@ -979,7 +1016,7 @@ public class TxManager {
 
         <!--声明txManager为切面类-->
         <aop:aspect ref="txManager">
-            <!--通知-->
+            <!--通知/增强-->
             <aop:before method="begin" pointcut-ref="book_all"/>
             <aop:after method="commit" pointcut-ref="book_all"/>
         </aop:aspect>
@@ -988,45 +1025,77 @@ public class TxManager {
 </beans>
 ```
 
-`AOP开发步骤`：
+###### `AOP开发步骤`：
 
-1.创建切面类，在切面类定义切点方法
+1. **创建切面类**，在切面类定义切点方法
 
-2.将切面类配置给Spring容器
+2. 将切面类配置给Spring容器 ` <aop:aspect ref="txManager">`
 
-3.声明切入点
+3. 声明切入点`<aop:pointcut id="book_all" expression="execution(* com.qfedu.dao.*.*(..))"/>`
 
-4.配置AOP的通知策略
+4. 配置AOP的通知策略：
+   - 切入点前：` <aop:before method="begin" pointcut-ref="book_all"/>`
+   - 切入点后：`<aop:after method="commit" pointcut-ref="book_all"/>`
 
 #### 5.4 切入点的声明
 
 ###### 5.4.1 各种切入点声明方式
 
+语法：
+
 ```xml
-<!--使用aop:pointcut标签声明切入点：切入点可以是一个方法-->
-<aop:pointcut id="book_insert" expression="execution(* com.qfedu.dao.BookDAOImpl.insert())"/>
-
-<!--BookDAOImpl类中所有无参数无返回值的方法-->
-<aop:pointcut id="book_pc1" expression="execution(void com.qfedu.dao.BookDAOImpl.*())"/>
-
-<!--BookDAOImpl类中所有无返回值的方法-->
-<aop:pointcut id="book_pc2" expression="execution(void com.qfedu.dao.BookDAOImpl.*(..))"/>
-
-<!--BookDAOImpl类中所有无参数的方法-->
-<aop:pointcut id="book_pc3" expression="execution(* com.qfedu.dao.BookDAOImpl.*())"/>
-
-<!--BookDAOImpl类中所有方法-->
-<aop:pointcut id="book_pc4" expression="execution(* com.qfedu.dao.BookDAOImpl.*(..))"/>
-
-<!--dao包中所有类中的所有方法-->
-<aop:pointcut id="pc5" expression="execution(* com.qfedu.dao.*.*(..))"/>
-
-<!--dao包中所有类中的insert方法-->
-<aop:pointcut id="pc6" expression="execution(* com.qfedu.dao.*.insert(..))"/>
-
-<!--dao包中所有类中的insert方法-->
-<aop:pointcut id="pc7" expression="execution(* *(..))"/>
+<aop:pointcut id="切入点自定义ID" expression="execution(返回值 切入位置的方法(参数))"/>
 ```
+
+- 切入点是方法
+
+  ```xml
+  <aop:pointcut id="book_insert" expression="execution(* com.qfedu.dao.BookDAOImpl.insert())"/>
+  ```
+
+- BookDAOImpl类中所有无参数无返回值的方法
+
+  ```xaml
+  <aop:pointcut id="book_pc1" expression="execution(void com.qfedu.dao.BookDAOImpl.*())"/>
+  ```
+
+- BookDAOImpl类中所有无返回值的方法
+
+  ```xml
+  <aop:pointcut id="book_pc2" expression="execution(void com.qfedu.dao.BookDAOImpl.*(..))"/>
+  ```
+
+- BookDAOImpl类中所有无参数的方法
+
+  ``` xml
+  <aop:pointcut id="book_pc3" expression="execution(* com.qfedu.dao.BookDAOImpl.*())"/>
+  ```
+
+- BookDAOImpl类中所有方法
+
+  ```xml
+  <aop:pointcut id="book_pc4" expression="execution(* com.qfedu.dao.BookDAOImpl.*(..))"/>
+  ```
+
+- dao包中所有类中的所有方法
+
+  ```xml
+  <aop:pointcut id="pc5" expression="execution(* com.qfedu.dao.*.*(..))"/>
+  ```
+
+- dao包中所有类中的insert方法
+
+  ```xml
+  <aop:pointcut id="pc6" expression="execution(* com.qfedu.dao.*.insert(..))"/>
+  ```
+
+- dao包中所有类中的insert方法
+
+  ```xml
+  <aop:pointcut id="pc7" expression="execution(* *(..))"/>
+  ```
+
+  
 
 ###### 5.4.2 AOP使用注意事项
 
@@ -1043,8 +1112,8 @@ bookService.addBook();
 
 >  AOP通知策略：就是声明将切面类中的切点方法如何织入到切入点
 >
-> - before
-> - after
+> - before ，切入到指定切入点之前
+> - after，切入到指定切入点之后
 > - after-throwing
 > - after-returning
 > - around
@@ -1067,7 +1136,7 @@ public class MyAspect {
         System.out.println("~~~~~~~method4");
     }
 
-    //环绕通知的切点方法，必须准守如下的定义规则：
+    //around环绕通知的切点方法，必须准守如下的定义规则：
     //1.必须带有一个ProceedingJoinPoint类型的参数
     //2.必须有Object类型的返回值
     //3.在前后增强的业务逻辑之间执行Object v = point.proceed();
@@ -1110,6 +1179,29 @@ public class MyAspect {
 
 ## 六、Spring AOP 注解配置
 
+### AOP注解：
+
+> - 连接点(JionPoint)：程序中的方法
+> - 切入点(Pointcut)：被Spring横切的方法
+> - 通知/增强(Advice)： 配置新增的业务的配置方法（定义新增的业务方法是放在切入点的前面\后面）
+>
+> - 切点：**新增的业务方法**添加到切入点
+> - 切面(Aspect)：定义**包含切点新增方法的类**   切点+通知
+
+##### @Aspect  声明切面类
+
+##### @Pointcut 定义切入点
+
+##### @Before 前置通知，方法有 JoinPoint 参数
+
+##### @AfterReturning 后置通知 - 注解带有 returning 属性
+
+##### @Around 环绕通知-增强法有 ProceedingJoinPoint 参数
+
+##### @AfterThrowing 异常通知 - 注解中有 throwing 属性（了解内容）
+
+##### @After 最终通知
+
 #### 6.1 Spring AOP 注解配置框架部署
 
 ###### 6.1.1 创建Maven工程
@@ -1144,6 +1236,8 @@ public class MyAspect {
 ```
 
 #### 6.2 AOP注解配置案例
+
+##### 切面类
 
 ```java
 @Component
