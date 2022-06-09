@@ -15,11 +15,17 @@
 
 ## SpringMVC常用的注解
 
-#### @RestController
+#### @RestController =  `@Controller`  + `@ResponseBody `
 
-> 类前注解，表示可以被浏览器访问（只在类上）
+> 组合注解，组合了@Controller和@ResponseBody
 >
-> 返回JSON格式的数据
+> @Controller 标识是一个Controller，Spring包扫描创建实例
+>
+> @ResponseBody 返回对象利用jackson工具类转换为json字符串
+>
+> 1. 类前注解，表示可以被浏览器访问（只在类上）
+>
+> 2. 返回JSON格式的数据
 
 ```java
 //让浏览器访问类/方法
@@ -35,23 +41,11 @@ public class HelloBoot{
 
 
 
-
-
-#### @getMapping
-
-> 详细规定了只获取get()请求的参数，和@requestMapping相近
-
-#### @postMapping
-
-> 详细规定了只获取post()请求的参数，和@requestMapping相近
-
-
-
 #### @RequestMapping
 
 > 作用是规定浏览器的访问方式（可以在类上和方法上）
 >
-> 用于建立请求 URL 和处理请求方法之间的对应关系
+> 将 URL 请求与业务方法进行映射
 
 | 属性    | 作用                                                         |
 | ------- | ------------------------------------------------------------ |
@@ -87,21 +81,31 @@ public class HelloBoot{
 }
 ```
 
-#### @Controller  + @ResponseBody  =   @RequesrMapping
+##### @getMapping 
 
-> 这两个注解一起使用相当于@RequesrMapping一个
+> `@getMapping` == ` @RequestMapping(method = RequestMethod.GET)`
 >
-> @Controller 标识是一个Controller，Spring包扫描创建实例
+> 详细规定了只获取get()请求的参数，和@requestMapping相近
+
+##### @postMapping
+
+> `@getMapping` == `@RequestMapping(method = RequestMethod.POST)`
 >
-> @ResponseBody 返回对象利用jackson工具类转换为json字符串
+> 详细规定了只获取post()请求的参数，和@requestMapping相近
+
+##### @PutMapping
+
+##### @PatchMapping
+
+##### @DeleteMapping
 
 
 
 #### @RequestParam
 
-> 把请求中指定名称的参数给控制器中的形参赋值。
+> 将指定的请求参数赋值给方法中的形参
 >
-> **表示在请求中，必须提供 key**
+> **URL表示在请求中，必须提供 key** ,` /url?key=value`
 
 | 属性         | 意义                                                         |
 | ------------ | ------------------------------------------------------------ |
@@ -121,7 +125,9 @@ public String useRequestParam(@RequestParam("name")String username,
 
 #### @RequestBody
 
-> 获取请求体内容。直接使用得到是 **key=value&key=value…** 结构的数据。
+> 获取POST请求的**body**部分数据（接收http请求的json转换为java对象）
+>
+> 直接使用得到是 **key=value&key=value…** 结构的数据。
 >
 > GET 请求方式不适用。
 
@@ -143,9 +149,13 @@ get ：null
 
 
 
+
+
 #### @PathVariable
 
-> 解析restful参数的数据，标识接收单个参数
+> 路径变量,解析restful参数的数据，标识接收单个参数
+>
+> 当使用@RequestMapping URI template 样式映射时， 即 someUrl/{paramId}, 这时的paramId可通过 @Pathvariable注解绑定它传过来的值到方法的参数上。
 
 ``` java
 //http://localhost:8080/user/unsert3/1/小明/18
@@ -157,7 +167,13 @@ public String insert3(@PathVariable Integer id,
 }
 ```
 
+#### @ResponseBody：
 
+> 注解实现将conreoller方法返回**对象转化为json对象**响应给客户端。
+>
+> 作用：将Controller的方法返回的对象，通过适当的HttpMessageConverter转换为指定格式后，写入到Response对象的body数据区。
+>
+> 使用时机：返回的数据不是html标签的页面，而是其他某种格式的数据时（如json、xml等）使用；
 
 #### @SpringBootApplication
 
@@ -178,7 +194,7 @@ public class  startApplication{
 
 #### @CrossOrigin
 
-> //放行JS的访问请问，springMVC的注解，添加了才能访问
+> 用在class和method上用来支持跨域请求
 
 
 
@@ -250,15 +266,25 @@ public void setClazz(@Qualifier("c2") Clazz clazz) {
 }
 ```
 
+> spring可以自动帮你把bean里面引用的对象的setter/getter方法省略，它会**自动帮你set/get**。
+
+```java
+@Controller 
+public class UserController{
+    @Autowired
+    UserService userService;
+    //自动setter
+     //public void setUserService(UserService injectdService){}
+}
+```
+
+
+
 #### @Resource
 
 > 属性注解，也用于声明**属性自动装配，默认byName**
 >
 > - 默认装配方式为byName，如果根据byName没有找到对应的bean，则**继续根据byType**寻找对应的bean，根据byType如果依然没有找到Bean或者找到不止一个类型匹配的bean,则抛出异常。
-
-## 
-
-
 
 ### AOP面向切面编程
 #### @Aspect
@@ -324,6 +350,8 @@ public void setClazz(@Qualifier("c2") Clazz clazz) {
 #### @Bean
 
 #### @Value
+
+> 此注解使用在字段、构造器参数和方法参数上。@Value可以指定属性取值的表达式，支持通过#{}使用SpringEL来取值，也支持使用${}来将属性来源中(Properties文件、本地环境变量、系统属性等)的值注入到bean的属性中。此注解值的注入发生在AutowiredAnnotationBeanPostProcessor类中。
 
 #### @Autowried
 
