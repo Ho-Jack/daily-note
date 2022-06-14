@@ -1290,7 +1290,7 @@ public class TransactionManager {
 
 ###### 7.2.1 创建Maven工程
 
-###### 7.2.2 部署MyBatis框架
+###### 7.2.2 部署MyBatis框架 
 
 - 添加依赖
   - Mysql驱动
