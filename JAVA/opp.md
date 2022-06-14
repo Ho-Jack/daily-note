@@ -1,3 +1,5 @@
+## 面向对象有三个特征：封装、继承、多态
+
 ## 类和对象
 
 ### 面向对象和面向过程的思想对比
@@ -10,10 +12,10 @@
 
 ### 成员变量和局部变量的区别
 
-- 成员变量：定义在类中，有初始值
-- 局部变量：定义在方法中，无初始值
+- 成员变量：定义在类中
+- 局部变量：定义在方法中
 
-### 静态变量（类变量）相当于全局变量
+### static静态变量（类变量）相当于全局变量
 
 - 用static修饰的变量叫静态变量也叫**类变量**
 
@@ -21,7 +23,7 @@
 
 - 修饰代码块叫静态块（先于main之前调用，先块后main）
 
-  可以直接通过类名直接调用 也可以 用对象调用，但是推荐类名调用
+- 可以直接通过类名直接调用 也可以 用对象调用，但是推荐**类名调用**
 
 - 静态方法中只能调用静态变量
 
@@ -200,11 +202,13 @@ public class Student{
 
 ```
 
-- **this**关键字：可以调用本类的成员（变量，方法），解决局部变量和成员变量重名问题
+#### this关键字：
 
-  局部变量和成员变量如果重名，Java使用的是就近原则
+> 可以调用本类的成员（变量，方法），解决局部变量和成员变量重名问题
 
-  `this`代表所在类的对象引用，方法被哪个对象调用，this就代表哪个对象
+局部变量和成员变量如果重名，Java使用的是就近原则
+
+`this`代表所在类的对象引用，方法被哪个对象调用，this就代表哪个对象
 
 ```java
 public class Student{
@@ -255,7 +259,7 @@ public class Student{
 
   3. 没有具体的返回值（不能由return带回结果数据）
 
-  4. 构造方法包含无参构造和有参构造
+  4. 构造方法包含**无参构造**和**有参构造**
 
      
 #### 语法：	` [可见度]  类名(){}`
@@ -330,16 +334,33 @@ public class Student{
 #### 接口的定义(interface)：
 
 - 是一种强制性（完全）的规范。 接口不是一个类，
-- 定义一系列的属性（静态常量）和方法（抽象方法）
+- 定义一系列的属性（` public static final`**静态常量**）和方法（` public abstract `**抽象方法**）
+
+#### 接口的特征
+
+- 不能被实例化，接口没有构造方法
+- 接口只能被实现implements 或者继续定义为接口
+- 属性默认是` public static fianl `修饰的静态常量,但可以省略不写
+- 方法默认是` public abstract `修饰的抽象方法 ，但**可以省略不写**
+- 只能有抽象方法
+- **接口中的方法必须被子类重写**
+- 一个类实现多个接口用逗号隔开`public class Man implements IPerson,Program`
+- 如果一个类有继承又有实现，那么是先继承再实现
+- 接口可以继承多个接口，用逗号隔开！
+
+
 
 #### 定义语法：
 
 ```java
 [可见度] interface 接口名称 [extends 其他的接口名] {
         // 声明变量
+        public static final 数据类型 属性名 = 默认值;
+        // public static final 可以省略不写
+        数据类型 属性名 = 默认值; 
         // 抽象方法
         public abstract 方法返回类型 方法名();
-        //public和abstract是可以省略的
+        //public abstract 是可以省略的
         方法返回类型 方法名();  
 }
 ```
@@ -354,21 +375,18 @@ public class 类名 implements 需要实现的接口名{
 }
 ```
 
+#### 接口中定义默认方法
 
+> 不需要对默认方法进行覆盖重写，就可以使用该方法
 
-#### 接口的特征
+```java
+//public可以省略
+public default 方法返回类型 方法名(){
+	//方法里面需要执行的内容
+}
+```
 
-- 不能被实例化，接口没有构造方法
-- 接口只能被实现implements 或者继续定义为接口
-- 属性默认是` public、 static、 fianl `修饰的静态常量
-- 方法默认是` public、 abstract `修饰的抽象方法 ，但**可以省略不写**
-- 只能有抽象方法
-- **接口中的方法必须被子类重写**
-- 一个类实现多个接口用逗号隔开`public class Man implements IPerson,Program`
-- 如果一个类有继承又有实现，那么是先继承再实现
-- 接口可以继承多个接口，用逗号隔开！
-
-
+接口实现类如果没有重写接口中的默认方法，会去调用接口中的默认方法；如果实现类重写了接口的默认方法，便会调用重写的方法。
 
 #### 类和接口的关系
 
@@ -511,82 +529,32 @@ final class 类名 {//类体}
 ### 方法的重写
 
 - 位置： 子类
+- 重写的特点：方法名、 参数列表、 返回值类型 必须和父类方法一致
+- 访问权限不能比父类的更严格
+- @Override //注解 规定它下面的方法必须是重写的方法
 
-重写的特点：方法名、 参数列表、 返回值类型 必须和父类方法一致
-访问权限不能比父类的更严格
-@Override //注解 规定它下面的方法必须是重写的方法
+![img](\img\重载和重写.jpg)
 
-![img](https://pic3.zhimg.com/80/v2-b642b54a9d6e478a42b7af2b74cc1f8a_720w.jpg)
-
-## 多态性
+## 多态
 
 > （接口）是为了弥补java单继承的缺陷，而应运而生，（方法的重载和覆盖（重写）） 
-
-多态是允许程序中出现重名现象。
-一个是方法多态：在一个类中，允许多个方法使用一个名字，但方法的参数不同，完成的功能也不同。
-另一个是对象多态：子类对象可以与父类对象进行互相的转换，而根据其使用的子类的不同完成的功能也不同。
-
-
-
-
-
-
-
-# 面向对象的总结：
-
-## 对象和封装
-
-
-
-- 
-
-## 封装和继承
-
-### 封装的概念
-
-将类的某些信息隐藏在类内部，不允许外部程序直接访问，
-而是通过该类提供的方法来实现对隐藏信息的操作和访问。
-
-### 封装的好处：
-
-- 隐藏类的实现细节
-- 方便加入控制语句
-- 方便修改实现
-- 只能通过规定方法访问数据
-
-
-
-## 抽象和多态
-
-### **抽象（abstract）**
-
-**意义**：抽象类是一种不完全规范，规定子类必须具备哪些方法
-**特点**： 抽象类中可以有普通属性和普通方法
-
-- 抽象类中有构造方法，但是不能实例化
-
-- 抽象类只能被继承
-
-- 抽象方法只能被子类重写或者子类继续抽象
-
-- 有抽象方法的类必须是抽象类
-
-  抽象类中不一定有抽象方法
-
-### 多态
 
 - 一个对象在不同的载体中呈现不同的形态。
 - 同一个引用类型，调用同一个方法，得到不同的结果。
 
-#### 实现多态的形式：
-
-> **继承**是多态的基础，没有继承就没有多态
->
-> 1.要有继承，2. 要有重写，3.父类对象实例指向子类对象`Parent p = new Child()`。
+#### 多态的实现方式：
 
 - 重写
 - 接口
 - 抽象类和抽象方法
+
+#### 多态存在的必要条件：
+
+> **继承**是多态的基础，没有继承就没有多态
+
+1. 有类继承或者接口实现
+2. 重写（实现类重写接口中的抽象方法，子类重写父类的方法）
+3. 父类实例指向子类对象：**`Parent p = new Child();`**
 
 ```java
 public class Polymorphic {
@@ -656,6 +624,47 @@ productService.listProducts()    //查询好评商品
 
 
 
+## 抽象类abstract：
+
+**意义**：抽象类是一种不完全规范，规定子类必须具备哪些方法
+**特点**： 抽象类中可以有普通属性和普通方法
+
+- 抽象类中不能实例化，只能被继承
+- 抽象类中不一定包含抽象方法，但是有抽象方法的类必定是抽象类
+- 抽象类中的抽象方法只是声明，不包含方法体，就是不给出方法的具体实现也就是方法的具体功能。
+- 抽象方法只能被子类重写或者子类继续抽象
+
+## 抽象类和接口的区别点
+
+1、接口只能含有抽象的方法，抽象类中可以包含部分的实现方法。
+
+2、接口只能定义静态常量，默认为public static final，并且需要显示初始化。抽象类中可以定义普通的成员变量。
+
+3、接口不能含构造方法，抽象类可以有自己的构造方法（被继承使用）。
+
+4、接口和抽象类都**无法被实例化**。
+
+5、一个类可以实现多个接口，只能继承一个抽象类（只能继承一个类，单继承）
+
+6、**一个类实现接口时需要实现所有的方法**。**继承一个抽象类的时候需要实现所有抽象方法**，否则同样需要声明为抽象类。（如果一个类含有抽象方法，则这个类必须被声明为抽象类）
+
+7、如果向一个抽象类里加入一个新的具体方法时，它的所有子类都自动得到了这个新方法。如果向一个接口添加一个新的方法，则实现该接口的所有类就必须同步修改来实现这个方法，否则无法编译通过。
+
+8、抽象类的实现只能由它的子类给出，而Java是单继承的，所以抽象类作为类型定义工具的效能大打折扣。任何实现一个接口的类都可以具有这个接口的类型，而一个类可以同时实现多个接口，从而这个类就有了多种类型。
+
+```java
+public abstract class Employee
+{
+   private String name;
+   private String address;
+   private int number;
+   //含抽象方法的类一定是抽象类
+   public abstract double computePay();
+   
+   //其余代码， 方法的实现....
+}
+```
+
 
 
 
@@ -696,9 +705,516 @@ catch()块可以有多个，但是catch块捕捉有顺序 先子类后父类
 
 - throws后面跟异常类，而且可以跟多个异常类。
 
-  
+  #
 
-作者：HelloCode：
-链接：https://juejin.cn/post/7082686505243639839
-来源：稀土掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+
+## 枚举
+
+>特殊的类
+>
+>表示一组常量
+>
+>可以使用构造器(`必须私有`),定义成员变量和方法
+>
+>实现一个或多个接口,但枚举类不能继承其他类
+
+### 语法：
+
+```java
+修饰符 enum 枚举名 {
+        枚举成员1,
+        枚举成员2
+}
+```
+
+实例：
+
+```java
+// 1. 定义
+public enum Color {
+    BLACK,
+    WHITE
+}
+
+// 2. 使用
+class Test {
+    public static void main(String[] args) {
+        System.out.println(Color.BLACK);  // BLACK
+    }
+}
+```
+
+### 常用方法
+
+| 方法名称    | 描述                             |
+| ----------- | -------------------------------- |
+| values()    | 以数组形式返回枚举类型的所有成员 |
+| valueOf()   | 将普通字符串转换为枚举实例       |
+| compareTo() | 比较两个枚举成员在定义时的顺序   |
+| ordinal()   | 获取枚举成员的索引位置           |
+
+1. `values()` 循环输出成员变量,并使用 `ordinal()` 输出索引值
+
+```java
+public static void main(String[] args) {
+        Color[] colorArr = Color.values();
+        //打印枚举数组
+        System.out.println(Arrays.toString(colorArr));
+  
+    
+        for (Color value : Color.values()) {
+            System.out.println("当前索引值为:"+value.ordinal()+",数据为:"+value);
+        }
+    }
+
+// 结果: 
+当前索引值为:0,数据为:BLACK
+当前索引值为:1,数据为:WHITE
+```
+
+2. 通过 `valueof()` 获取枚举实例,并使用 `compareTo()` 比较定义顺序
+
+```java
+public enum Color {
+    BLACK,
+    WHITE,
+    YELLOW;
+}
+
+class Test {
+    public static void main(String[] args) {
+        Color color = Color.valueOf("WHITE");
+        compare(color);
+    }
+
+    public static void compare(Color color){
+        for (Color value : Color.values()) {
+            //compareTo()
+            System.out.println(color+"与"+value+"的比较结果是"+color.compareTo(value));
+        }
+    }
+}
+
+结果:  
+
+WHITE与BLACK的比较结果是1
+WHITE与WHITE的比较结果是0
+WHITE与YELLOW的比较结果是-1
+```
+
+- String name() :返回此枚举实例的名称
+- String toString():返回枚举常量的名称
+- toString()方法更常用
+
+```java
+public class  TestDemo{
+	public static void main(String[] args) {
+		System.out.println(Season.SPRING.name());
+		System.out.println(Season.SPRING.toString());
+		//实质就是调用toString()方法
+		System.out.println(Season.SPRING);
+	}
+}
+```
+
+
+
+### 枚举的成员变量与方法
+
+ >特殊的类
+ >
+ >表示一组常量
+ >
+ >可以使用构造器(`必须私有`),定义成员变量和方法
+ >
+ >实现一个或多个接口,但枚举类不能继承其他类
+
+枚举常量外, enum是一个完整的类,它也可以定义`成员变量`编写自己的`构造方法`以及`成员方法`,甚至`实现接口`.
+
+```java
+// 实现Runnable接口,在这个类中没有意义,只是为了举例
+public enum Color implements Runnable {
+    WHITE("黑色",1),
+    BLACK("白色",2),
+    YELLOW("黄色",3);
+   
+    //定义成员变量 
+    private final String value; 
+    private final Integer index;
+
+    // 自定义构造,虽然没有写private,但是默认就是private
+    Color(String value,Integer index) {
+        this.value = value;
+        this.index = index;
+    }
+
+    // 自定义方法
+    public void draw() {
+        System.out.println("绘制 " + value);
+    }
+
+    // 重写方法
+    @Override
+    public String toString() {
+        return "hello I'm "+value+", my index is "+index;
+    }
+
+    // 实现接口方法
+    @Override
+    public void run() {
+        // todo ...
+    }
+}
+
+class Test {
+    public static void main(String[] args) {
+        for (Color value : Color.values()) {
+            System.out.println(value);
+        }
+    }
+}
+
+结果: 
+hello I'm 黑色, my index is 1
+hello I'm 白色, my index is 2
+hello I'm 黄色, my index is 3
+
+```
+
+### **枚举类和普通类的区别**
+
+1. 枚举类可以实现一个或多个接口，使用eunm定义的类默认继承了java.lang.Enum类，而不是默认
+继承Object类，因此枚举类不能显示继承其他父类。其中java.lang.Enum类实现了
+java.lang.Serializable和java.lang.Comparable接口
+2. 非抽象的枚举类默认会使用final修饰，因此枚举类**不能派生子类**。
+3. 枚举类的**构造器只能使用private修饰**，如果省略，系统默认使用private修饰。
+4. 枚举类的每一个实例必须显示声明，每个实例使用逗号隔开。
+
+
+
+
+
+## 泛型
+
+泛型类在java中有着很重要的地位，其中我们用的最多的就是ArrayList,HashMap,HashSet.
+
+> 泛型就是把**类型明确的工作推迟**到**创建对象**或**调用方法**的时候才去明确的特殊的类型。
+
+- 泛型的本质是**参数化类型**，也就是说所操作的数据类型被指定为一个参数。
+
+- 泛型---->广泛的类型
+
+###  泛型的好处：
+
+- 在编译的时候能够检查类型安全
+- 所有的强制转换都是自动和隐式的
+
+在没有泛型的情况的下，通过对类型 Object 的引用来实现**参数的“任意化”**，“任意化”带来的缺点是要做**显式的强制类型转换**，而这种转换是要求开发者对实际参数类型可以预知的情况下进行的。对于强制类型转换错误的情况，编译器可能不提示错误，在运行的时候才出现异常，这是本身就是一个安全隐患。
+
+``` java
+public class GlmapperGeneric<T> {
+    private T t;
+    public void set(T t) { this.t = t; }
+    public T get() { return t; }
+  
+    public static void main(String[] args) {
+        // do nothing
+    }
+
+  /**
+    * 不指定类型
+    */
+  public void noSpecifyType(){
+    GlmapperGeneric glmapperGeneric = new GlmapperGeneric();
+    glmapperGeneric.set("test");
+    // 需要强制类型转换
+    String test = (String) glmapperGeneric.get();
+    System.out.println(test);
+  }
+
+  /**
+    * 指定类型
+    */
+  public void specifyType(){
+    GlmapperGeneric<String> glmapperGeneric = new GlmapperGeneric();
+    glmapperGeneric.set("test");
+    // 不需要强制类型转换
+    String test = glmapperGeneric.get();
+    System.out.println(test);
+  }
+}
+```
+
+### 泛型只能用引用数据类型
+
+#### 基本数据类型：
+
+- 整型【byte、short、int、long】
+
+- 浮点【float、double】
+
+- 字符【char】
+
+- 逻辑【boolean】
+
+#### 引用数据类型：
+
+- 类、
+- 接口
+- 数组
+
+#### 包装类：
+
+Boolean、Character、Byte、Short、Integer、Long、Float、Double
+
+#### 常见类：
+
+String、StringBuffer、Date、Math、
+
+```java
+Object<Integer>  //true
+Object<int> //false
+```
+
+### 泛型的标记符：
+
+- ？ 表示不确定的 java 类型
+- T (type) 表示具体的一个java类型
+- K V (key value) 分别代表java键值中的Key Value
+- E (element) 代表Element
+
+### 泛型有三种实用方式
+
+- 类泛型：`public class Test<T>}{}` T表示未知类型
+
+- 接口泛型：`public interface Test<T>{}` 和定义类一样
+
+- 方法泛型：`public <T> void Test(T name){}`
+
+### 类泛型 
+
+> 语法：` 类名 <泛型类型> `
+>
+> 实例：`类名<实际类型> 实例类名 = new 类名<实际类型>();`
+
+```java
+public class 类名 <泛型类型1,...> {
+    
+}
+//实例类
+类名<实际类型> 实例类名 = new 类名<实际类型>();
+```
+
+实例：
+
+```java
+public class Box<T> {
+   
+  private T t;
+ 
+  public void add(T t) {
+    this.t = t;
+  }
+ 
+  public T get() {
+    return t;
+  }
+ 
+  public static void main(String[] args) {
+    Box<Integer> integerBox = new Box<Integer>();
+    Box<String> stringBox = new Box<String>();
+ 
+    integerBox.add(new Integer(10));
+    stringBox.add(new String("菜鸟教程"));
+  }
+}
+```
+
+
+
+
+
+### 接口泛型
+
+> 语法： `接口名 <泛型类型> `
+>
+> 泛型使用：  
+>
+> - **接口名 <实际泛型类型>**  变量名 = 方法() 
+>
+> - **接口名 <实际泛型类型>**  变量名 = new 接口的实例化类**<实际泛型类型>** () 
+>
+> 总结： 类的实例，变量声明的类型是：**接口名 <实际泛型类型>**
+
+```java
+//修饰符  interface 接口名<数据类型> {}
+  public interface 接口名<泛型类型> {
+    
+ }
+```
+
+#### 接口泛型一般被类实现：
+
+- 实现接口的时候**不传入数据类型**，需要将泛型声明也要写到类中，要不然会报错
+- 实现接口的时候**传入数据类型**，就不用把泛型声明也写到类中了
+
+```java
+public interface Test<T>{
+    T getName(T name);
+}
+
+//如果实现接口的时候不传入数据类型的话，需要将泛型声明也要写到类中要不然会报错
+class Test1<T> implements Test<T>{
+    @Override
+    public T getName(T name) {
+        return null;
+    }
+}
+
+//实现接口的时候传入数据类型的话，就不用把泛型声明也写到类中了
+class Test2 implements  Test<String>{
+    @Override
+    public String getName(String name) {
+        return name;
+    }
+}
+```
+
+实例：
+
+- **接口名 <实际泛型类型>**  变量名 = 方法() 
+
+- **接口名 <实际泛型类型>**  变量名 = new 接口的实例化类**<实际泛型类型>** () 
+
+```java
+Test<String>  demo  = new Test1<String>()
+```
+
+
+
+###  方法泛型
+
+> 调用方法时，**传入的参数类型决定泛型的类型**
+>
+> 语法：`修饰词 <泛型类型> `
+
+```java
+public <泛型类型> 返回类型 方法名 (泛型类型 变量名) {
+    
+}
+```
+
+#### 方法泛型的使用：
+
+> 参数需要多少泛型，返回值前面就得定义几个泛型
+
+```java
+public <T> void getName(T name){} 
+public <T,K> void getNameAndValue(T name, K value){}
+public <T,K,V> void getNameAndValueAndV(T name, K value, V v){}
+```
+
+实例：
+
+```java
+class Demo{  
+  public <T> T fun(T t){   // 可以接收任意类型的数据  
+   return t ;     // 直接把参数返回  
+  }  
+};  
+public class GenericsDemo26{  
+  public static void main(String args[]){  
+     Demo d = new Demo() ;         // 实例化Demo对象  
+   
+     String str = d.fun("汤姆") ; // 传递字符串  
+     int i = d.fun(30) ;          // 传递数字，自动装箱  
+   
+    System.out.println(str) ; // 输出内容  
+    System.out.println(i) ;   // 输出内容  
+  }  
+};
+```
+
+
+
+### 类派生子类
+
+```java
+public class A extends Parent<Integer, String> {}
+```
+
+### 类型通配符
+
+> **?** 代替具体的类型参数
+
+例如**` List<?> `**在逻辑上是` List<String>`,`List<Integer> `等所有 `List<具体类型实参>`的**父类**。
+
+```java
+import java.util.*;
+ 
+public class GenericTest {
+     
+    public static void main(String[] args) {
+        List<String> name = new ArrayList<String>();
+        List<Integer> age = new ArrayList<Integer>();
+        List<Number> number = new ArrayList<Number>();
+        
+        name.add("icon");
+        age.add(18);
+        number.add(314);
+ 
+        getData(name);
+        getData(age);
+        getData(number);
+       
+   }
+ 
+   public static void getData(List<?> data) {
+      System.out.println("data :" + data.get(0));
+   }
+}
+```
+
+注意：上述正常
+
+```java
+ public static void getData1(List<?> data) {
+        data.add("string");//报错
+        data.add(18);      //报错
+        data.add(null);    //添加成功
+
+    }
+
+//以下才正确
+public static void getData1(List<String> data) {
+        data.add("string");
+    }
+  public static void getData2(List<Number> data) {
+        data.add(18);
+    }
+```
+
+注意：方法的参数泛型`List<?>` ，在方法内使用`data.add()`接受类型只能是null，其他类型都报错；需要通过`List<String>`，指明？的类型
+
+```java
+getData(name);
+getData(age);    //报错
+getData(number); //报错
+public static void getData(List<? extends String> data) {
+        System.out.println("data :" + data.get(0));
+        data.add("string"); //报错
+    }
+```
+
+注意：方法的参数泛型`List<? extends String>`  限制调用方法时传入的参数
+
+
+
+
+
+
+
+上边界通配符号：可以接收E以及E的子类型的泛型，这里面的E不止是类哦，也可以是接口
+
+下边界通配符号： 就是传入的类型必须得是E以及E的父类

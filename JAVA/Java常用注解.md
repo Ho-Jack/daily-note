@@ -13,6 +13,36 @@
 
 > 生命周期
 
+## 封装JavaBean常用的注解：
+
+#### @Data 
+
+> 注在类上，省去代码中大量的get()、 set()、 toString()等方法
+
+#### @AllArgsConstructor 
+
+> 注在类上，提供类的全参构造 >
+
+#### @NoArgsConstructor 
+
+> 注在类上，提供类的无参构造
+
+#### @Setter 
+
+> 注在属性上，提供 set 方法
+
+#### @Getter 
+
+> 注在属性上，提供 get 方法
+
+#### @EqualsAndHashCode
+
+> 注在类上，提供对应的 equals 和 hashCode 方法
+
+#### @Log4j/@Slf4j 
+
+> 注在类上，提供对的 Logger 对象，变量名为 log
+
 ## SpringMVC常用的注解
 
 #### @RestController =  `@Controller`  + `@ResponseBody `
@@ -21,7 +51,7 @@
 >
 > @Controller 标识是一个Controller，Spring包扫描创建实例
 >
-> @ResponseBody 返回对象利用jackson工具类转换为json字符串
+> @ResponseBody 返回对象换为json字符串
 >
 > 1. 类前注解，表示可以被浏览器访问（只在类上）
 >
@@ -195,6 +225,94 @@ public class  startApplication{
 #### @CrossOrigin
 
 > 用在class和method上用来支持跨域请求
+
+## 校验注解
+
+### @Validated和@Vaild
+
+#### 注解位置：
+
+@Validated：可以用在**类型**、方法和方法参数上。但是不能用在成员属性（字段）上
+
+@Valid：可以用在方法、构造函数、方法参数和**成员属性（字段）**上
+
+#### 分组：
+
+@Validated：提供了一个分组功能，可以在入参验证时，根据不同的分组采用不同的验证机制
+
+@Valid：作为标准JSR-303规范，还没有吸收分组的功能
+
+#### 总结：
+
+Spring validation验证框架对入参实体进行嵌套验证必须在相应属性（字段）加上@Valid而不是@Validated
+
+@Validated：不能用在成员属性（字段）上，也无法提示框架进行嵌套验证。
+
+@Valid：能够用在成员属性（字段）上，提示验证框架进行嵌套验证。
+
+```java
+@Data
+public class UserModel {
+    @NotBlank
+    private String name;
+    
+    @Valid //用在成员属性上，使得FamilyModell实例对象校验生效
+    private FamilyModel familyModel;
+}
+
+public class FamilyModel 
+    @NotBlank
+    private String motherName;
+    @NotBlank
+    private String fatherName;
+}
+```
+
+
+
+### 约束性：
+
+#### 值校验：
+
+| 注解         | 功能                                                         |
+| ------------ | ------------------------------------------------------------ |
+| @NotNull     | 不能为null，**可以是空**                                     |
+| @Null        | 必须为null                                                   |
+| @NotBlank    | 字符串不能为null,字符串trim()后也不能等于“”                  |
+| @NotEmpty    | 不能为null，集合、数组、map等size()不能为0；字符串trim()后可以等于“” |
+| @AssertFalse | 可以为null,如果不为null的话必须为false                       |
+| @AssertTrue  | 可以为null,如果不为null的话必须为true                        |
+
+#### 范围校验： 
+
+| 注解                          | 功能                     |
+| ----------------------------- | ------------------------ |
+| @Max                          | 最大不得超过此最大值     |
+| @Min                          | 最大不得小于此最小值     |
+| @Future                       | 日期必须在当前日期的未来 |
+| @Past                         | 日期必须在当前日期的过去 |
+| @DecimalMax(value = "最大值") | 设置不能超过最大值       |
+| @DecimalMin                   | 设置不能超过最小值       |
+| @Range                        | 值必须在指定范围内       |
+
+
+#### 长度校验：
+| 注解                                | 功能                                        |
+| ----------------------------------- | ------------------------------------------- |
+| @Size(min = 最小值, max = 最大值)   | 集合、数组、map等的size()值必须在指定范围内 |
+| @Length(min = 最小值, max = 最大值) | 长度必须在指定范围内                        |
+
+
+
+#### 格式校验
+
+| 注解     | 功能                                                       |
+| -------- | ---------------------------------------------------------- |
+| @Pattern | 必须满足指定的正则表达式                                   |
+| @Email   | 必须是email格式                                            |
+| @URL     | 必须是一个URL                                              |
+| @Digits  | 设置必须是数字且数字整数的位数和小数的位数必须在指定范围内 |
+
 
 
 
