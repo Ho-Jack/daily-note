@@ -1284,7 +1284,7 @@ public class TransactionManager {
 
 - **IoC支持** SpringIoC 可以为MyBatis完成DataSource、SqlSessionFactory、SqlSession以及DAO对象的创建
 
-- **AOP支持**使用Spring提供的事务管理切面类完成对MyBatis数据库操作中的事务管理
+- **AOP支持**使用Spring提供的**事务管理切面类**完成对MyBatis数据库操作中的事务管理
 
 #### 7.2 Spring整合MyBatis准备工作
 
