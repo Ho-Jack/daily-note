@@ -21,11 +21,11 @@
 
 #### @AllArgsConstructor 
 
-> 注在类上，提供类的全参构造 >
+> 注在类上，提供类的**全参构造** 
 
 #### @NoArgsConstructor 
 
-> 注在类上，提供类的无参构造
+> 注在类上，提供类的**无参构造**
 
 #### @Setter 
 
@@ -34,6 +34,8 @@
 #### @Getter 
 
 > 注在属性上，提供 get 方法
+
+#### @toString
 
 #### @EqualsAndHashCode
 
@@ -319,7 +321,9 @@ public class FamilyModel
 ## spring常用的注解
 ### Ioc的类注解：
 
-#### @Component：
+
+
+#### @Component
 
 > 除了控制器、servcie和DAO之外的类一律使用此注解声明
 >
@@ -351,7 +355,9 @@ public class FamilyModel
 >
 >   (默认为饿汉模式,bean在加载对象时候，对象就会创建实例)
 
+#### @Bean
 
+> 多用于第三方类无法写@Component的情况
 
 ### IoC的方法注解：
 
@@ -438,21 +444,41 @@ public class UserController{
 > 最终通知
 
 ## MyBatis注解
-@Data     //动态生成get/set,tostring等方法
-
-@Accessors(chain=true)    /*开启链式加载，重写set方法*/
-
-@NoArgsConstructor    //无参构造
-
-@AllArgsConstructor    //有参构造
+> 貌似少用，之后再补充
 
 
 
 @BeforeEach    //测试API中的注解，在执行@Test注解时会提前先执行
 
+#### @Mapper
+
+> 简化mapper映射文件 
+
+#### @Param
+
+> 标注在DAO接口中的方法参数上，给参数命名后就可以通过 **#{xxx}** 的形式注入sql语句中(与映射文件#{xx}变量关联)
+>
+> 注解声明参数的别名
+
+- DAO接口
+
+  ```java
+  public User selectUser(@Param("userName") String name,@Param("password") String pwd);
+  ```
+
+- 映射到XML中的`<select>`标签
+
+  ```java
+  <select id="selectUser" resultMap="User">  
+     select * from user  where user_name = #{userName} and user_password=#{password}  
+  </select>
+  ```
+
+  与 @RequestParam比较：
+
+  @RequestParam用在Controller层，将请求参数和控制器方法的形参创建映射关系
 
 
-@Param("sex") String sex 封装为Map.
 
 ## 其他注解
 #### @ResponseBody   
@@ -524,3 +550,63 @@ public class UserController{
 @Query
 
 @EnableMongoRepositories
+
+## Swagger
+
+#### @Api 
+
+> 用在类上，标记一个 Controller 类作为 Swagger 文档资源（**接口目录标题**）
+>
+> 配合：@RestController
+>
+> tags：接口说明，可以在页面中显示； `@Api(tags={"controller接口目录"})`
+
+#### @ApiOperation 
+
+> 用在 Controller 里的方法上，说明方法的作用，每一个接口的定义 （**接口的名称和说明**）
+>
+> `@ApiOperation(value = "接口名称",notes = "详细说明")`
+
+#### @ApiModel 
+
+> 表示一个实体类，用于实体类中的参数接收**总说明**
+>
+> `@ApiModel(value = "类", description = "参数总说明")`
+
+#### @ApiModelProperty 
+
+> 在类的属性上，添加属性描述；
+>
+> `@ApiModelProperty(value = "属性说明")`
+
+#### @ApiParam 
+
+> 用于 Controller 中方法的参数说明
+>
+> `@ApiParam(value = "参数说明", required = "是否必填")`
+
+
+
+#### @ApiImplicitParam 
+
+>  作用在接口方法上，描述单个参数信息，只能作用在方法上；
+
+- name：参数名，对应方法中单独的参数名称。
+- value：参数中文说明。
+- required：是否必填。
+- paramType：参数类型，取值为 path、query、body、header、form。
+- dataType：参数数据类型。
+- defaultValue：默认值。
+
+#### @ApiImplicitParams 
+
+> 作用在接口方法上，描述**多个**参数信息,嵌套`@ApiImplicitParam `使用
+>
+> `@ApiImplicitParams({ @ApiImplicitParam(name = "id", value = "用户ID", dataType = "string", paramType = "query", required = true, defaultValue = "1") })`
+
+#### ApiResponse 和 ApiResponses
+
+> @ApiResponse 用于方法上，说明接口响应的一些信息；
+>
+> `@ApiResponses` 嵌套多个 `@ApiRespons`
+
