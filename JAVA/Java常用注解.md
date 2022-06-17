@@ -458,15 +458,17 @@ public class UserController{
 
 > 标注在DAO接口中的方法参数上，给参数命名后就可以通过 **#{xxx}** 的形式注入sql语句中(与映射文件#{xx}变量关联)
 >
-> 注解声明参数的别名
+> 注解声明参数的别名(**用在DAO接口的操作方法中如果有多个参数情况**)
+>
+> **`注意`** 如果DAO操作方法没有通过@Param指定参数别名，在SQL映射文件中也可以通过`arg0,arg1...`或者`param1,param2,...`获取参数
 
-- DAO接口
+- DAO接口：用`@Param()`给操作方法的参数设置别名
 
   ```java
   public User selectUser(@Param("userName") String name,@Param("password") String pwd);
   ```
 
-- 映射到XML中的`<select>`标签
+- 映射到XML中的`<select>`标签，通过`#{别名}`获取到指定参数
 
   ```java
   <select id="selectUser" resultMap="User">  
@@ -515,7 +517,29 @@ public class UserController{
 
 ## Spring Data
 
-@Transactional
+#### @Transactional
+
+> - 作用于类：当把@Transactional 注解放在类上时，表示所有该类的public方法都配置相同的事务属性信息。
+>
+> - 作用于方法：当类配置了@Transactional，方法也配置了@Transactional，方法的事务会覆盖类的事务配置信息。
+>
+> - 作用于接口：不推荐这种使用方法，因为一旦标注在Interface上并且配置了Spring AOP 使用CGLib动态代理，将会导致@Transactional注解失效
+
+| 参数                   | 意义                                             |
+| ---------------------- | ------------------------------------------------ |
+| isolation              | 事务隔离级别，默认为DEFAULT                      |
+| propagation            | 事务传播机制，默认为REQUIRED                     |
+| readOnly               | 事务读写性，默认为false                          |
+| noRollbackFor          | 一组异常类，遇到时不回滚，默认为{}               |
+| noRollbackForClassName | 一组异常类名，遇到时不回滚，默认为{}             |
+| rollbackFor            | 一组异常类，遇到时回滚，默认为{}                 |
+| rollbackForClassName   | 一组异常类名，遇到时回滚，默认为{}               |
+| timeout                | 超时时间，以秒为单位                             |
+| value                  | 可选的限定描述符，指定使用的事务管理器，默认为“” |
+
+
+
+
 
 @NoRepositoryBean
 

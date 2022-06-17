@@ -358,7 +358,13 @@ public class StudentDAOTest {
 
 #### 5.8 添加操作回填生成的主键
 
-- StduentMapper.xml的添加操作标签——`insert`
+- useGeneratedKeys 设置添加操作**是否需要回填生成的主键**
+
+-  keyProperty 设置回填的主键值赋值到参数对象的哪个属性 
+
+  
+
+StduentMapper.xml的添加操作标签——`insert`
 
 ```xml
 <!-- useGeneratedKeys 设置添加操作是否需要回填生成的主键 -->
@@ -570,6 +576,8 @@ mysql_password=admin123
 
 #### 8.2 settings标签
 
+> 设置mybatis的属性
+
 ```xml
 <!--设置mybatis的属性-->
 <settings>
@@ -581,6 +589,8 @@ mysql_password=admin123
 ```
 
 #### 8.3 typeAliases标签
+
+> 给实体类取别名
 
 ```xml
 <!--typeAliases标签用于给实体类取别名，在映射文件中可以直接使用别名来替代实体类的全限定名-->
@@ -648,7 +658,7 @@ mysql_password=admin123
 
 #### 9.2 mapper根标签
 
-> mapper文件相当于DAO接口的‘实现类’，namespace属性要指定`实现`DAO接口的全限定名
+> mapper文件相当于**DAO接口的‘实现类’**，namespace属性要指定`实现`DAO接口的全限定名
 
 #### 9.3 insert标签
 
@@ -656,15 +666,13 @@ mysql_password=admin123
 >
 > **常用属性**
 >
-> id属性，绑定对应DAO接口中的方法
->
-> parameterType属性，用以指定接口中对应方法的参数类型（可省略）
->
-> useGeneratedKeys属性， 设置添加操作是否需要回填生成的主键
->
-> keyProperty属性，指定回填的id设置到参数对象中的哪个属性
->
-> timeout属性，设置此操作的超时时间，如果不设置则一直等待
+> | 属性             | 作用                                       |
+>| ---------------- | ------------------------------------------ |
+> | id               | 绑定对应DAO接口中的方法                    |
+>| parameterType    | 用以指定接口中对应方法的参数类型（可省略） |
+> | useGeneratedKeys | 设置添加操作是否需要回填生成的主键         |
+>| keyProperty      | 指定回填的id设置到参数对象中的哪个属性     |
+> | timeout          | 设置此操作的超时时间，如果不设置则一直等待 |
 
 **主键回填**
 
@@ -697,15 +705,18 @@ mysql_password=admin123
 
 > 声明查询操作
 >
-> - id属性， 指定绑定方法的方法名
-> - parameterType属性，设置参数类型
->
-> - resultType属性，指定当前sql返回数据封装的对象类型（实体类）
-> - resultMap属性，指定从数据表到实体类的字段和属性的对应关系
-> - useCache属性，指定此查询操作是否需要缓存
-> - timeout属性，设置超时时间
+> | 属性          | 作用                                        |
+> | ------------- | ------------------------------------------- |
+> | id            | 指定绑定方法的方法名                        |
+> | parameterType | 设置参数类型                                |
+> | resultType    | 指定当前sql返回数据封装的对象类型（实体类） |
+> | **resultMap** | 指定从数据表到实体类的字段和属性的对应关系  |
+> | useCache      | 指定此查询操作是否需要缓存                  |
+> | timeout       | 设置超时时间                                |
 
 #### 9.7 resultMap标签
+
+> 用于定义实体类与数据表的映射关系（ORM）
 
 ```xml
 <!-- resultMap标签用于定义实体类与数据表的映射关系（ORM） -->
@@ -728,7 +739,7 @@ mysql_password=admin123
 
 #### 9.9 sql和include
 
-> SQL片段
+> SQL片段(用于抽离可复用sql片段)
 
 ```xml
 <sql id="wanglaoji">sid , stu_num , stu_name , stu_gender , stu_age</sql>
