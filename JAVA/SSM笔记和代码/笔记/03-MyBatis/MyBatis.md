@@ -1,3 +1,45 @@
+实体类：插入数据，创建对象（在myBatis中与`resultMap`/关联）数据库表的实体
+
+DAO接口：关联数据库操作  (与mapper映射文件的`<mapper namespace="dao接口">`标签关联关联)
+
+```xml
+<resultMap id="" type="">
+    <constructor><!-- 类再实例化时用来注入结果到构造方法 -->
+        <idArg/><!-- ID参数，结果为ID -->
+        <arg/><!-- 注入到构造方法的一个普通结果 -->  
+    </constructor>
+    <id column="" property=""/>  <!-- 用于表示哪个列是主键 -->
+    <result column="" property=""/><!-- 注入到字段或JavaBean属性的普通结果 -->
+
+   <!-- 用于一对一关联  关联的是对象--> 
+    <result column="" property="XX.xx"/>
+    
+    <association property="属性名称" javaType="resultMap标签关联的type">
+        <id column="" property=""/>
+        <result column="" property=""/>
+    </association>
+    <association property="json的字段名" select="mapper映射文件的其他方法" column="传入select方法的参数">
+    </association>
+    <!-- 用于一对多、多对多关联  关联的是集合-->
+    <collection property="json的字段名" ofType="resultMap标签关联的type">
+         <id property="id" column="role_id"></id>
+		<result property="name" column="role_name"></result>
+    </collection> 
+    <collection property="" select="mapper映射文件的其他方法">
+    </collection> 
+    <!-- 使用结果值来决定使用哪个结果映射 -->
+    <discriminator javaType="">
+        <case value=""/><!-- 基于某些值的结果映射 -->
+    </discriminator>
+</resultMap>
+```
+
+
+
+
+
+
+
 ## 一、MyBatis简介
 
 #### 1.1 框架概念
@@ -705,18 +747,46 @@ mysql_password=admin123
 
 > 声明查询操作
 >
-> | 属性          | 作用                                        |
-> | ------------- | ------------------------------------------- |
-> | id            | 指定绑定方法的方法名                        |
-> | parameterType | 设置参数类型                                |
-> | resultType    | 指定当前sql返回数据封装的对象类型（实体类） |
-> | **resultMap** | 指定从数据表到实体类的字段和属性的对应关系  |
-> | useCache      | 指定此查询操作是否需要缓存                  |
-> | timeout       | 设置超时时间                                |
+> | 属性          | 作用                                                         |
+> | ------------- | ------------------------------------------------------------ |
+> | id            | 指定绑定方法的方法名                                         |
+> | parameterType | 设置参数类型                                                 |
+> | resultType    | 指定当前sql返回数据封装的对象类型（实体类）**但是不能取别名** |
+> | **resultMap** | 指定从数据表到实体类的字段和属性的对应关系，**可以取别名**   |
+> | useCache      | 指定此查询操作是否需要缓存                                   |
+> | timeout       | 设置超时时间                                                 |
+
+```xml
+   <!-- resultMap标签用于定义实体类与数据表的映射关系（ORM） -->
+<resultMap id="studentMap" type="Student">
+    <id column="sid" property="stuId"/>
+    <result column="stu_num" property="stuNum"/>
+    <result column="stu_name" property="stuName"/>
+    <result column="stu_gender" property="stuGender"/>
+    <result column="stu_age" property="stuAge"/>
+</resultMap>
+
+<select id="queryStudent" resultMap="studentMap">
+        select sid , stu_num , stu_name , stu_gender , stu_age from tb_students
+        where stu_num=#{aaa}
+ </select>
+```
+
+
 
 #### 9.7 resultMap标签
 
 > 用于定义实体类与数据表的映射关系（ORM）
+>
+> property为json的字段名，column为数据库字段名
+>
+> | 元素名称    | 作用                                         |
+> | ----------- | -------------------------------------------- |
+> | constructor | 实例化类时，注入结果到构造方法中             |
+> | association | 关联一个对象（关联一个mapper映射文件的对象） |
+> | collection  | 关联多个对象                                 |
+>
+> 
 
 ```xml
 <!-- resultMap标签用于定义实体类与数据表的映射关系（ORM） -->
@@ -785,6 +855,7 @@ mysql_password=admin123
 @Test
 public void testListStudentsByPage() {
     StudentDAO studentDAO = MyBatisUtil.getMapper(StudentDAO.class); //sqlSession
+    //PageHelper拦截器
     PageHelper.startPage(2,4);
     List<Student> students = studentDAO.listStudents();
     PageInfo<Student> pageInfo = new PageInfo<Student>(students);
@@ -822,11 +893,11 @@ public void testListStudentsByPage() {
 
 数据表关系：
 
-- 主键关联（用户表主键 和详情主键相同时，表示是匹配的数据）
+- **主键关联**（用户表主键 和详情主键相同时，表示是匹配的数据）
 
   ![1616550990633](imgs/1616550990633.png)
 
-- 唯一外键关联
+- **唯一外键关联**（外键+唯一）
 
   ![1616551159843](imgs/1616551159843.png)
 
@@ -839,13 +910,13 @@ public void testListStudentsByPage() {
 
 数据表关系：
 
-- 在多的一端添加外键和一的一段进行关联
+- **在多的一端添加外键**和一的一端进行关联
 
 **多对多关联**
 
 实例：用户和角色、角色和权限、房屋和业主、学生和社团、订单和商品
 
-数据表关系：建立第三张关系表添加两个外键分别与两张表主键进行关联
+数据表关系：建立第三张**关系表**添加两个外键分别与两张表主键进行关联
 
 用户(user_id)           用户角色表(uid,rid)      角色(role_id)
 
@@ -935,6 +1006,9 @@ public void testListStudentsByPage() {
 
 #### 11.3 一对一关联
 
+- **主键关联**（用户表主键 和详情主键相同时，表示是匹配的数据）
+- **唯一外键关联**（外键+唯一）
+
 > 实例：用户---详情
 
 ###### 11.3.1 创建数据表
@@ -956,7 +1030,8 @@ create table details(
     user_tel char(11) not null,
     user_desc varchar(200),
 	uid int not null unique
-    -- constraint FK_USER foreign key(uid) references users(user_id)
+    
+    -- constraint FK_USER foreign key(uid) references users(user_id)  //物理关联，基本少用，用业务代码实现
 );
 ```
 
@@ -1003,6 +1078,10 @@ create table details(
 ###### 11.3.4 一对一关联查询
 
 > 在查询用户的同时关联查询出与之对应的详情
+>
+> DAO接口用来mapper映射数据库（）
+>
+> 实体类：关联`<resultMap>` 标签，用于连接查询
 
 **实体**
 
@@ -1012,14 +1091,14 @@ create table details(
 
 **映射文件**
 
-| 连接查询                                 |
-| ---------------------------------------- |
-| ![1616558061073](imgs/1616558061073.png) |
+| 方式1：连接查询   `inner jion`联表  `on`条件 |
+| -------------------------------------------- |
+| ![1616558061073](imgs/1616558061073.png)     |
 
-| 子查询                                   |
-| ---------------------------------------- |
-| ![1616558696902](imgs/1616558696902.png) |
-| ![1616558739190](imgs/1616558739190.png) |
+| 方式2：子查询`<association>`关联一个查询对象 |
+| -------------------------------------------- |
+| ![1616558696902](imgs/1616558696902.png)     |
+| ![1616558739190](imgs/1616558739190.png)     |
 
 #### 11.4 一对多关联
 
@@ -1054,22 +1133,26 @@ create table students(
 
 > 当查询一个班级的时候， 要关联查询出这个班级下的所有学生
 
-**连接查询**
+- **连接查询 **  `inner jion `联表  on 条件
 
 | 连接查询映射配置                         |
 | ---------------------------------------- |
 | ![1616567949549](imgs/1616567949549.png) |
 
-**子查询**
+- **子查询** `<collection>` 关联多个mapper对象
 
 | 子查询映射配置                           |
 | ---------------------------------------- |
 | ![1616568410749](imgs/1616568410749.png) |
 | ![1616568443022](imgs/1616568443022.png) |
 
+
+
+
+
 #### 11.5 多对一关联
 
-> 实例：学生(n)—班级(1)
+> 实例：学生(n)—班级(1)     多个学生同属一个班级
 >
 > 当查询一个学生的时候，关联查询这个学生所在的班级信息
 
@@ -1081,7 +1164,7 @@ create table students(
 
 ###### 11.5.2 关联查询
 
-**连接查询**
+- **连接查询**
 
 | 连接查询映射配置                         |
 | ---------------------------------------- |
@@ -1102,6 +1185,7 @@ create table students(
 
 ```sql
 -- 学生信息表（如上）
+
 -- 课程信息表
 create table courses(
     course_id int primary key auto_increment,

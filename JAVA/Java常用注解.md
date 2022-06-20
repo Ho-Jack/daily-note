@@ -453,6 +453,8 @@ public class UserController{
 #### @Mapper
 
 > 简化mapper映射文件 
+>
+> 不需要在spring配置中设置扫描地址，通过`mapper.xml`里面的**namespace**属性对应相关的mapper类(接口)，spring将动态的生成Bean后注入到ServiceImpl中
 
 #### @Param
 

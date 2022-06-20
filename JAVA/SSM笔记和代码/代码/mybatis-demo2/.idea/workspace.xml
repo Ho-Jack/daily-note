@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b8d4d8e-a18a-4d70-938c-64b00f1ae6d9" name="Default Changelist" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="4b8d4d8e-a18a-4d70-938c-64b00f1ae6d9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Java基础.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Java基础.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Java常用注解.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Java常用注解.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mybatis-demo1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../mybatis-demo1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../笔记/03-MyBatis/MyBatis.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../笔记/03-MyBatis/MyBatis.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,6 +30,12 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -29,18 +45,20 @@
     </option>
   </component>
   <component name="ProjectId" id="1qBSyO6nMUH6ROgkQsazGhDMrcq" />
-  <component name="PropertiesComponent">
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../mybatis-demo3" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/notes/daily-note/JAVA/SSM笔记和代码/代码/mybatis-demo2"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
       <recent name="com.qfedu.dao" />
@@ -48,18 +66,6 @@
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="JUnit.CourseDAOTest.testQueryCourseById">
     <configuration name="ClassDAOTest.testQueryClass" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
@@ -221,7 +227,7 @@
       <item itemvalue="JUnit.ClassDAOTest.testQueryClass" />
       <item itemvalue="JUnit.StudentDAOTest.testQueryStudentBySid" />
       <item itemvalue="JUnit.CourseDAOTest.testQueryCourseById" />
-      <item itemvalue="Tomcat Server.Tomcat 8.5" />
+      <item itemvalue="Tomcat 服务器.Tomcat 8.5" />
     </list>
     <recent_temporary>
       <list>
@@ -233,6 +239,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -248,10 +255,22 @@
       <workItem from="1616635217280" duration="714000" />
       <workItem from="1616660677671" duration="477000" />
       <workItem from="1616662269568" duration="890000" />
+      <workItem from="1655705460486" duration="2275000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
