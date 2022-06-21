@@ -448,6 +448,56 @@ public default 方法返回类型 方法名(){
 
 - **类只能继承一个父类**，但可以实现多个接口，一个类如果实现了一个接口，则必须 实现接口中的全部方法，否则必须将其定义为抽象类。
 
+## 匿名内部类：
+
+> 必须是一个抽象类或者是一个接口
+>
+> 一般可以作为方法的参数传递，也可以在方法中直接定义
+
+- Java 中可以实现**一个类中包含另外一个类**，且不需要提供任何的类名直接实例化。
+
+
+
+语法:
+
+```java
+ 类名/接口名 匿名内部类= new 类名/接口名(){
+  //重写抽象方法
+   @override  
+}
+```
+
+实例：
+
+```java
+//在下面作为匿名内部类
+class Polygon {
+   public void display() {
+      System.out.println("在 Polygon 类内部");
+   }
+}
+
+class AnonymousDemo {
+   public void createClass() {
+
+      // 创建的匿名类继承了 Polygon 类
+      Polygon p1 = new Polygon() {
+         public void display() {
+            System.out.println("在匿名类内部。");
+         }
+      };
+      p1.display();
+   }
+}
+
+class Main {
+   public static void main(String[] args) {
+       AnonymousDemo an = new AnonymousDemo();
+       an.createClass();
+   }
+}
+```
+
 
 
 ## 继承
