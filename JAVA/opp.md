@@ -482,6 +482,7 @@ class AnonymousDemo {
 
       // 创建的匿名类继承了 Polygon 类
       Polygon p1 = new Polygon() {
+         @override
          public void display() {
             System.out.println("在匿名类内部。");
          }

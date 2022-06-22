@@ -15,6 +15,8 @@
 
 ## 封装JavaBean常用的注解：
 
+### projectlombok插件的注解
+
 #### @Data 
 
 > 注在类上，省去代码中大量的get()、 set()、 toString()等方法

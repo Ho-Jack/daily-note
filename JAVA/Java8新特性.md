@@ -23,9 +23,14 @@
 
 - **简化接口实现** （接口的实现方式：①设计接口的实现类、②使用匿名内部类）
 
+  也就是简化匿名内部类的写法（只**重写**匿名内部类的方法，并且方法是匿名方法）
+
 #### 要求：
 
 - 只能实现**函数式接口**（一个有且仅有**一个抽象方法**，但是可以有多个非抽象方法的接口）
+
+  重写函数式接口里面的抽象方法，保持参数一致（抽象方法变成匿名函数）
+
 - `@FunctionalInterface` 注解 （函数式接口）
 
 #### 语法：
@@ -34,16 +39,122 @@
 (parameters) -> expression
 
 (parameters) ->{ statements; }
+
+@FunctionalInterface
+public interface 函数式接口 {
+   void 抽象方法(dataType 参数1);
+} 
+函数式接口 匿名类 = 参数1 -> {方法业务;}
+匿名类.方法(参数)
+//一般情况 函数式接口是传入方法作为参数
+@FunctionalInterface
+public interface 函数式接口 {
+   int 抽象方法(dataType 参数1);
+}  
+public int 目标方法(函数式接口 函数式接口实例){
+    //目标方法内可以写实参,真正调用方法
+    //如果可以写一些业务逻辑
+    return  函数式接口实例.抽象方法(参数1)
+}
+int  demo = 目标方法( 参数1 -> 重写抽象方法)
 ```
 
-#### 主要特征
+#### 一般使用情况
 
-- 可选类型声明：**不需要声明参数类型**，编译器可以统一识别参数值。
-- 可选的参数圆括号：**一个参数无需定义圆括号**，但多个参数需要定义圆括号。
-- 可选的大括号：如果主体包含了**一个语句，就不需要使用大括号**。
-- 可选的返回关键字：如果主体只有一个表达式返回值则编译器会自动返回值，大括号需要指定表达式返回了一个数值。
+1. 函数式接口传入**目标方法**作为参数 (目标方法的参数定义为接口)
 
+   > 好处:可以重写方法的实现
 
+2. 在**目标方法体**中**使用函数式接口的抽象方法**
+
+3. 使用时:直接调用目标方法,并在方法参数括号内实现函数式接口(重写函数式接口的抽象方法)
+
+   `int  demo = 目标方法( 参数1 -> 重写抽象方法)`
+
+   好处: 不需要再通过函数式接口的实现调用抽象方法,已经在目标方法返回了
+
+   - 类似foreach实现
+
+   ```java
+   public class lambdaDemo{
+       //1.函数式接口传入目标方法作为参数 (目标方法的参数定义为接口)
+       public static viod foreachArr(IntConsumer consumer){
+           //业务逻辑
+           int[] arr ={1,2,3,4};
+           for(int i : arr){
+               //2.在目标方法中使用函数式接口的抽象方法
+               consumer.accept(i)
+           }
+       }
+       //3.直接调用目标方法,并重写抽象方法
+       foreachArr((int value)->{
+           System.out.printIn(value)
+       })
+       //没使用lambda表达的,在参数括号内实现匿名内部类
+       foreachArr(new IntConsumer(){
+           @override
+           public viod accept(int value){
+                  System.out.printIn(value)
+           }
+       })           
+   }
+   ```
+
+   - 实例2
+
+     ```java
+     package 函数式编程;
+     
+     public class 匿名内部类 {
+        public interface IntBinaryOperator {
+             int applyAsInt(int a, int b);
+         }
+     
+         //1.传入函数式接口并
+         public static int calculateNum(IntBinaryOperator operator) {
+             int a = 10;
+             int b = 20;
+             //2.使用抽象方法的
+             return operator.applyAsInt(a, b);
+         }
+     
+     
+         public static void main(String[] args) {
+     //        int i = calculateNum(new IntBinaryOperator() {
+     //            @Override
+     //            public int applyAsInt(int left, int right) {
+     //                return left + right;
+     //            }
+     //        });
+             
+     //3.直接调用目标方法 并重写抽象方法
+             int i = calculateNum((left, right) -> left + right);
+             //  int i = calculateNum(Integer::sum);  
+             //Integer.sum()求和
+             System.out.println(i);
+     
+             //匿名内部类IntBinaryOperator
+             //简写  IntBinaryOperator myOperator = (left, right) -> left + right;
+             IntBinaryOperator myOperator = new IntBinaryOperator() {
+                 @Override
+                 public int applyAsInt(int left, int right) {
+                     return left + right;
+                 }
+             };
+             int ii= myOperator.applyAsInt(10,20);
+             System.out.println(ii);
+     
+         }
+     }
+     ```
+
+     
+
+#### 省略规则
+
+- 参数类型可以省略
+- 只有一句代码,花括号和分号可以省略
+- 只有一个参数,小括号可以省略
 
 ```java
 //函数式接口
@@ -117,6 +228,8 @@ public class Java8Tester {
    }
 }
 ```
+
+
 
 
 
@@ -251,4 +364,16 @@ greetService1.sayMessage("Runoob");
 
 
 
+
+
+
+
+## 函数式编程
+
+ 	
+
 LambdaQueryWrapper 条件构造器
+
+
+
+## Stream流
