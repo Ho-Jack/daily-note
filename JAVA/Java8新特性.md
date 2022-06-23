@@ -763,14 +763,14 @@ try (Stream<String> lines = Files.lines(Paths.get("pom.xml"), StandardCharsets.U
 | `static <T> Optional<T> ofNullable(T value)`                 | 如果为非空，返回 Optional 描述的指定值，否则返回空的 Optional。 |
 | `<U>Optional<U> map(Function<? super T,? extends U> mapper)` | 如果有值，则对其执行调用映射函数得到返回值。如果返回值不为 null，则创建包含映射返回值的Optional作为map方法返回值，否则返回空Optional。 |
 | `Optional<T> filter(Predicate<? super <T> predicate)`        | 如果值存在，并且这个值匹配给定的 predicate，返回一个Optional用以描述这个值，否则返回一个空的Optional。 |
-| `T get()`                                                    | 如果在这个Optional中包含这个值，返回值，否则抛出异常：NoSuchElementException |
+| **`T get()`**                                                | Optional对象中存在不为空的值，返回值，否则抛出异常：`NoSuchElementException`(`Optional.empty() 上调也报异常`) |
 | `int hashCode()`                                             | 返回存在值的哈希码，如果值不存在 返回 0。                    |
 | `boolean equals(Object obj)`                                 | 判断其他对象是否等于 Optional。                              |
-| `void ifPresent(Consumer<? super T> consumer)`               | 如果值存在则使用该值调用 consumer , 否则不做任何事情。       |
+| **`void ifPresent(Consumer<? super T> consumer)`**           | 如果值存在则使用该值调用 consumer , 否则不做任何事情。       |
 | `boolean isPresent()`                                        | 如果值存在则方法会返回true，否则返回 false。                 |
 | `T orElse(T other)`                                          | 如果存在该值，返回值， 否则返回 other。                      |
-| `T orElseGet(Supplier<? extends T> other)`                   | 如果存在该值，返回值， 否则触发 other，并返回 other 调用的结果。 |
-| `<X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier)` | 如果存在该值，返回包含的值，否则抛出由 Supplier 继承的异常   |
+| `T orElseGet(Supplier<? extends T> other)`                   | 不为空时，返回该值；为空时，设置默认值（根据参入的参数来创建对象的默认值） |
+| `<X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier)` | 不为空时，返回该值； 为空时，通过Supplier函数接口自定义异常抛出 |
 
 ##### `empty()` 
 
@@ -801,26 +801,15 @@ Optional<String> nullableOpt = Optional.ofNullable(str);
 
 如果str的值为`null`，得到的`nullableOpt`是一个没有值的`Optional`对象。
 
-##### 安全消费
+总结：一般使用`Optional.ofNullable(obj) `来构造optional实例对象
 
-
-
-##### `map(T -> R)`
-
-> 获取Optional内对象的值集
->
-> 如果有值，则对其执行调用映射函数得到返回值。如果返回值不为 null，则创建包含映射返回值的Optional作为map方法返回值，否则返回空Optional。
->
-> - 返回值为null,则返回空Optional
-
-```java
-Optional<User> userOpt = Optional.ofNullable(user);
-Optional<String> roleIdOpt = userOpt.map(User::getRoleId);
-```
+#### 其他方法： 
 
 ##### `orElse(T other)` 
 
-> 如果存在该值，返回该值， 否则返回传入的参数other。  
+> 不为空时，返回该值
+>
+> 为空时，返回指定值other  
 
 ```java
 Optional<String> optionalITest=Optional.ofNullable(null);
@@ -834,67 +823,6 @@ return str != null ? str : "Hello World"
 //简化代码    
 return strOpt.orElse("Hello World")
 ```
-
-
-
-
-
-
-
-##### `orElseGet(Supplier<? extends T>)`：
-
-> 与orElse()方法作用类似，区别在于生成默认值的方式不同。
->
-> 该方法接受一个`Supplier<? extends T>`函数式接口参数，用于生成默认值；
-
-```java
-Optional<List<String>> optionalITest=Optional.ofNullable(null);
-optionalITest.orElseGet(()->new ArrayList<>());
-```
-
-##### `orElseThrow(Supplier<? extends X> exceptionSupplier)` 
-
-> 自定义抛出异常的取值方法。
->
-> 当值为空时也会抛出异常，但是可以自己定义异常
-
-```java
-        Optional<List<String>> optionalITest=Optional.ofNullable(null);
-        optionalITest.orElseThrow(() -> new IllegalArgumentException("自己设定的异常"));
-```
-
-#####  `ifPresent(Consumer<? super T>)`
-
-> 如果值存在则方法会返回true，否则返回 false。
->
-> - 方法 接收`Consumer<? super T>`一般用于消费参数(将参数打印到后台)
-
-```java
-Optional<String> strOpt = Optional.of("Hello World");
-strOpt.ifPresent(System.out::println);
-```
-
-##### `filter(Predicate<? super T> predicate)` 
-
-> 条件过滤
->
-> - 与Stream的`filter(Predicate<? super T> predicate)`用法相同
->
-> - 区别为stream返回一个过滤后的stream对象，optional返回一个过滤后的optional对象
-
-```java
-Optional<String> optionalITest=Optional.ofNullable("add");
-        Optional<String> a = optionalITest.filter(s -> s.startsWith("a"));
-        a.ifPresent(System.out::println);
-```
-
-
-
-
-
-
-
-
 
 原本:
 
@@ -910,4 +838,133 @@ return strOpt.orElse("Hello World")
 
 
 
+#### 安全消费值
+
+##### `ifPresent(Consumer<? super T>)`
+
+> 该方法，接收`Consumer<? super T>`一般用于消费参数(将参数打印到后台)
+>
+> 如果为空值，则不做任何事情（不消费该值）。
+>
+> - 区别boolean  isPresent()方法不传参
+>
+>   不为空返回true，为空返回 false。
+
+避免空指针异常：
+
+```java
+//getAuthor()获得一个 List<author>集合
+Optional<Author> authorOptional1 = Optional1.ofNullable(getAuthor());
+authorOptional1.ifPresent(author -> System.out.prinLn(author.getName()));
+```
+
+#### 获取值
+
+##### T get()
+
+> **`T get()`**方法，
+>
+> 不为空时，返回该值；
+>
+> 为空时，抛出异常；
+>
+> `NoSuchElementException`(`Optional.empty() 上调也报异常`)
+>
+> 所以不推荐使用
+
+#### 安全获取值
+
+##### `orElseGet`
+
+> `T orElseGet(Supplier<? extends T> other)`
+>
+> 不为空时，返回该值；
+>
+> 为空时，设置默认值（根据参入的参数来创建对象的默认值）
+
+```java
+Optional<List<String>> optionalITest=Optional.ofNullable(null);
+optionalITest.orElseGet(()->new ArrayList<>());
+//为空，orElseGet返回new ArrayList<>()集合
+```
+
+
+
+##### `orElseThrow` 
+
+> `<X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier)`
+>
+> 不为空时，返回该值
+>
+> 为空时，通过Supplier函数接口自定义异常抛出
+
+```java
+        Optional<List<String>> optionalITest=Optional.ofNullable(null);
+        optionalITest.orElseThrow(() -> new IllegalArgumentException("自己设定的异常"));
+```
+
+#### 过滤
+
+##### filter
+
+> `Optional<T> filter(Predicate<? super <T> predicate)`
+>
+> 不为空时，触发过滤条件，符合过滤条件的被过滤掉，则返回空的optional对象
+>
+> 为空时，直接返回空optional对象
+>
+> - 与stream区别：
+>
+>   stream返回一个过滤后的stream对象，
+>
+>   optional返回一个过滤后的optional对象
+
+```java
+Optional<String> optionalITest=Optional.ofNullable("add");
+        Optional<String> a = optionalITest.filter(s -> s.startsWith("a"));
+       //上面被过滤掉了，下面消费跳过消费
+        a.ifPresent(System.out::println);
+```
+
+
+
+#### 判断
+
+##### isPresent
+
+>`boolean isPresent()`
+>
+>不为空返回true；
+>
+>为空返回false；
+>
+>isPresent与ifPresent区别：
+>
+>- isPresent不能体系Optional的好处，所以不推荐
+>- ifPresent，不为空时能触发消费逻辑，处理optional对象
+
+```java
+Optional<Author> authorOptional2 = Optional1.ofNullable(getAuthor());
+//authorOptional2.isPresent(author -> System.out.prinLn(author.getName()));
+if(authorOptional2.isPresent){
+     System.out.prinLn(authorOptional2.get().getName())
+}
+```
+
+
+
+#### 数据转换
+
+##### map(T -> R)
+
+>`<U>Optional<U> map(Function<? super T,? extends U> mapper)`
+>
+>+ 不为空时，通过映射对数据进行转换处理，返回Optional对象
+>+ 为空时，直接返回空Optional对象
+
+```java
+Optional<Author> authorOptional = Optional1.ofNullable(getAuthor());
+Optional<List<Book>> books = authorOptional.map( author -> author.getBooks());
+//books这个是个Optional对象，还能进行一些optional的操作
+```
 
