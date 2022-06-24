@@ -15,16 +15,16 @@
 
 #### 函数式接口
 
-- 注解:`@FunctionalInterface`   
-
-  > 声明这是一个函数式接口
-
-- 函数式接口:一个有且仅有**一个抽象方法**，但是可以有多个非抽象方法的接口
+- 定义:一个有且仅有**一个抽象方法**，但是可以有多个非抽象方法的接口
 
 - 函数式接口实例化的时:必须重写抽象方法
 
 - 与lambda表达式关系:函数式接口作为参数传入方法中,当函数式接口作为参数被实例时,可以被lambda表达式简写
 
+- 注解:`@FunctionalInterface`   
+
+  > 声明这是一个函数式接口
+  
   
 
 
@@ -58,150 +58,172 @@ public void 函数(接口名称 参数1){
 
 ##### JDK内置函数式接口:
 
-  1. **. Consumer<T>**：消费型接口，接收一个参数进行消费，没有返回值
+###### 	 `Consumer<T>`
 
-     ```java
-     @FunctionalInterface
-     public interface Consumer<T> {
-         void accept(T t);
-         ...
-     }
-     ```
+> 消费型接口，接收一个参数进行消费，没有返回值
 
-     - 实例化函数式接口:
+```java
+@FunctionalInterface
+public interface Consumer<T> {
+    void accept(T t);
+    ...
+}
+```
 
-       ```java
-       Consumer consumer = new Consumer() {
-           @Override
-           public void accept(Object x) {
-               System.out.println(x);
-           }
-       };
-       
-       //lambda表达式 (先了解,大体上看就是 将方法匿名,然后抽离参数和方法体,参数类型也不用写)
-       Consumer consumer = x -> System.out.println(x);
-       
-       consumer.accept("hello function");
-       ```
+- 实例化函数式接口:
 
-     - 使用函数式接口中的default方法
+  ```java
+  Consumer consumer = new Consumer() {
+      @Override
+      public void accept(Object x) {
+          System.out.println(x);
+      }
+  };
+  
+  //lambda表达式 (先了解,大体上看就是 将方法匿名,然后抽离参数和方法体,参数类型也不用写)
+  Consumer consumer = x -> System.out.println(x);
+  
+  consumer.accept("hello function");
+  ```
 
-       **默认方法：** andThen(Consumer<? super T> after)，先消费然后在消费，先执行调用andThen接口的accept方法，然后在执行andThen方法参数after中的accept方法。
+- 使用函数式接口中的default方法
 
-       **使用方式：**
+  **默认方法：** andThen(Consumer<? super T> after)，先消费然后在消费，先执行调用andThen接口的accept方法，然后在执行andThen方法参数after中的accept方法。
 
-       ```java
-         Consumer<String> consumer1 = s -> System.out.print("车名："+s.split(",")[0]);
-         Consumer<String> consumer2 = s -> System.out.println("-->颜色："+s.split(",")[1]);
-       
-         String[] strings = {"保时捷,白色", "法拉利,红色"};
-         for (String string : strings) {
-            consumer1.andThen(consumer2).accept(string);
-         }
-       ```
+  **使用方式：**
 
-  2. **Supplier<T>**：供给型接口，供给变量
+  ```java
+    Consumer<String> consumer1 = s -> System.out.print("车名："+s.split(",")[0]);
+    Consumer<String> consumer2 = s -> System.out.println("-->颜色："+s.split(",")[1]);
+  
+    String[] strings = {"保时捷,白色", "法拉利,红色"};
+    for (String string : strings) {
+       consumer1.andThen(consumer2).accept(string);
+    }
+  ```
 
-     ```java
-     @FunctionalInterface
-     public interface Supplier<T> {
-         T get();
-     }
-     ```
+###### `Supplier<T>`
 
-     - 实例匿名内部类:
+> 生产型接口，生产变量,返回T类型的对象
+>
+> 不传参数,返回(生产)一个T类型对象
 
-       ```java
-       Supplier<String> supplier = new Supplier<String>() {
-               @Override
-               public String get() {
-                   return "我要变的很有钱";
-               }
-           };
-       
-       Supplier<String> supplier = () -> "我要变的很有钱";
-        System.out.println(supplier.get());
-       ```
+```java
+@FunctionalInterface
+public interface Supplier<T> {
+    T get();
+}
+```
 
-       
+- 实例匿名内部类:
 
-  3. **Function<T, R>**：参数转换操作，传入类型T 的参数, 转换并返回类型为 R 的返回值：
+  ```java
+  Supplier<String> supplier = new Supplier<String>() {
+          @Override
+          public String get() {
+              return "我要变的很有钱";
+          }
+      };
+  
+  Supplier<String> supplier = () -> "我要变的很有钱";
+   System.out.println(supplier.get());
+  ```
 
-     ```java
-     @FunctionalInterface
-     public interface Function<T, R> {
-         R apply(T t);
-         ...
-     }
-     ```
+  
 
-     - 实例匿名内部类:
+###### `Function<T, R>`
 
-       ```java
-       Function<Integer, Integer> function1 = new Function<Integer, Integer>() {
-           @Override
-           public Integer apply(Integer e) {
-               return e * 6;
-           }
-       };
-       //lambda表达式 (先了解,大体上看就是 将方法匿名,然后抽离参数和方法体,参数类型也不用写)
-       Function<Integer, Integer> function1 = e -> e * 6;
-       System.out.println(function1.apply(2));
-       ```
+> 参数转换操作，传入类型T 的参数, 转换并返回类型为 R 的返回值：
 
-       
+```java
+@FunctionalInterface
+public interface Function<T, R> {
+    R apply(T t);
+    ...
+}
+```
 
-  4. **Predicate<T>**： 断言型接口,传入一个类型T 的参数,返回一个布尔值
+- 实例匿名内部类:
 
-     ```java
-     @FunctionalInterface
-     public interface Predicate<T> {
-         boolean test(T t);
-         ...
-     }	
-     ```
+  ```java
+  Function<Integer, Integer> function1 = new Function<Integer, Integer>() {
+      @Override
+      public Integer apply(Integer e) {
+          return e * 6;
+      }
+  };
+  //lambda表达式 (先了解,大体上看就是 将方法匿名,然后抽离参数和方法体,参数类型也不用写)
+  Function<Integer, Integer> function1 = e -> e * 6;
+  System.out.println(function1.apply(2));
+  ```
 
-     - 实例
+  
 
-       ```java
-       Predicate<Integer> predicate = new Predicate<Integer>() {
-           @Override
-           public boolean test(Integer t) {
-               return t > 0;
-           }
-       };
-       //lambda表达式 (先了解,大体上看就是 将方法匿名,然后抽离参数和方法体,参数类型也不用写)
-       Predicate<Integer> predicate = t -> t > 0;
-       
-       boolean test = predicate.test(1);
-       System.out.println(test);
-       ```
+###### `Predicate<T>`
 
-     - 使用函数式接口中的default方法:
+> 判断接口,传入一个类型T 的参数,返回一个布尔值
 
-       - 默认方法：and(Predicate<? super T> other):
+```java
+@FunctionalInterface
+public interface Predicate<T> {
+    boolean test(T t);
+    ...
+}	
+```
 
-         > 相当于逻辑运算符中的&&，当两个Predicate函数的返回结果都为true时才返回true。
+- 实例
 
-       - 使用方式：
+  ```java
+  Predicate<Integer> predicate = new Predicate<Integer>() {
+      @Override
+      public boolean test(Integer t) {
+          return t > 0;
+      }
+  };
+  //lambda表达式 (先了解,大体上看就是 将方法匿名,然后抽离参数和方法体,参数类型也不用写)
+  Predicate<Integer> predicate = t -> t > 0;
+  
+  boolean test = predicate.test(1);
+  System.out.println(test);
+  ```
 
-       ```java
-           default Predicate<T> and(Predicate<? super T> other) {
-               Objects.requireNonNull(other);
-               return (t) -> test(t) && other.test(t);
-           }
-       
-       Predicate<String> predicate1 = s -> s.length() > 0;
-        Predicate<String> predicate2 =obj -> Objects.nonNull(obj);
-        boolean test = predicate1.and(predicate2).test("&&测试");
-        System.out.println(test);
-       ```
+- `Predicate<T>`中的default方法:
 
-       - or(Predicate<? super T> other) ,相当于逻辑运算符中的||，当两个Predicate函数的返回结果有一个为true则返回true，否则返回false。
+  - 默认方法1：`and(Predicate<? super T> other)`
 
-     
+    > 相当于逻辑运算符中的**&&**
+  >
+    > 当两个Predicate函数的返回结果都为true时才返回true。
+
+  - 使用方式：
+  
+  ```java
+      default Predicate<T> and(Predicate<? super T> other) {
+          Objects.requireNonNull(other);
+          return (t) -> test(t) && other.test(t);
+      }
+  
+  Predicate<String> predicate1 = s -> s.length() > 0;
+   Predicate<String> predicate2 =obj -> Objects.nonNull(obj);
+   boolean test = predicate1.and(predicate2).test("&&测试");
+ System.out.println(test);
+  ```
+  
+  - 默认方法2:    `or(Predicate<? super T> other) `
+  
+    > 相当于逻辑运算符中的**||**
+    >
+    > 当两个Predicate函数的返回结果有一个为true则返回true，否则返回false。
 
 
+
+##### 其他内置接口
+
+| 函数式接口          | 参数 | 返回值  | 描述                                                 |
+| ------------------- | ---- | ------- | ---------------------------------------------------- |
+| `BiConsumer<T,U>`   | T,U  | viod    | 代表了一个接受两个输入参数的操作，并且不返回任何结果 |
+| `BiPredicate<T,U>`  | T,U  | boolean | 代表了一个两个参数的boolean值方法                    |
+| `BiFunction<T,U,R>` | T,U  | R       | 代表了一个接受两个输入参数的方法，并且返回一个结果   |
 
 
 
@@ -231,7 +253,7 @@ public void 函数(接口名称 参数1){
 
 - defualt方法
 
-  > 实现类可以直接调用，并不需要**重写**这个方法
+  > 实现类可以直接调用，并不需要**重写**这个方 法
   >
   > 注意：如果接口中的默认方法不能满足某个实现类需要，那么实现类可以覆盖默认方法。不用加default关键字
 
@@ -520,124 +542,6 @@ greetService1.sayMessage("Runoob");
 
 
 
-
-### 方法引用`::`
-
-> 方法引用就是 Lambda 表达式，也就是**函数式接口的一个实例**，通过方法的名字来指向一个方法。
-
-- 通过方法的名字来指向一个方法
-- 使语言的构造更紧凑简洁，减少冗余代码
-
-#### 使用场景
-
-> 当要传递给 Lambda 体的操作，已经实现的方法了，可以使用方法引用！
-
-#### 格式：
-
-```java
-类(或对象) :: 方法名
-```
-
-接口中的抽象方法的形参列表和返回值类型与方法引用的方法的形参列表和返回值类型相同
-
-- 对象 `::` 非静态方法(实例方法)
-
-- 类 `::` 静态方法
-
-  ```
-  //lambda表达式
-  (参数1，参数2)-> 类名.方法名(参数1，参数2)
-  
-  //方法引用
-  类名::方法名
-  ```
-
-  > 采用**擦除法**，去掉左右两边一致的参数表
-
-  ```java
-  class A {
-    void a(String s) {
-      System.out.println(s);
-    }
-  }
-  
-  interface B {
-    void b(String s);
-  }
-  
-  A a = new A();
-  //lambda表达式实现了 B函数式接口中的b方法
-  B b = s -> a.a(s); // 等价于 B b = a::a;
-  ```
-
-  
-
-函数式接口方法的第一个参数是需要引用方法的调用者，并且第二个参数是需要引用方法的参数(或无参数)
-
-- 类 `::` 非静态方法(实例方法)
-
-  ```java
-  //lambda表达式
-  (参数1，参数2)-> 参数1.方法名(参数2)
-  
-  //方法引用
-  类名::方法名
-  ```
-
-  实例：
-
-  ```java
-  package test;
-  
-  //函数式接口
-  public interface Converter {
-      int convert(String s);
-  }
-  
-  public class Demo {
-      //参数为 函数式接口
-      private static void useConverter(Converter c) {
-          int number = c.convert("666");
-          System.out.println(number);
-      }
-      public static void main(String[] args) {
-          //lambda表达式
-          useConverter(s -> Integer.parseInt(s)); //666
-          //引用类方法
-          useConverter(Integer::parseInt); //666
-      }
-  }
-  
-  ```
-
-  
-
-
-
-- 类型::new（构造方法的引用）
-
-
-
-
-
-| 类型         | 方法引用           | Lambda表达式                         |
-| ------------ | ------------------ | ------------------------------------ |
-| 静态方法引用 | 类名::staticMethod | (args) -> 类名.staticMethod(args)    |
-| 实例方法引用 | inst::instMethod   | (args) -> inst.instMethod(args)      |
-| 对象方法引用 | 类名::instMethod   | (inst,args) -> 类名.instMethod(args) |
-| 构建方法引用 | 类名::new          | (args) -> new 类名(args)             |
-
-
-
-
-
-
-
-## 函数式编程
-
- 	
-
-LambdaQueryWrapper 条件构造器
 
 ### Stream流
 
@@ -966,5 +870,215 @@ if(authorOptional2.isPresent){
 Optional<Author> authorOptional = Optional1.ofNullable(getAuthor());
 Optional<List<Book>> books = authorOptional.map( author -> author.getBooks());
 //books这个是个Optional对象，还能进行一些optional的操作
+```
+
+
+
+
+
+### 方法引用`::`
+
+> 方法引用就是 Lambda 表达式，也就是**函数式接口的一个实例**，通过方法的名字来指向一个方法。
+
+- 通过方法的名字来指向一个方法
+- 使语言的构造更紧凑简洁，减少冗余代码
+
+#### 使用场景
+
+> 当要传递给 Lambda 体的操作，已经实现的方法了，可以使用方法引用！
+
+####   格式：
+
+```java
+类名(或对象名) :: 方法名
+```
+
+接口中的抽象方法的形参列表和返回值类型与方法引用的方法的形参列表和返回值类型相同
+
+##### 引用类的静态方法
+
+> 采用**擦除法**，去掉左右两边一致的参数表
+
+###### 格式: `类名::静态方法名`
+
+###### 条件:
+
+- 方法体只有一行代码
+- 该代码调用了某个类的静态方法
+- 重写的抽象方法的所有参数都按顺序传入静态方法中(**参数左右两边一致**)
+
+- 类名 `::` 静态方法名
+
+  ```
+  //lambda表达式
+  (参数1，参数2)-> 类名.静态方法名(参数1，参数2)
+  
+  //方法引用(去掉左右两边一致的参数表)
+  类名::静态方法名
+  ```
+
+  实例:
+
+  ```java
+  List<Author>  authors = getAuthors();
+  Stream<Author> authorStream = authors.stream();
+  authorStream.map(author -> author.getAge())
+             // .map(age -> String.valueOf(age));
+                .map( String::valueOf );
+  /**         1.方法体只有一行代码
+  *           2.该代码调用了 String类里面的静态方法valueOf
+  *           3.参数左右2边一致
+  */
+  ```
+
+##### 引用对象的实例方法
+
+###### 格式:      实例对象 `::` 实例方法
+
+> 实例方法(非静态方法)
+
+###### 条件:
+
+- 方法体只有一行代码
+- 该代码调用了某个**对象的成员方法**(非静态方法 ~~statis~~)
+- **重写的抽象方法**的所有参数都按顺序传入**成员方法**中(**参数左右两边一致**)
+
+实例:
+
+```java
+//函数式接口Supplier中的T get()    不传参数,返回一个T类型对象
+//Employee中的String getName()
+@Test
+public void test2() {
+    Employee emp = new Employee(1001,"Tom",23,5600);
+    Supplier<String> sup1 = () -> emp.getName();
+    System.out.println(sup1.get());
+    System.out.println("*******************");
+
+    Supplier<String> sup2 = emp::getName;
+    System.out.println(sup2.get());
+}
+
+
+class A {
+  void aa(String s) {
+    System.out.println(s);
+  }
+}
+
+interface B {
+  void b(String s);
+}
+
+A a = new A();
+//lambda表达式实现了 B函数式接口中的b方法
+//  B b = s -> a.aa(s); 
+   B b = a::aa;
+/**         1.方法体只有一行代码
+*           2.该代码调用了 A对象的成员方法aa
+*           3.参数左右两边一致
+*/
+```
+
+##### 引用类的实例方法(复杂)
+
+###### 格式:    类名 `::` 实例方法
+
+> 实例方法(非静态方法 ~~static~~)
+
+###### 条件:
+
+- 方法体只有一行代码
+- 该代码**第一个参数的调用了成员方法**
+- 重写的抽象方法的**剩余参数**都按顺序传入**成员方法**中 (箭头右边:`参数.成员方法(剩余参数)`)
+
+函数式接口方法的第一个参数是需要引用方法的调用者，并且第二个参数是需要引用方法的参数(或无参数)
+
+```java
+//lambda表达式
+(参数1，参数2)-> 参数1.成员方法名(参数2)
+
+//方法引用
+类名::实例方法名
+```
+
+实例：
+
+```java
+public class MethodDemo {
+    interface UseString{
+        String use(String str,int start,int length);
+    }
+    public static String subAuthorName(String str, UseString useString){
+        int start = 0;
+        int length = 1;
+        return useString.use(str,start,length);
+    }
+    public static void main(String[] args) {
+//      subAuthorName("三更草堂", (s, beginIndex, endIndex) -> s.substring(beginIndex, endIndex));
+        subAuthorName("三更草堂", String::substring);
+    }
+}
+```
+
+##### 构造器方法引用
+
+###### 格式:      类名 `::` new
+
+> 一行代码是构造器
+
+###### 条件:
+
+- 方法体只有一行代码
+- 该代码调用了某个**类的构造方法**
+- **重写的抽象方法**,所有参数都按顺序传入**构造方法**中(参数左右两边一致)
+
+```java
+        List<Author> authors = getAuthors();
+        authors.stream()
+              // 引用类的实例方法 类名::实例方法
+              //.map(author -> author.getName())  
+                .map(Author::getName) 
+             //构造一个初始化为指定字符串内容的字符串构建器。字符串生成器的初始容量是16加上字符串参数的长度
+             // .map(str -> new StringBuilder(str))
+                .map(StringBuilder::new)
+                .map(sb->sb.append("-三更").toString())
+            //  引用类的静态方法 类名::静态方法
+            //  .forEach(x -> System.out.println(x));
+                .forEach(System.out::println);
+```
+
+| 类型         | 方法引用           | Lambda表达式                         |
+| ------------ | ------------------ | ------------------------------------ |
+| 静态方法引用 | 类名::staticMethod | (args) -> 类名.staticMethod(args)    |
+| 实例方法引用 | inst::instMethod   | (args) -> inst.instMethod(args)      |
+| 对象方法引用 | 类名::instMethod   | (inst,args) -> 类名.instMethod(args) |
+| 构建方法引用 | 类名::new          | (args) -> new 类名(args)             |
+
+
+
+### 基本数据类型优化
+
+- mapToInt
+- mapToLong
+- mapToDouble
+- flatMapToInt
+- flatMapToDouble
+
+```java
+     List<Author> authors = getAuthors();
+        authors.parallelStream()
+                .map(author -> author.getAge())
+                .map(age -> age + 10)
+                .filter(age->age>18)
+                .map(age->age+2)
+                .forEach(System.out::println);
+
+        authors.stream()
+                .mapToInt(author -> author.getAge())
+                .map(age -> age + 10)
+                .filter(age->age>18)
+                .map(age->age+2)
+                .forEach(System.out::println);
 ```
 
