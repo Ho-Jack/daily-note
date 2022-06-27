@@ -1,4 +1,4 @@
-**where: WHERE 语句，拼接 + WHERE 条件
+where: WHERE 语句，拼接 + WHERE 条件
 and: AND 语句，拼接 + AND 字段=值
 andNew: AND 语句，拼接 + AND (字段=值)
 or: OR 语句，拼接 + OR 字段=值
@@ -26,7 +26,7 @@ notExists: NOT EXISTS 条件语句
 between: BETWEEN 条件语句
 notBetween: NOT BETWEEN 条件语句
 addFilter: 自由拼接 SQL
-last: 拼接在最后，例如：last(“LIMIT 1”)**
+last: 拼接在最后，例如：last(“LIMIT 1”)
 
 
 
