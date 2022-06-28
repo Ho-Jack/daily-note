@@ -511,7 +511,11 @@ public class UserController{
 
 #### @Configuration 
 
-> 把一个类作为一个IOC容器，它的某个方法上如果注解了@Bean，就会作为这个Spring容器的Bean。
+> 用于定义配置类，可**替换xml配置文件**，被注解的类内部包含有一个或多个被@Bean注解的方法，这些方法将会被`AnnotationConfigApplicationContext`或`AnnotationConfigWebApplicationContext`类进行扫描，并用于构建bean定义，初始化Spring容器。
+>
+>  @Configuation等价于`<Beans></Beans>`
+>
+>  @Bean等价于`<Bean></Bean>`
 
 #### @RefreshScope
 
@@ -583,7 +587,7 @@ public class UserController{
 
 #### @Api 
 
-> 用在类上，标记一个 Controller 类作为 Swagger 文档资源（**接口目录标题**）
+> **用在类上**，标记一个 Controller 类作为 Swagger 文档资源（**接口目录标题**）
 >
 > 配合：@RestController
 >
@@ -591,7 +595,7 @@ public class UserController{
 
 #### @ApiOperation 
 
-> 用在 Controller 里的方法上，说明方法的作用，每一个接口的定义 （**接口的名称和说明**）
+> **用在 Controller 里的方法上**，说明方法的作用，每一个接口的定义 （**接口的名称和说明**）
 >
 > `@ApiOperation(value = "接口名称",notes = "详细说明")`
 
