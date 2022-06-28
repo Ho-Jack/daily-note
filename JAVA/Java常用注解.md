@@ -601,7 +601,7 @@ public class UserController{
 
 #### @ApiModel 
 
-> 表示一个实体类，用于实体类中的参数接收**总说明**
+> 表示一个**实体类**，用于实体类中的参数接收**总说明**
 >
 > `@ApiModel(value = "类", description = "参数总说明")`
 
