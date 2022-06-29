@@ -12,8 +12,8 @@
 
 Controler负责**请求转发**，接受页面过来的参数，传给Service处理，接到返回值，再传给页面。
 
-- Controller类:提供给管理后台的 RESTful API (业务方法)
-- VO类: 接口的入参 ReqVO、出参 RespVO  (业务对象)
+- Controller类:提供给管理后台的 RESTful API (业务方法,提供外部调用的接口方法)
+- VO类: 接口的入参 ReqVO、出参 RespVO  (业务对象,作为Controller类中的方法的参数)
 
 ### Service层：
 
@@ -23,10 +23,19 @@ Controler负责**请求转发**，接受页面过来的参数，传给Service处
 >
 > 3、调用已定义的dao层接口
 
-Service层叫服务层，**中间层**，处理Dal
+Service层叫服务层，**中间层**，沟通DAL层和Controler层,
 
-- Service 接口:  业务逻辑的接口定义
-- ServiceImpl 类: 业务逻辑的实现类(实现提供给Controller调用的方法)
+1. DAL层处理好的数据传给Controler层(查询数据)
+2. Controler层的数据传给DAL层做持久化处理(更新和插入数据)
+
+-  Service 接口:  业务逻辑的接口定义(crud的业务抽象方法)
+
+- ServiceImpl 类: 业务逻辑的实现类(业务逻辑具体实现)
+
+  1. 关联DAL层(DI依赖注入,实例化DAL层的数据库操作接口-Mapper 接口)
+
+  2. 实现提供给Controller调用的方法
+  3. 在方法中操作DAL层提供的操作数据的方法(调用1步骤中的数据库操作方法)
 
 ### DAL层:
 
@@ -53,6 +62,8 @@ Service层叫服务层，**中间层**，处理Dal
 
 
 ### API层
+
+> 提供其他模块使用和Controller层是对外的接口调用,API层是自己模块间的调用
 
 - Api接口: 提供给其它模块的 API 接口
 

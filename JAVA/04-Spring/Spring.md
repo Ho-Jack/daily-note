@@ -575,7 +575,7 @@ public class Student{
 >
 > 自动装配策略有两种：
 >
-> - byName  根据当前Bean的**属性名**在Spring容器中寻找匹配的对象 ，如果根据name找打了bean但是类型不匹配则抛出异常（private Clazz clazz 是找clazz 这个属性）
+> - byName  根据当前Bean的**属性名**在Spring容器中寻找匹配的对象 ，如果根据name找打了bean但是类型不匹配则抛出异常（private Clazz clazz 是找clazz 这个属性）.
 > - byType  根据当前Bean的**属性类型**在Spring容器中寻找匹配的对象，如果根据类型找到了多个bean也会抛出异常（private Clazz clazz 是找Clazz这个类型）
 
 - byName

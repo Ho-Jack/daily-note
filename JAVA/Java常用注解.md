@@ -329,7 +329,7 @@ public class FamilyModel
 
 > 除了控制器、servcie和DAO之外的类一律使用此注解声明
 >
-> 类注解，声明此类被Spring容器进行管理，**相当于bean标签的作用**
+> 类注解，声明此类被Spring容器进行管理，相当于bean标签的作用(**new Object创建对象的控制权反转给了Spring框架**)
 
 #### @Controller 
 
@@ -361,7 +361,7 @@ public class FamilyModel
 
 > 多用于第三方类无法写@Component的情况
 
-### IoC的方法注解：
+### IoC控制反转的方法注解：
 
 #### @PostConstruct
 
@@ -373,16 +373,28 @@ public class FamilyModel
 
 
 
-### DI的注解：
+### DI依赖注入的注解：
+
+> @Autowired
+>
+> 自动装配：Spring在实例化当前bean的时候从**Spring容器(其他bean/实体类)**中找到匹配的实例赋值给当前bean的属性
+>
+> 自动装配策略有两种：
+>
+> - byName  根据当前Bean的**属性名**在Spring容器中寻找匹配的对象 ，如果根据name找打了bean但是类型不匹配则抛出异常（private Clazz clazz 是找clazz 这个属性）.
+> - **byType**  根据当前Bean的**属性类型**在Spring容器中寻找匹配的对象，如果根据类型找到了多个bean也会抛出异常（private Clazz clazz 是找Clazz这个类型）
 
 #### @Autowired
 
+> 用在JavaBean中的注解，默认通过**byType**形式，用来给指定的字段或方法注入所需的外部资源
+>
 > **1、属性注解、2、方法注解（set方法）**，声明当前**属性自动装配，默认byType**
 >
-> **@Autowired(required = false)**  通过requried属性设置当前自动装配是否为必须（默认必须——如果没有找到类型与属性类型匹配的bean则抛出异常）
+> **@Autowired(required = false)**  requried属性:是否为必须自动装配
 >
-> - byType  →→  @Autowired
-> - ref引用  →→  @Qualifier("bean的id")
+> （默认必须——如果没有找到类型与属性类型匹配的bean则抛出异常）
+
+- @Autowired:方法自动装配
 
 ```java
 //方法注解用在setter方法
@@ -392,7 +404,7 @@ public void setClazz(@Qualifier("c2") Clazz clazz) {
 }
 ```
 
-> spring可以自动帮你把bean里面引用的对象的setter/getter方法省略，它会**自动帮你set/get**。
+@Autowired:属性自动装配
 
 ```java
 @Controller 
@@ -404,15 +416,46 @@ public class UserController{
 }
 ```
 
+##### @Qualifier
 
+>使用情况:@Autowired如果要使用byName，需要使用@Qualifier一起配合
+>
+>结合@Autowired一起使用: byName  根据当前Bean的**属性名**在Spring容器中寻找匹配的对象
+>@Qualifier("userDao")
+
+#####  @Value
+
+> 注入普通属性值  相当于赋值
 
 #### @Resource
 
-> 属性注解，也用于声明**属性自动装配，默认byName**
+> 与@Autowired功能相似,功能更齐全,是JSR-250定义的注解
 >
-> - 默认装配方式为byName，如果根据byName没有找到对应的bean，则**继续根据byType**寻找对应的bean，根据byType如果依然没有找到Bean或者找到不止一个类型匹配的bean,则抛出异常。
+> **默认byName**,byName没有找到对应的bean，则**继续根据byType**寻找,都没用就抛出异常
+>
+> @Resource能用在：类、成员变量和方法上。
+>
+> 最重要的两个参数是：name 和 type。
+
+```java
+@Service("courseDAO")
+@Scope("prototype")
+public class CourseDAOImpl extends HibernateDaoSupport implements CourseDAO{
+		...    
+}
+//使用方法1
+@Autowried  //byType
+private CourseDAOImpl  courseDAOImpl;
+//使用方法2
+@Resource
+```
+
+
+
+
 
 ### AOP面向切面编程
+
 #### @Aspect
 
 > 声明切面类
@@ -601,17 +644,17 @@ public class UserController{
 
 #### @ApiModel 
 
-> 表示一个**实体类**，用于实体类中的参数接收**总说明**
+> 表示一个**JavaBean实体类**，用于实体类中的参数接收总说明(**接口参数总说明**)
 >
 > `@ApiModel(value = "类", description = "参数总说明")`
 
 #### @ApiModelProperty 
 
-> 在类的属性上，添加属性描述；
+> 在类的属性上，添加属性描述；(**接口的参数说明**)
 >
-> `@ApiModelProperty(value = "属性说明")`
+> `@ApiModelProperty(value = "属性说明" required = true, example = "123456")`
 
-#### @ApiParam 
+#### @ApiParam (少用)
 
 > 用于 Controller 中方法的参数说明
 >
@@ -621,7 +664,7 @@ public class UserController{
 
 #### @ApiImplicitParam 
 
->  作用在接口方法上，描述单个参数信息，只能作用在方法上；
+>  作用在接口方法上，描述单个**参数信息**，只能作用在方法上；
 
 - name：参数名，对应方法中单独的参数名称。
 - value：参数中文说明。
