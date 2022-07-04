@@ -17,6 +17,10 @@
 
 ### projectlombok插件的注解
 
+> 美: ['lɔmbɔk] 
+>
+> Lombok 一个Java库,通过用简单的语法和注解（Annoation）代替众多的冗余代码,自动生成 `getter` 、`setter`、`equals`、`hashCode` 等等方法
+
 #### @Data 
 
 > 注在类上，省去代码中大量的get()、 set()、 toString()等方法
