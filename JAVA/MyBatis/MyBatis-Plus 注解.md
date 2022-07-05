@@ -75,6 +75,10 @@ public class User {
 | UUID          | 32 位 UUID 字符串(please use `ASSIGN_UUID`)                  |
 | ID_WORKER_STR | 分布式全局唯一 ID 字符串类型(please use `ASSIGN_ID`)         |
 
+```java
+@TableId(type = IdType.AUTO)
+```
+
 
 
 ## @TableField

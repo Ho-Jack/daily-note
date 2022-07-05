@@ -26,7 +26,6 @@ echo 'deb http://mirrors.163.com/debian-security/ stretch/updates main non-free 
    apt-get  update
    ```
 
-3. 
 
 
 

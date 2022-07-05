@@ -45,7 +45,19 @@
 
 #### @EqualsAndHashCode
 
-> 注在类上，提供对应的 equals 和 hashCode 方法
+> 注在类上，默认对类的所有字段实现equals()和hashCode()方法
+>
+> - 重写hashCode()    哈希算法提高比较效率,都有重复,需要先hashCode() 再equals() 
+>
+> - 重写equals()      比较对象的各个字段值是否相等
+>
+>   
+>
+> - @EqualsAndHashCode(of={"id", "age"}, exclude = {"name"})
+>   指定字段，排除字段
+>
+> - @EqualsAndHashCode(callSuer=true)
+>   覆盖父类字段(生成的方法中调用父类的方法,比较父类的属性,如id等定义在父类中,callSuer=false时,即使id不相等比较2个对象也是true的情况)
 
 #### @Log4j/@Slf4j 
 
