@@ -513,21 +513,103 @@ private CourseDAOImpl  courseDAOImpl;
 
 #### @Mapper
 
-> 简化mapper映射文件 
+> 简化mapper映射文件 (Mapper接口,继承BaseMapper)
 >
 > 不需要在spring配置中设置扫描地址，通过`mapper.xml`里面的**namespace**属性对应相关的mapper类(接口)，spring将动态的生成Bean后注入到ServiceImpl中
 
+#### SQL相关 :
+
+##### @Select
+
+###### @Results和@Result
+
+```java
+@Select("Select * from user")
+@Results({
+    @Result(id = true, column = "id", property = "id"),
+    @Result(column = "name", property = "name"),
+    @Result(column = "sex", property = "sex"),
+    @Result(column = "age", property = "age")
+})
+List<User> queryAllUser();
+```
+
+###### @ResultMap
+
+````java
+@Select({"select id, name, class_id from student where id = #{id}"})
+@ResultMap(value="studentMap")
+Student selectById(integer id);
+````
+
+
+
+##### @Insert
+
+###### @Options
+
+```java
+@Insert("insert into user(id,name) values(#{id},#{name})")
+@Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id") 
+public int insert(User user);
+```
+
+##### @Update
+
+##### @Delete
+
+#### 关系映射: 
+
+##### 一对一
+
+###### @One
+
+````java
+@Select("select * from student")  
+@Results({  
+    @Result(id=true,property="id",column="id"),  
+    @Result(property="name",column="name"),  
+    @Result(property="age",column="age"),  
+    @Result(property="address",column="address_id",
+          one=@One(select="cn.mybatis.mydemo.mappers.AddressMapper.getAddress"))  
+})  
+public List<Student> getAllStudents();  
+````
+
+
+
+##### 一对多
+
+> 可以使用集合遍历来组成
+
+###### @Many
+
+```java
+@Select("select * from t_class where id=#{id}")  
+@Results({  
+    @Result(id=true,column="id",property="id"),  
+    @Result(column="class_name",property="className"),  
+    @Result(property="students", column="id",    
+            many=@Many(select="cn.mybatis.mydemo.mappers.StudentMapper.getStudentsByClassId"))  
+    })  
+public Class getClass(int id); 
+```
+
+
+
 #### @Param
 
-> 标注在DAO接口中的方法参数上，给参数命名后就可以通过 **#{xxx}** 的形式注入sql语句中(与映射文件#{xx}变量关联)
+> 标注在DAO/DAL/Mapper接口中的方法参数上，给参数命名后就可以通过 **#{xxx}** 的形式注入sql语句中(与映射文件#{xx}变量关联)
 >
-> 注解声明参数的别名(**用在DAO接口的操作方法中如果有多个参数情况**)
+> 注解声明参数的别名(**用在DAO/DO/Mapper接口的操作方法中如果有多个参数情况**)
 >
-> **`注意`** 如果DAO操作方法没有通过@Param指定参数别名，在SQL映射文件中也可以通过`arg0,arg1...`或者`param1,param2,...`获取参数
+> **`注意`** 如果DAO/DO/Mapper操作方法没有通过@Param指定参数别名，在SQL映射文件中也可以通过`arg0,arg1...`或者`param1,param2,...`获取参数
 
-- DAO接口：用`@Param()`给操作方法的参数设置别名
+- DAO/DO/Mapper接口：用`@Param()`给操作方法的参数设置别名
 
   ```java
+  //不写Mapper XML 映射文件可以用 @select注解
+  @select("select * from user  where user_name = #{userName} and user_password=#{password}")
   public User selectUser(@Param("userName") String name,@Param("password") String pwd);
   ```
 
@@ -542,6 +624,8 @@ private CourseDAOImpl  courseDAOImpl;
   与 @RequestParam比较：
 
   @RequestParam用在Controller层，将请求参数和控制器方法的形参创建映射关系
+
+
 
 
 
@@ -695,7 +779,7 @@ private CourseDAOImpl  courseDAOImpl;
 >
 > `@ApiImplicitParams({ @ApiImplicitParam(name = "id", value = "用户ID", dataType = "string", paramType = "query", required = true, defaultValue = "1") })`
 
-#### ApiResponse 和 ApiResponses
+#### @ApiResponse 和 @ApiResponses
 
 > @ApiResponse 用于方法上，说明接口响应的一些信息；
 >

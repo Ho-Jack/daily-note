@@ -11,9 +11,9 @@
 - **Optional 类** − Optional 类已经成为 Java 8 类库的一部分，用来解决空指针异常。
 - **Nashorn, JavaScript 引擎** − Java 8提供了一个新的Nashorn javascript引擎，它允许我们在JVM上运行特定的javascript应用。
 
-### 学习前必备知识点
+## 学习前必备知识点
 
-#### 函数式接口
+### 1. 函数式接口
 
 - 定义:一个有且仅有**一个抽象方法**，但是可以有多个非抽象方法的接口
 
@@ -28,7 +28,7 @@
   
 
 
-##### 自定义函数式接口
+##### 1.1. 自定义函数式接口
 
 ```java
  @FunctionalInterface
@@ -38,7 +38,7 @@
  }
 ```
 
-##### 函数式接口实例化
+##### 1.2. 函数式接口实例化
 
 > 接口是不能被实例化的,但是作为函数的参数传入时,可以在方法调用时被实例化
 >
@@ -56,9 +56,9 @@ public void 函数(接口名称 参数1){
 
 
 
-##### JDK内置函数式接口:
+##### 1.3. JDK内置函数式接口:
 
-###### 	 `Consumer<T>`
+###### 	 1.3.1. `Consumer<T>`
 
 > 消费型接口，接收一个参数进行消费，没有返回值
 
@@ -80,7 +80,7 @@ public interface Consumer<T> {
       }
   };
   
-  //lambda表达式 (先了解,大体上看就是 将方法匿名,然后抽离参数和方法体,参数类型也不用写)
+  //上面简写成 lambda表达式 (先了解,大体上看就是 将方法匿名,然后抽离参数和方法体,参数类型也不用写)
   Consumer consumer = x -> System.out.println(x);
   
   consumer.accept("hello function");
@@ -102,7 +102,7 @@ public interface Consumer<T> {
     }
   ```
 
-###### `Supplier<T>`
+###### 1.3.2. `Supplier<T>`
 
 > 生产型接口，生产变量,返回T类型的对象
 >
@@ -131,7 +131,7 @@ public interface Supplier<T> {
 
   
 
-###### `Function<T, R>`
+###### 1.3.3. `Function<T, R>`
 
 > 参数转换操作，传入类型T 的参数, 转换并返回类型为 R 的返回值：
 
@@ -159,8 +159,10 @@ public interface Function<T, R> {
 
   
 
-###### `Predicate<T>`
+###### 1.3.4. `Predicate<T>`
 
+> 美: [ˈpredɪkeɪt]  断言
+>
 > 判断接口,传入一个类型T 的参数,返回一个布尔值
 
 ```java
@@ -197,17 +199,17 @@ public interface Predicate<T> {
 
   - 使用方式：
   
-  ```java
-      default Predicate<T> and(Predicate<? super T> other) {
-          Objects.requireNonNull(other);
-          return (t) -> test(t) && other.test(t);
-      }
-  
-  Predicate<String> predicate1 = s -> s.length() > 0;
-   Predicate<String> predicate2 =obj -> Objects.nonNull(obj);
-   boolean test = predicate1.and(predicate2).test("&&测试");
- System.out.println(test);
-  ```
+    ```java
+        default Predicate<T> and(Predicate<? super T> other) {
+            Objects.requireNonNull(other);
+            return (t) -> test(t) && other.test(t);
+        }
+    
+    Predicate<String> predicate1 = s -> s.length() > 0;
+     Predicate<String> predicate2 =obj -> Objects.nonNull(obj);
+     boolean test = predicate1.and(predicate2).test("&&测试");
+   System.out.println(test);
+    ```
   
   - 默认方法2:    `or(Predicate<? super T> other) `
   
@@ -217,7 +219,7 @@ public interface Predicate<T> {
 
 
 
-##### 其他内置接口
+##### 1.4. 其他内置接口
 
 | 函数式接口          | 参数 | 返回值  | 描述                                                 |
 | ------------------- | ---- | ------- | ---------------------------------------------------- |
@@ -232,13 +234,13 @@ public interface Predicate<T> {
 
 
 
-  ##### 接口的statis和default:
+  ##### 1.5. 接口的statis和default:
 
 - statis方法:
 
   > java8新增,定义一个或者多个静态方法。用法和普通的static方法一样
   >
-  > 注意:实现接口的类或者子接口不会继承接口中的静态方法。
+  > 注意:实现接口的类或者子接口**不会继承**接口中的静态方法。
 
   ```java
   public interface Interface {
@@ -253,9 +255,9 @@ public interface Predicate<T> {
 
 - defualt方法
 
-  > 实现类可以直接调用，并不需要**重写**这个方 法
+  > 实现类可以直接调用，并**不需要重写**这个方 法
   >
-  > 注意：如果接口中的默认方法不能满足某个实现类需要，那么实现类可以覆盖默认方法。不用加default关键字
+  > 注意：如果接口中的默认方法不能满足某个实现类需要，那么实现类**可以覆盖默认方法**。不用加default关键字
 
   ```java
   public interface Interface {
@@ -283,7 +285,7 @@ public interface Predicate<T> {
 
 
 
-### lambda表达式
+### 2. lambda表达式
 
 > 闭包,允许把函数作为一个方法的参数（函数作为参数传递进方法中）。 回调函数
 
@@ -291,21 +293,35 @@ public interface Predicate<T> {
 
   
 
-#### 作用：
+#### 2.1. 作用：
 
 - **简化接口实现** （接口的实现方式：①设计接口的实现类、②使用匿名内部类）
 
-  也就是简化匿名内部类的写法（只**重写**匿名内部类的方法，并且方法是匿名方法）
+  简化函数式接口里面的抽象方法，保持参数一致（抽象方法变成匿名函数）
 
-#### 要求：
+  ```java
+  int  demo = 目标方法( 参数1 -> 重写抽象方法)
+  //未使用lambda表达式的情况
+  int  demo = 目标方法(new 函数式接口(){
+      //重写函数式接口内的抽象方法
+      @override
+      public int 抽象方法(){
+          return 一个int类型的值
+      }
+  })   
+  ```
+
+  
+
+#### 2.2 要求：
 
 - 只能实现**函数式接口**（一个有且仅有**一个抽象方法**，但是可以有多个非抽象方法的接口）
 
-  重写函数式接口里面的抽象方法，保持参数一致（抽象方法变成匿名函数）
-
 - `@FunctionalInterface` 注解 （函数式接口）
 
-#### 伪代码语法：
+
+
+#### 2.3. 伪代码语法：
 
 ```java
 (parameters) -> expression
@@ -316,14 +332,14 @@ public interface 函数式接口 {
    void 抽象方法(dataType 参数1);
 } 
 函数式接口 匿名类 = 参数1 -> {方法业务;}
-匿名类.方法(参数)
+匿名类.抽象方法(参数)
     
 //一般情况 函数式接口是传入方法作为参数
 @FunctionalInterface
 public interface 函数式接口 {
    int 抽象方法(dataType 参数1);
 }  
-//1.函数式接口传入目标方法作为参数 (目标方法的参数定义为接口)
+//1.函数式接口作为参数传入**目标方法** (目标方法的参数类型为接口)
 public int 目标方法(函数式接口 函数式接口实例){
     //2.在目标方法中使用函数式接口的抽象方法
     //目标方法内可以写实参,真正调用方法
@@ -342,15 +358,15 @@ int  demo = 目标方法(new 函数式接口(){
 })    
 ```
 
-#### 一般使用情况
+#### 2.4. 一般使用情况
 
-1. 函数式接口传入**目标方法**作为参数 (目标方法的参数定义为接口)
+1. **函数式接口作为参数**传入**目标方法** (目标方法的参数类型为接口)
 
    > 好处:可以重写方法的实现
 
 2. 在**目标方法体**中**使用函数式接口的抽象方法**
 
-3. 使用时:直接调用目标方法,并在方法参数括号内实现函数式接口(重写函数式接口的抽象方法)
+3. **使用目标方法**: 直接调用目标方法,并在方法参数括号内实现函数式接口(**重写函数式接口的抽象方法**)
 
    `int  demo = 目标方法( 参数1 -> 重写抽象方法)`
 
@@ -433,7 +449,7 @@ int  demo = 目标方法(new 函数式接口(){
 
      
 
-#### 省略规则
+#### 2.5. 省略规则
 
 - 参数类型可以省略
 - 只有一句代码,花括号和分号可以省略
@@ -520,7 +536,7 @@ public class Java8Tester {
 
 
 
-#### 变量作用域
+#### 2.6. 变量作用域
 
 lambda 表达式只能引用标记了 final 的外层局部变量
 
@@ -543,11 +559,11 @@ greetService1.sayMessage("Runoob");
 
 
 
-### Stream流
+### 3. Stream流
 
-#### 创建流:
+#### 3.1. 创建流:
 
-##### 1.通过值创建
+##### 3.1.1. 通过值创建
 
 > 使用静态方法 `Stream.of()` 由指定的值进行创建：
 
@@ -555,7 +571,7 @@ greetService1.sayMessage("Runoob");
 Stream<String> stream = Stream.of("a", "b ", "c", "d");
 ```
 
-##### 2. 由集合或数组创建
+##### 3.1.2. 由集合或数组创建
 
 - 集合:
 
@@ -577,7 +593,7 @@ Stream<String> stream = Stream.of("a", "b ", "c", "d");
   Stream<String> stream = Arrays.stream(strings);
   ```
 
-##### 3.由文件创建
+##### 3.1.3. 由文件创建
 
 ```java
 try (Stream<String> lines = Files.lines(Paths.get("pom.xml"), StandardCharsets.UTF_8)) {
@@ -589,64 +605,66 @@ try (Stream<String> lines = Files.lines(Paths.get("pom.xml"), StandardCharsets.U
 
 
 
-##### 4.由函数创建
+##### 3.1.4. 由函数创建
 
 除了以上方法外，还可以通过 `Stream.iterate()` 和 `Stream.generate()` 方法来来创建无限流：
 
 - `Stream.iterate()` 接受两个参数：第一个是初始值；第二个参数是一个输入值和输出值相同的函数型接口，主要用于迭代式地产生新的元素，示例如下：
 
-  ```
+  ```java
   // 依次输出0到9
   Stream.iterate(0, x -> x + 1).limit(10).forEach(System.out::print);
   ```
 
 - `Stream.generate()`  接收一个供应型函数作为参数，用于按照该函数产生新的元素：
 
-  ```
+  ```java
   // 依次输出随机数
   Stream.generate(Math::random).limit(10).forEach(System.out::print);
   ```
 
-#### 操作流
+#### 3.2. 操作流
 
-##### 中间操作:
+##### 3.2.1. 中间操作:
 
-> 对**Stream**进行操作，对Stream操作返回完返回的还是Stream
+> 对**Stream**进行操作，对Stream操作返回完**返回的还是Stream**
 
-##### 终结操作:
+##### 3.2.2. 终结操作:
 
 > 最终操作返回的不再是Stream对象，**调用了最终操作的方法，Stream才会执行**
 
+##### 3.2.3. 操作流常用方法:
+
 当流创建后，便可以利用 Stream 类上的各种方法对流中的数据进行处理，常用的方法如下：
 
-| 操作      | 作用                               | 返回类型    | 使用的类型/函数式接口 |
-| --------- | ---------------------------------- | ----------- | --------------------- |
-| filter    | 过滤符合条件的元素                 | Stream<T>   | Predicate<T>          |
-| distinct  | 过滤重复元素                       | Stream<T>   |                       |
-| skip      | 跳过指定数量的元素                 | Stream<T>   | long                  |
-| limit     | 限制元素的数量                     | Stream<T>   | long                  |
-| map       | 对元素执行特定转换操作             | Stream<T>   | Function<T,R>         |
-| flatMap   | 将元素扁平化后执行特定转换操作     | Stream<T>   | Function<T,Stream<R>> |
-| sorted    | 对元素进行排序                     | Stream<T>   | Comparator<T>         |
-| anyMatch  | 是否存在任意一个元素能满足指定条件 | boolean     | Predicate<T>          |
-| noneMatch | 是否所有元素都不满足指定条件       | boolean     | Predicate<T>          |
-| allMatch  | 是否所有元素都满足指定条件         | boolean     | Predicate<T>          |
-| findAny   | 返回任意一个满足指定条件的元素     | Optional<T> |                       |
-| findFirst | 返回第一个满足指定条件的元素       | Optional<T> |                       |
-| forEach   | 对所有元素执行特定的操作           | void        | Cosumer<T>            |
-| collect   | 使用收集器                         | R           | Collector<T, A, R>    |
-| reduce    | 执行归约操作                       | Optional<T> | BinaryOperator<T>     |
-| count     | 计算流中元素的数量                 | long        |                       |
+| 操作        | 作用                               | 返回类型    | 使用的类型/函数式接口 |
+| ----------- | ---------------------------------- | ----------- | --------------------- |
+| filter      | 过滤符合条件的元素                 | Stream<T>   | Predicate<T>          |
+| distinct    | 过滤重复元素                       | Stream<T>   |                       |
+| skip        | 跳过指定数量的元素                 | Stream<T>   | long                  |
+| limit       | 限制元素的数量                     | Stream<T>   | long                  |
+| map         | 对元素执行特定转换操作             | Stream<T>   | Function<T,R>         |
+| flatMap     | 将元素扁平化后执行特定转换操作     | Stream<T>   | Function<T,Stream<R>> |
+| sorted      | 对元素进行排序                     | Stream<T>   | Comparator<T>         |
+| anyMatch    | 是否存在任意一个元素能满足指定条件 | boolean     | Predicate<T>          |
+| noneMatch   | 是否所有元素都不满足指定条件       | boolean     | Predicate<T>          |
+| allMatch    | 是否所有元素都满足指定条件         | boolean     | Predicate<T>          |
+| findAny     | 返回任意一个满足指定条件的元素     | Optional<T> |                       |
+| findFirst   | 返回第一个满足指定条件的元素       | Optional<T> |                       |
+| **forEach** | 对所有元素执行特定的操作           | void        | Cosumer<T>            |
+| collect     | 使用收集器                         | R           | Collector<T, A, R>    |
+| reduce      | 执行归约操作                       | Optional<T> | BinaryOperator<T>     |
+| count       | 计算流中元素的数量                 | long        |                       |
 
 > 注：上表中返回类型为 Stream<T> 的操作都是中间操作，代表还可以继续调用其它方法对流进行处理。返回类型为其它的操作都是终止操作，代表处理过程到此为止
 
 
 
-### Optional
+### 4. Optional
 
-> Optional 类是一个可以为null的容器对象。如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象。
+> Optional 类是一个**可以为null的容器对象**。如果值存在则`isPresent()`方法会返回true，调用get()方法会返回该对象。
 
-#### 作用:
+#### 4.1. 作用:
 
 - Optional 是个**容器**：它可以保存类型T的值，或者仅仅保存null。
 
@@ -654,11 +672,11 @@ try (Stream<String> lines = Files.lines(Paths.get("pom.xml"), StandardCharsets.U
 
 - 解决程序中常见的`NullPointerException`（空指针异常）异常问题
 
-#### 创建Optional对象
+#### 4.2. 创建Optional对象
 
 > `Optional`类提供类三个方法用于实例化一个`Optional`对象，它们分别为`empty()`、`of()`、`ofNullable()`
 >
-> 这三个方法都是静态方法，可以直接调用。
+> 这三个方法都是**静态方法**，可以直接调用。
 
 | 方法                                                         | 描述                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -676,7 +694,11 @@ try (Stream<String> lines = Files.lines(Paths.get("pom.xml"), StandardCharsets.U
 | `T orElseGet(Supplier<? extends T> other)`                   | 不为空时，返回该值；为空时，设置默认值（根据参入的参数来创建对象的默认值） |
 | `<X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier)` | 不为空时，返回该值； 为空时，通过Supplier函数接口自定义异常抛出 |
 
-##### `empty()` 
+总结:
+
+- orelse 开头的方法,在为空时,触发参数方法
+
+##### 4.2.1. `empty()` 
 
 > 创建一个没有值的Optional对象
 
@@ -684,7 +706,7 @@ try (Stream<String> lines = Files.lines(Paths.get("pom.xml"), StandardCharsets.U
  Optional<String> optionalITest=Optional.empty();
 ```
 
-##### `of()`
+##### 4.2.2. `of()`
 
 > 使用一个非空的值创建Optional对象
 >
@@ -695,7 +717,7 @@ String str = "Hello World";
 Optional<String> notNullOpt = Optional.of(str);
 ```
 
-##### `ofNullable()` (推荐)
+##### 4.2.3. `ofNullable()` (推荐)
 
 > 接收一个可以为null的值：
 
@@ -707,7 +729,7 @@ Optional<String> nullableOpt = Optional.ofNullable(str);
 
 总结：一般使用`Optional.ofNullable(obj) `来构造optional实例对象
 
-#### 其他方法： 
+#### 4.3. Optional类的其他方法： 
 
 ##### `orElse(T other)` 
 
@@ -742,7 +764,7 @@ return strOpt.orElse("Hello World")
 
 
 
-#### 安全消费值
+#### 4.4. 安全消费值
 
 ##### `ifPresent(Consumer<? super T>)`
 
@@ -762,7 +784,7 @@ Optional<Author> authorOptional1 = Optional1.ofNullable(getAuthor());
 authorOptional1.ifPresent(author -> System.out.prinLn(author.getName()));
 ```
 
-#### 获取值
+#### 4.5. 获取值
 
 ##### T get()
 
@@ -770,13 +792,11 @@ authorOptional1.ifPresent(author -> System.out.prinLn(author.getName()));
 >
 > 不为空时，返回该值；
 >
-> 为空时，抛出异常；
->
-> `NoSuchElementException`(`Optional.empty() 上调也报异常`)
+> 为空时，抛出异常；`NoSuchElementException`(`Optional.empty() 上调也报异常`)
 >
 > 所以不推荐使用
 
-#### 安全获取值
+#### 4.6. 安全获取值
 
 ##### `orElseGet`
 
@@ -807,7 +827,7 @@ optionalITest.orElseGet(()->new ArrayList<>());
         optionalITest.orElseThrow(() -> new IllegalArgumentException("自己设定的异常"));
 ```
 
-#### 过滤
+#### 4.7.  过滤
 
 ##### filter
 
@@ -832,7 +852,7 @@ Optional<String> optionalITest=Optional.ofNullable("add");
 
 
 
-#### 判断
+#### 4.8. 判断
 
 ##### isPresent
 
@@ -857,7 +877,7 @@ if(authorOptional2.isPresent){
 
 
 
-#### 数据转换
+#### 4.9. 数据转换
 
 ##### map(T -> R)
 
@@ -876,18 +896,18 @@ Optional<List<Book>> books = authorOptional.map( author -> author.getBooks());
 
 
 
-### 方法引用`::`
+### 5. 方法引用`::`
 
 > 方法引用就是 Lambda 表达式，也就是**函数式接口的一个实例**，通过方法的名字来指向一个方法。
 
 - 通过方法的名字来指向一个方法
 - 使语言的构造更紧凑简洁，减少冗余代码
 
-#### 使用场景
+#### 5.1.  使用场景
 
 > 当要传递给 Lambda 体的操作，已经实现的方法了，可以使用方法引用！
 
-####   格式：
+####   5.2. 格式：
 
 ```java
 类名(或对象名) :: 方法名
@@ -895,7 +915,7 @@ Optional<List<Book>> books = authorOptional.map( author -> author.getBooks());
 
 接口中的抽象方法的形参列表和返回值类型与方法引用的方法的形参列表和返回值类型相同
 
-##### 引用类的静态方法
+##### 5.2.1. 引用类的静态方法
 
 > 采用**擦除法**，去掉左右两边一致的参数表
 
@@ -931,7 +951,7 @@ Optional<List<Book>> books = authorOptional.map( author -> author.getBooks());
   */
   ```
 
-##### 引用对象的实例方法
+##### 5.2.2. 引用对象的实例方法
 
 ###### 格式:      实例对象 `::` 实例方法
 
@@ -980,7 +1000,7 @@ A a = new A();
 */
 ```
 
-##### 引用类的实例方法(复杂)
+##### 5.2.3. 引用类的实例方法(复杂)
 
 ###### 格式:    类名 `::` 实例方法
 
@@ -1021,7 +1041,7 @@ public class MethodDemo {
 }
 ```
 
-##### 构造器方法引用
+##### 5.2.4. 构造器方法引用
 
 ###### 格式:      类名 `::` new
 

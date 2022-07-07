@@ -1,22 +1,80 @@
+
+
+- eq：equals，等于=
+
+- gt：greater than ，大于 >
+
+- ge：greater than or equals，大于等于≥
+
+- lt：less than，小于<
+
+- le：less than or equals，小于等于≤
+
+- between：相当于SQL中的BETWEEN
+
+- like：模糊匹配。
+
+  > `like("name","黄")`，相当于SQL的`name like '%黄%'`
+
+- likeRight：模糊匹配右半边。
+
+  > `likeRight("name","黄")`，相当于SQL的`name like '黄%'`
+
+- likeLeft：模糊匹配左半边。
+
+  > `likeLeft("name","黄")`，相当于SQL的`name like '%黄'`
+
+- notLike：
+
+  > `notLike("name","黄")`，相当于SQL的`name not like '%黄%'`
+
+- isNull
+
+- isNotNull
+
+- and：SQL连接符AND
+
+- or：SQL连接符OR
+
+- in: 
+
+  > `in("age",{1,2,3})`相当于` age in(1,2,3)`
+
+- groupBy: 
+
+  > `groupBy("id","name")`相当于` group by id,name`
+
+- orderByAsc : 
+
+  > `orderByAsc("id","name")`相当于 `order by id ASC,name ASC`
+
+- orderByDesc :
+
+  > `orderByDesc ("id","name")`相当于 `order by id DESC,name DESC`
+
 # 条件构造器
 
-::: tip 说明:
+> ::: tip 说明:
+>
+> - 以下出现的第一个入参`boolean condition`表示该条件**是否**加入最后生成的sql中，例如：query.like(StringUtils.isNotBlank(name), Entity::getName, name) .eq(age!=null && age >= 0, Entity::getAge, age)
+> - 以下代码块内的多个方法均为从上往下补全个别`boolean`类型的入参,默认为`true`
+> - 以下出现的泛型`Param`均为`Wrapper`的子类实例(均具有`AbstractWrapper`的所有方法)
+> - 以下方法在入参中出现的`R`为泛型,在普通wrapper中是`String`,在LambdaWrapper中是**函数**(例:`Entity::getId`,`Entity`为实体类,`getId`为字段`id`的**getMethod**)
+> - 以下方法入参中的`R column`均表示数据库字段,当`R`具体类型为`String`时则为数据库字段名(**字段名是数据库关键字的自己用转义符包裹!**)!而不是实体类数据字段名!!!,另当`R`具体类型为`SFunction`时项目runtime不支持eclipse自家的编译器!!!
+> - 以下举例均为使用普通wrapper,入参为`Map`和`List`的均以`json`形式表现!
+> - 使用中如果入参的`Map`或者`List`为**空**,则不会加入最后生成的sql中!!!
+> - 有任何疑问就点开源码看,看不懂**函数**的[点击我学习新知识](https://www.jianshu.com/p/613a6118e2e0) :::
+>
 
-- 以下出现的第一个入参`boolean condition`表示该条件**是否**加入最后生成的sql中，例如：query.like(StringUtils.isNotBlank(name), Entity::getName, name) .eq(age!=null && age >= 0, Entity::getAge, age)
-- 以下代码块内的多个方法均为从上往下补全个别`boolean`类型的入参,默认为`true`
-- 以下出现的泛型`Param`均为`Wrapper`的子类实例(均具有`AbstractWrapper`的所有方法)
-- 以下方法在入参中出现的`R`为泛型,在普通wrapper中是`String`,在LambdaWrapper中是**函数**(例:`Entity::getId`,`Entity`为实体类,`getId`为字段`id`的**getMethod**)
-- 以下方法入参中的`R column`均表示数据库字段,当`R`具体类型为`String`时则为数据库字段名(**字段名是数据库关键字的自己用转义符包裹!**)!而不是实体类数据字段名!!!,另当`R`具体类型为`SFunction`时项目runtime不支持eclipse自家的编译器!!!
-- 以下举例均为使用普通wrapper,入参为`Map`和`List`的均以`json`形式表现!
-- 使用中如果入参的`Map`或者`List`为**空**,则不会加入最后生成的sql中!!!
-- 有任何疑问就点开源码看,看不懂**函数**的[点击我学习新知识](https://www.jianshu.com/p/613a6118e2e0) :::
 
-::: danger 警告: 不支持以及不赞成在 RPC 调用中把 Wrapper 进行传输
 
-1. wrapper 很重
-2. 传输 wrapper 可以类比为你的 controller 用 map 接收值(开发一时爽,维护火葬场)
-3. 正确的 RPC 调用姿势是写一个 DTO 进行传输,被调用方再根据 DTO 执行相应的操作
-4. 我们拒绝接受任何关于 RPC 传输 Wrapper 报错相关的 issue 甚至 pr :::
+> ::: danger 警告: 不支持以及不赞成在 RPC 调用中把 Wrapper 进行传输
+>
+> 1. wrapper 很重
+> 2. 传输 wrapper 可以类比为你的 controller 用 map 接收值(开发一时爽,维护火葬场)
+> 3. 正确的 RPC 调用姿势是写一个 DTO 进行传输,被调用方再根据 DTO 执行相应的操作
+> 4. 我们拒绝接受任何关于 RPC 传输 Wrapper 报错相关的 issue 甚至 pr :::
+>
 
 ## AbstractWrapper
 
@@ -26,7 +84,7 @@
 
 ### allEq
 
-```
+```java
 allEq(Map<R, V> params)
 allEq(Map<R, V> params, boolean null2IsNull)
 allEq(boolean condition, Map<R, V> params, boolean null2IsNull)
@@ -37,7 +95,7 @@ allEq(boolean condition, Map<R, V> params, boolean null2IsNull)
 - 例1: `allEq({id:1,name:"老王",age:null})`--->`id = 1 and name = '老王' and age is null`
 - 例2: `allEq({id:1,name:"老王",age:null}, false)`--->`id = 1 and name = '老王'`
 
-```
+```java
 allEq(BiPredicate<R, V> filter, Map<R, V> params)
 allEq(BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull)
 allEq(boolean condition, BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull) 
@@ -51,7 +109,7 @@ allEq(boolean condition, BiPredicate<R, V> filter, Map<R, V> params, boolean nul
 
 ### eq
 
-```
+```java
 eq(R column, Object val)
 eq(boolean condition, R column, Object val)
 ```
@@ -61,7 +119,7 @@ eq(boolean condition, R column, Object val)
 
 ### ne
 
-```
+```java
 ne(R column, Object val)
 ne(boolean condition, R column, Object val)
 ```
@@ -71,7 +129,7 @@ ne(boolean condition, R column, Object val)
 
 ### gt
 
-```
+```java
 gt(R column, Object val)
 gt(boolean condition, R column, Object val)
 ```

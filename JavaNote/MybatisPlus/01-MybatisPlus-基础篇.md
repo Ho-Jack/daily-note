@@ -175,7 +175,7 @@ public class MPTest {
 
 ## 3.常用设置
 
-### 3.1 设置表映射规则
+### 3.1  表映射规则
 
 ​	默认情况下MP操作的表名就是实体类的类名，但是如果表名和类名不一致就需要我们自己设置映射规则。
 
@@ -220,7 +220,7 @@ mybatis-plus:
 
 
 
-### 3.2 设置主键生成策略
+### 3.2  主键生成策略
 
 #### 3.2.0 测试代码
 
@@ -305,7 +305,7 @@ mybatis-plus:
 
 
 
-### 3.3 设置字段映射关系
+### 3.3  字段映射关系
 
 ​	默认情况下MP会根据实体类的属性名去映射表的列名。
 
@@ -359,6 +359,56 @@ mybatis-plus:
 
 
 ## 4.基本使用
+
+###  BaseMapper常用方法
+
+> Mapper CRUD接口 继承mp提供的`BaseMapper`
+
+部分方法如下：
+
+- `insert(T entity)`  
+
+  > 插入一条记录
+
+- `deleteById(Serializable id)`  
+
+  > 根据主键id删除一条记录
+
+- `delete(Wrapper<T> wrapper)` 
+
+  > 根据条件构造器wrapper进行删除
+
+- `selectById(Serializable id)` 
+
+  > 根据主键id进行查找
+
+- `selectBatchIds(Collection idList)` 
+
+  > 根据主键id进行批量查找
+
+- `selectByMap(Map<String,Object> map)` 
+
+  > 根据map中指定的列名和列值进行**等值匹配**查找
+
+- `selectMaps(Wrapper<T> wrapper)`  
+
+  > 根据 wrapper 条件，查询记录，将查询结果封装为一个Map，Map的key为结果的列，value为值
+
+- **`selectList(Wrapper<T> wrapper)`** 
+
+  > 根据条件构造器`wrapper`进行查询
+
+- **`update(T entity, Wrapper<T> wrapper)`** 
+
+  > 根据条件构造器`wrapper`进行更新
+
+- `updateById(T entity)`
+
+  > 传入一个实体对象 (set 条件值,可为 null),自动匹配实体对象的主键值来更新
+
+- ...
+
+
 
 ### 4.1 插入数据
 
@@ -440,7 +490,9 @@ mybatis-plus:
 
 
 
-## 5.条件构造器Wrapper
+## 5.Where条件构造器Wrapper
+
+> **构造Where条件的方法**
 
 ### 5.1 概述
 
@@ -450,17 +502,26 @@ mybatis-plus:
 
 ​	![image-20210823105447044](img\wrapper继承体系图.png)
 
-​	在其子类`AbstractWrapper`中提供了很多用于构造Where条件的方法。
+​	在其子类`AbstractWrapper`中提供了很多用于**构造Where条件的方法**。
 
-​	`AbstractWrapper`的子类`QueryWrapper`则额外提供了用于针对Select语法的`select`方法。可以用来设置查询哪些列。
+-  `AbstractWrapper`的子类`QueryWrapper`则额外提供了用于针对Select语法的**`select`方法**。可以用来设置查询哪些列。
 
-​	`AbstractWrapper`的子类`UpdateWrapper`则额外提供了用于针对SET语法的`set`方法。可以用来设置对哪些列进行更新。
+- `AbstractWrapper`的子类`UpdateWrapper`则额外提供了用于针对SET语法的**`set`方法**。可以用来设置对哪些列进行更新。
 
-
+> BaseMapper的常用可传入Wrapper条件构造器的方法
+>
+> - **`selectList(Wrapper<T> wrapper)`** 
+>
+>   > 根据条件构造器`wrapper`进行查询
+>
+> - **`update(T entity, Wrapper<T> wrapper)`** 
+>
+>   > 根据条件构造器`wrapper`进行更新
+> - `delete(Wrapper<T> wrapper)`
+>
+>   > 根据条件构造器wrapper进行删除
 
 ​	完整的AbstractWrapper方法可以参照：https://baomidou.com/guide/wrapper.html#abstractwrapper
-
-
 
 介绍是用来干什么的。它的实现类有哪些
 
@@ -468,28 +529,59 @@ QueryWrapper,UpdateWrapper，【LambdaQueryWrapper】
 
 ### 5.2 常用AbstractWrapper方法
 
-> eq：equals，等于
-> gt：greater than ，大于 >
-> ge：greater than or equals，大于等于≥
-> lt：less than，小于<
-> le：less than or equals，小于等于≤
-> between：相当于SQL中的BETWEEN
-> like：模糊匹配。like("name","黄")，相当于SQL的name like '%黄%'
-> likeRight：模糊匹配右半边。likeRight("name","黄")，相当于SQL的name like '黄%'
-> likeLeft：模糊匹配左半边。likeLeft("name","黄")，相当于SQL的name like '%黄'
-> notLike：notLike("name","黄")，相当于SQL的name not like '%黄%'
-> isNull
-> isNotNull
-> and：SQL连接符AND
-> or：SQL连接符OR
->
-> in: in(“age",{1,2,3})相当于 age in(1,2,3)
->
-> groupBy: groupBy("id","name")相当于 group by id,name
->
-> orderByAsc :orderByAsc("id","name")相当于 order by id ASC,name ASC
->
-> orderByDesc :orderByDesc ("id","name")相当于 order by id DESC,name DESC
+- eq：equals，等于=
+
+- gt：greater than ，大于 >
+
+- ge：greater than or equals，大于等于≥
+
+- lt：less than，小于<
+
+- le：less than or equals，小于等于≤
+
+- between：
+
+  > `between("age",12,29)`, 相当于SQL中的`age BETWEEN 12 AND 29  `
+
+- like：模糊匹配。
+
+  > `like("name","黄")`，相当于SQL的`name LIKE '%黄%'`
+
+- likeRight：模糊匹配右半边。
+
+  > `likeRight("name","黄")`，相当于SQL的`name LIKE '黄%'`
+
+- likeLeft：模糊匹配左半边。
+
+  > `likeLeft("name","黄")`，相当于SQL的`name LIKE '%黄'`
+
+- notLike：
+
+  > `notLike("name","黄")`，相当于SQL的`name NOT LIKE '%黄%'`
+
+- isNull
+
+- isNotNull
+
+- and：SQL连接符AND
+
+- or：SQL连接符OR
+
+- in: 
+
+  > `in("age",{1,2,3})`相当于` age IN(1,2,3)`
+
+- groupBy: 
+
+  > `groupBy("id","name")`相当于`ORDER BY id,name`
+
+- orderByAsc : 
+
+  > `orderByAsc("id","name")`相当于 `ORDER BY  id ASC,name ASC`
+
+- orderByDesc :
+
+  > `orderByDesc ("id","name")`相当于 `ORDER BY  id DESC,name DESC`
 
 
 
@@ -588,15 +680,15 @@ ORDER BY
 
 
 
-### 5.3 常用QueryWrapper方法
+### 5.3 QueryWrapper的SELECT方法
 
  	QueryWrapper的 select 可以设置要查询的列。
 
 
 
-#### 示例一 
+#### 5.3.1. `select(String... sqlSelect) `
 
-> select(String... sqlSelect) 方法的测试为要查询的列名
+> 方法的参数为要查询的列名
 
 SQL语句如下：
 
@@ -621,13 +713,11 @@ MP写法如下：
 
 
 
-#### 示例二
+#### 5.3.2. `select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)`
 
-> select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)
-
-方法的第一个参数为实体类的字节码对象，第二个参数为Predicate类型，可以使用lambda的写法，过滤要查询的字段 (主键除外) 。
-
-
+> 第一个参数为实体类的字节码对象，
+>
+> 第二个参数为Predicate类型，可以使用lambda的写法，过滤要查询的字段 (主键除外) 。
 
 SQL语句如下：
 
@@ -650,6 +740,8 @@ MP写法如下：
                 return "user_name".equals(tableFieldInfo.getColumn());
             }
         });
+        //lambda写法
+       queryWrapper.select(User.class, tableFieldInfo -> "user_name".equals(tableFieldInfo.getColumn()););
         List<User> users = userMapper.selectList(queryWrapper);
         System.out.println(users);
     }
@@ -659,11 +751,9 @@ MP写法如下：
 
 
 
-#### 示例三
+#### 5.3.3. `select(Predicate<TableFieldInfo> predicate)`
 
-> select(Predicate<TableFieldInfo> predicate)
-
-方法第一个参数为Predicate类型，可以使用lambda的写法，过滤要查询的字段 (主键除外) 。
+> 第一个参数为Predicate类型，可以使用lambda的写法，过滤要查询的字段 (主键除外) 。
 
 
 
@@ -683,35 +773,36 @@ FROM
 MP写法如下：
 
 ~~~~java
-    @Test
-    public void testSelect03(){
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>(new User());
-        queryWrapper.select(new Predicate<TableFieldInfo>() {
-            @Override
-            public boolean test(TableFieldInfo tableFieldInfo) {
-                return !"address".equals(tableFieldInfo.getColumn());
-            }
-        });
-        List<User> users = userMapper.selectList(queryWrapper);
-        System.out.println(users);
-    }
+@Test
+public void testSelect03(){
+    QueryWrapper<User> queryWrapper = new QueryWrapper<>(new User());
+    queryWrapper.select(new Predicate<TableFieldInfo>() {
+        @Override
+        public boolean test(TableFieldInfo tableFieldInfo) {
+            return !"address".equals(tableFieldInfo.getColumn());
+        }
+    });
+    //lambda
+    queryWrapper.select( tableFieldInfo -> !"address".equals(tableFieldInfo.getColumn()););
+    List<User> users = userMapper.selectList(queryWrapper);
+    System.out.println(users);
+}
 ~~~~
 
 
 
-
-
-
-
-### 5.4 常用UpdateWrapper方法
+### 5.4 UpdateWrapper的SET方法
 
 ​		我们前面在使用update方法时需要创建一个实体类对象传入，用来指定要更新的列及对应的值。但是如果需要更新的列比较少时，创建这么一个对象显的有点麻烦和复杂。
 
-​		我们可以使用UpdateWrapper的set方法来设置要更新的列及其值。同时这种方式也可以使用Wrapper去指定更复杂的更新条件。
+​		我们可以使用**UpdateWrapper的set方法**来设置要更新的列及其值。同时这种方式也可以使用Wrapper去指定更复杂的更新条件。
 
 
 
-#### 示例
+#### set(String column, Object val)
+
+> - 参数一: 列字段名( key)
+> - 参数二: 列属性值 (value)
 
 SQL语句如下：
 
@@ -736,15 +827,53 @@ where
     }
 ~~~~
 
+#### setSql(String sql)
 
+> 设置 SET 部分 SQL
+
+```
+setSql("name = '老李头'")
+```
 
 
 
 ### 5.5 Lambda条件构造器
 
-​	我们前面在使用条件构造器时列名都是用字符串的形式去指定。这种方式无法在编译期确定列名的合法性。
+#### 5.5.1. 普通条件构造器
 
-​	所以MP提供了一个Lambda条件构造器可以让我们直接以实体类的方法引用的形式来指定列名。这样就可以弥补上述缺陷。
+- `QueryWrapper`
+- `UpdateWrapper`
+
+##### 缺点:
+
+在使用条件构造器时列名都是用**字符串**的形式去指定。这种方式无法在编译期确定列名的合法性。
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper();
+queryWrapper.gt("age",18);
+queryWrapper.eq("address","狐山");
+List<User> users = userMapper.selectList(queryWrapper);
+```
+
+
+
+#### 5.5.2. Lambda条件构造器
+
+- `LambdaQueryWrapper`
+- `LambdaUpdateWrapper`
+
+##### 优点
+
+Lambda条件构造器可以让我们直接**以实体类的方法引用的形式来指定列名**可以弥补上述缺陷。
+
+```java
+LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+//queryWrapper.gt("age",18);
+queryWrapper.gt(User::getAge,18);
+//queryWrapper.eq("address","狐山");
+queryWrapper.eq(User::getAddress,"狐山");
+List<User> users = userMapper.selectList(queryWrapper);
+```
 
 
 
@@ -791,17 +920,16 @@ WHERE
 
 ## 6.自定义SQL
 
-​	虽然MP为我们提供了很多常用的方法，并且也提供了条件构造器。但是如果真的遇到了复制的SQL时，我们还是需要自己去定义方法，自己去写对应的SQL，这样SQL也更有利于后期维护。
+> 一般情况下，尽可能使用 Mapper 进行 CRUD 增删改查即可。
+> 无法满足的场景，例如说多表关联查询，才使用 XML 编写 SQL。
 
-​	因为MP是对mybatis做了增强，所以还是支持之前Mybatis的方式去自定义方法。
+- 支持Mybatis的方式去自定义SQL
 
-​	同时也支持在使用Mybatis的自定义方法时使用MP的条件构造器帮助我们进行条件构造。
-
-​	接下去我们分别来讲讲。
+- 支持使用MP的条件构造器的方式去自定义SQL
 
 ### 6.0 准备工作
 
-①准备数据
+#### ①准备数据(创建表和插入数据)
 
 ~~~~mysql
 CREATE TABLE `orders` (
@@ -824,7 +952,7 @@ insert  into `orders`(`id`,`price`,`remark`,`user_id`,`update_time`,`create_time
 
 ~~~~
 
-②创建实体类
+#### ②创建实体类JavaBean (DO类)
 
 ~~~~java
 @Data
@@ -877,7 +1005,7 @@ public class Orders  {
 
 ### 6.1 Mybatis方式
 
-#### ①定义方法
+#### ①定义方法Mapper 接口并继承BaseMapper
 
 ​	在Mapper接口中定义方法
 
@@ -886,7 +1014,6 @@ public interface UserMapper extends BaseMapper<User> {
 
     User findMyUser(Long id);
 }
-
 ~~~~
 
 
@@ -925,26 +1052,26 @@ mybatis-plus:
 
 
 
-### 6.2 Mybatis方式结合条件构造器
+### 6.2 Mybatis方式结合MP条件构造器
 
-​	我们在使用上述方式自定义方法时。如果也希望我们的自定义方法能像MP自带方法一样使用条件构造器来进行条件构造的话只需要使用如下方式即可。
+> 注意事项:
+>
+> 需要`mybatis-plus`版本 >= `3.0.7` param 参数名要么叫`ew`,要么加上注解`@Param(Constants.WRAPPER)` 使用`${ew.customSqlSegment}` 不支持 `Wrapper` 内的entity生成where语句
 
+#### 6.2.1. 使用XML方式
 
-
-①方法定义中添加Warpper类型的参数
+##### ①方法定义中添加Warpper类型的参数
 
 添加Warpper类型的参数，并且要注意给其指定参数名。
 
 ~~~~java
 public interface UserMapper extends BaseMapper<User> {
 
-    User findMyUserByWrapper(@Param(Constants.WRAPPER) Wrapper<User> wrapper);
+    User findMyUserByWrapper(Wrapper ew);
 }
 ~~~~
 
-
-
-②在SQL语句中获取Warpper拼接的SQL片段进行拼接。
+##### ②在SQL语句中获取Warpper拼接的SQL片段进行拼接。
 
 ~~~~xml
     <select id="findMyUserByWrapper" resultType="com.sangeng.domian.User">
@@ -954,13 +1081,23 @@ public interface UserMapper extends BaseMapper<User> {
 
 注意：不能使用#{}应该用${}
 
+#### 6.2.2. 使用注解的方式
+
+```java
+@Mapper
+public interface UserMapper extends BaseMapper<User> {
+    @Select("select * from user ${ew.customSqlSegment}")
+    User findMyUserByWrapper(@Param(Constants.WRAPPER) Wrapper wrapper);
+}
+```
+
 
 
 ## 7.分页查询
 
 ### 7.1 基本分页查询
 
-①配置分页查询拦截器
+##### ①配置分页查询拦截器
 
 ~~~~java
 @Configuration
@@ -988,7 +1125,7 @@ public class PageConfig {
 }
 ~~~~
 
-②进行分页查询
+##### ②进行分页查询
 
 ~~~~java
     @Test
@@ -1124,7 +1261,6 @@ public interface OrdersMapper extends BaseMapper<Orders> {
 public interface UserService {
     List<User> list();
 }
-
 ~~~~
 
 定义实现类
@@ -1140,7 +1276,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectList(null);
     }
 }
-
 ~~~~
 
 
@@ -1184,6 +1319,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 ### 8.2自定义方法
 
 ~~~~java
+//定义要实现的相关方法
 public interface UserService extends IService<User> {
 
 
@@ -1195,7 +1331,7 @@ public interface UserService extends IService<User> {
 ~~~~java
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
-
+    //依赖注入 Mapper操作数据库的方法
     @Autowired
     private OrdersMapper ordersMapper;
 
