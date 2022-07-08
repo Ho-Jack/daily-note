@@ -589,7 +589,9 @@ class 子类 implements  My接口 {
 ##### 声明类：
 
 ```java
-final class 类名 {//类体}
+final class 类名 {
+    //类体
+}
 ```
 
 注： final 定义的类，其中的属性、方法不是 final 的。
@@ -597,7 +599,9 @@ final class 类名 {//类体}
 ##### 声明方法：
 
 ```java
-修饰符(public/private/default/protected) final 返回值类型 方法名(){//方法体}
+修饰符(public/private/default/protected) final 返回值类型 方法名(){
+    //方法体
+}
 ```
 
 ### 继承的特点：
@@ -634,7 +638,7 @@ final class 类名 {//类体}
 - 访问权限不能比父类的更严格
 - @Override //注解 规定它下面的方法必须是重写的方法
 
-![img](\img\重载和重写.jpg)
+![img](img\重载和重写.jpg)
 
 ## 多态
 
