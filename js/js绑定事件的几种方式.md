@@ -67,3 +67,6 @@ let xss = document.getElementById('XSS')
     })
 ```
 
+### 4. JQuery
+
+> $(selector).click(function(){  })

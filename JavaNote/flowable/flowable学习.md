@@ -78,9 +78,11 @@
 
 > 提供了管理与控制部署(deployments)与流程定义(process definitions)的操作。
 >
-> - deploymentId
-> - definitionId
-> - procInsId
+> - deploymentId   ("78323ad6-fdd2-11ec-a784-00ff0b7a6947")   部署ID
+> - definitionId   ("Process_1657183049555:8:785fda89-fdd2-11ec-a784-00ff0b7a6947")   定义id
+> - procInsId:( "f432d9c1-fdd4-11ec-a784-00ff0b7a6947")   实例id
+> - processKey: "Process_1657183049555"    实例key
+> - 
 
 - 流程定义和流程部署 
 
@@ -96,6 +98,31 @@
   ```
 
 - 查询引擎现有的部署与流程定义。
+
+  ```java
+  //查询流程定义
+  ProcessDefinition processDefinition=repositoryService.createProcessDefinitionQuery()
+              .latestVersion()
+              .active()
+              .orderByProcessDefinitionKey()
+              .asc();
+  for(ProcessDefinition processDefinition : processDefinition){
+              vo.setDefinitionId(processDefinition.getId());
+              vo.setProcessKey(processDefinition.getKey());
+              vo.setProcessName(processDefinition.getName());
+              vo.setVersion(processDefinition.getVersion());
+              vo.setCategory(processDefinition.getCategory());
+              vo.setDeploymentId(processDefinition.getDeploymentId());
+              vo.setSuspended(processDefinition.isSuspended());
+              // 流程定义时间
+              vo.setCategory(deployment.getCategory());
+              vo.setDeploymentTime(deployment.getDeploymentTime());
+  }
+  //根据部署id查询
+  .ProcessDefinition processDefinition=repositoryService.createProcessDefinitionQuery()
+                  .deploymentId(deployment.getId())
+                  .singleResult();
+  ```
 
 - 暂停或激活部署中的某些流程，或整个部署。暂停意味着不能再对它进行操作，激活刚好相反，重新使它可以操作。
 
@@ -115,6 +142,24 @@
 ### 2.2. RuntimeService
 
 > 用于**启动流程定义的新流程实例**。
+
+- 启动流程定义的实例-通过processKey 实例key
+
+  ```java
+    Map<String, Object> variables = new HashMap<String, Object>();
+          variables.put("employee", employee);
+          variables.put("nrOfHolidays", nrOfHolidays);
+          variables.put("description", description);
+   ProcessInstance processInstance=runtimeService.startProcessInstanceByKey(processKey,variables);
+  ```
+
+- 启动流程定义的实例-通过procInsId  实例id
+
+  ```java
+  ProcessInstance processInstance = runtimeService.startProcessInstanceById(procDefId, variables);
+  ```
+
+  
 
 ### 2.3. HistoryService
 
