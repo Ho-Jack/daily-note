@@ -74,6 +74,17 @@
 
 ![](img\API.png)
 
+| service名称       | 定义                                       |
+| ----------------- | ------------------------------------------ |
+| RepositoryService | 管理流程的定义和部署                       |
+| RuntimeService    | 执行管理，流程实例、启动、推进、删除等操作 |
+| TaskService       | 任务管理                                   |
+| HistoryService    | 历史管理（执行玩的数据管理）               |
+| FormService       | 一个可选服务                               |
+| ManagerService    | 管理服务                                   |
+
+
+
 ### 2.1. RepositoryService
 
 > 提供了管理与控制部署(deployments)与流程定义(process definitions)的操作。
@@ -86,55 +97,180 @@
 
 - 流程定义和流程部署 
 
-  ```java
-  // 创建流程部署
-  DeploymentBuilder deploymentBuilder = repositoryService.createDeployment()
-      .name(processName)
-      .key(name)
-      .category(category)
-      .addInputStream(processName, in);
-  // 部署
-  deploymentBuilder.deploy();
-  ```
-
 - 查询引擎现有的部署与流程定义。
 
-  ```java
-  //查询流程定义
-  ProcessDefinition processDefinition=repositoryService.createProcessDefinitionQuery()
-              .latestVersion()
-              .active()
-              .orderByProcessDefinitionKey()
-              .asc();
-  for(ProcessDefinition processDefinition : processDefinition){
-              vo.setDefinitionId(processDefinition.getId());
-              vo.setProcessKey(processDefinition.getKey());
-              vo.setProcessName(processDefinition.getName());
-              vo.setVersion(processDefinition.getVersion());
-              vo.setCategory(processDefinition.getCategory());
-              vo.setDeploymentId(processDefinition.getDeploymentId());
-              vo.setSuspended(processDefinition.isSuspended());
-              // 流程定义时间
-              vo.setCategory(deployment.getCategory());
-              vo.setDeploymentTime(deployment.getDeploymentTime());
-  }
-  //根据部署id查询
-  ProcessDefinition processDefinition=repositoryService.createProcessDefinitionQuery()
-                  .deploymentId(deployment.getId())
-                  .singleResult();
-  //根据定义id查
-   ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
-                  .processDefinitionId(procDefId)
-                  .singleResult();
-  ```
-
 - 暂停或激活部署中的某些流程，或整个部署。暂停意味着不能再对它进行操作，激活刚好相反，重新使它可以操作。
-
 - 获取各种资源，比如部署中保存的文件，或者引擎自动生成的流程图。
-
 - 获取POJO版本的流程定义。它可以用Java而不是XML的方式查看流程。
 
-### 2.2. TaskService
+#### 2.1.1. getRepositoryService（）
+
+> 使用这个方法获取到RepositoryService对象，用这个对象里面的各种各样的方法操作25张表
+
+#### 2.1.2. createDeployment() 和deploy()
+
+> 流程创建部署并生产定义（版本号）
+>
+> act_ge_bytearray表里存入流程bpmn文件和png文件
+>
+> - deploymentId   ("78323ad6-fdd2-11ec-a784-00ff0b7a6947")   部署ID
+> - definitionId   ("Process_1657183049555:8:785fda89-fdd2-11ec-a784-00ff0b7a6947")   定义id-含版本信息
+
+```java
+// 创建流程部署
+DeploymentBuilder deploymentBuilder = repositoryService.createDeployment()
+    .name(processName)
+    .key(name)
+    .category(category)
+    .addInputStream(processName, in);
+// 部署
+deploymentBuilder.deploy();
+```
+
+#### 2.1.2. createDeploymentQuery（）
+
+> 创建查询部署的对象，
+>
+> 相当于查询 act_re_deployment
+
+```java
+DeploymentQuery deploymentQuery = repositoryService.createDeploymentQuery();
+```
+
+#### 2.1.3. list( )
+
+> 创建查询部署的对象，
+>
+> 相当于查询 act_re_deployment
+
+```java
+  List<Deployment> list = repositoryService.createDeploymentQuery().list();
+   for(Deployment dep : list){
+            System.out.println("Id："+dep.getId());
+            System.out.println("Name："+dep.getName());
+            System.out.println("DeploymentTime："+dep.getDeploymentTime());
+            System.out.println("Key："+dep.getKey());
+        }
+```
+
+#### 2.1.4. createProcessDefinitionQuery（）
+
+> 使用这个方法，创建流程定义对象；																														相当于操作这个表act_re_procdef
+
+```java
+//查询流程定义
+ProcessDefinition processDefinition=repositoryService.createProcessDefinitionQuery()
+            .latestVersion()
+            .active()
+            .orderByProcessDefinitionKey()
+            .asc();
+for(ProcessDefinition processDefinition : processDefinition){
+            vo.setDefinitionId(processDefinition.getId());
+            vo.setProcessKey(processDefinition.getKey());
+            vo.setProcessName(processDefinition.getName());
+            vo.setVersion(processDefinition.getVersion());
+            vo.setCategory(processDefinition.getCategory());
+            vo.setDeploymentId(processDefinition.getDeploymentId());
+            vo.setSuspended(processDefinition.isSuspended());
+            // 流程定义时间
+            vo.setCategory(deployment.getCategory());
+            vo.setDeploymentTime(deployment.getDeploymentTime());
+}
+//查询-根据部署id
+ProcessDefinition processDefinition=repositoryService.createProcessDefinitionQuery()
+                .deploymentId(deployment.getId())
+                .singleResult();
+//查询-根据定义id
+ ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(procDefId)
+                .singleResult();
+```
+
+
+
+### 2.2. RuntimeService
+
+> 创建流程定义的新流程实例
+>
+> 启动流程实例
+>
+> 定义流程变量
+
+#### 2.2.1. getRuntimeService（）
+
+> 获取到RuntimeService对象，用这个对象里面的各种各样的方法操作25张表
+
+#### 2.2.2. startProcessInstanceByKey（）
+
+> 创建流程实例-通过processKey( 流程key)
+
+```java
+        //1、获取页面表单填报的内容，请假时间，请假事由，String fromData
+        //2、fromData 写入业务表，返回业务表主键ID==businessKey
+        //3、把业务数据与Activiti7流程数据关联
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess_claim","bKey002");
+        System.out.println("流程实例ID："+processInstance.getProcessDefinitionId());
+```
+
+#### 2.2.3. startProcessInstanceById
+
+> 创建流程定义的实例-通过procDefId 流程定义id)
+
+```java
+//定义流程变量
+Map<String, Object> variables = new HashMap<String, Object>();
+        variables.put("employee", employee);
+        variables.put("nrOfHolidays", nrOfHolidays);
+        variables.put("description", description);
+//启动流程并设置流程变量
+ ProcessInstance processInstance=runtimeService.startProcessInstanceById(procDefId, variables);
+```
+
+#### 2.2.4. createProcessInstanceQuery（）
+
+> 获取流程实例查询对象
+
+```java
+ProcessInstanceQuery processInstanceQuery = runtimeService.createProcessInstanceQuery();
+```
+
+#### 2.2.5 list( )
+
+> 获取流程实例list集合
+
+```java
+ List<ProcessInstance> list = runtimeService.createProcessInstanceQuery().list();
+```
+
+#### 2.2.6.  suspendProcessInstanceById()
+
+> 挂起流程实例，传参是流程实例的id
+
+```java
+runtimeService.suspendProcessInstanceById("73f0fb9a-ce5b-11ea-bf67-dcfb4875e032");
+```
+
+
+
+#### 2.2.7. activateProcessInstanceById（）
+
+> 激活流程实例，传参是流程实例的id
+
+```java
+runtimeService.activateProcessInstanceById("73f0fb9a-ce5b-11ea-bf67-dcfb4875e032");
+```
+
+#### 2.2.8. deleteProcessInstance()
+
+> 删除流程实例
+
+```java
+runtimeService.deleteProcessInstance("45b8b797-ba0c-11ec-8af3-e02be94c81b8","删着玩");
+```
+
+
+
+### 2.3.  TaskService
 
 > BPM引擎来说，核心是需要人类用户操作的任务
 >
@@ -151,15 +287,6 @@
 
 - 添加审批意见
 
-  ```java
-  //  设置审批意见的审批人,  这个必须写
-  Authentication.setAuthenticatedUserId(userid+"");
-  //        添加审批意见
-  taskService.addComment(taskid+"",task.getProcessInstanceId(),comment);
-  ```
-
-  
-
 - 查询分派给用户或组的任务
 
 - 创建*独立运行(standalone)*任务。这是一种没有关联到流程实例的任务。
@@ -168,31 +295,114 @@
 
 - 认领(claim)与完成(complete)任务。认领是指某人决定成为任务的执行用户，也即他将会完成这个任务。完成任务是指“做这个任务要求的工作”，通常是填写某个表单。
 
-### 2.2. RuntimeService
+#### 2.3.1. getTaskService（）
 
-> 用于**启动流程定义的新流程实例**。
+> 获取到TaskService对象
+
+#### 2.3.2. createTaskQuery( )
+
+> 创建查询对象
+
+```java
+TaskQuery taskQuery = taskService.createTaskQuery();
+```
+
+##### 2.3.2.1. taskId（）
+
+> 根据**任务id**查询`act_ru_task`表数据的任务
+
+```java
+//根据任务id查询任务表
+TaskQuery taskQuery1 = taskQuery.taskId(taskid + "");
+```
+
+##### 2.3.2.2. processInstanceId（）
+
+> 通过**流程实例ID** 查询`act_ru_task`表数据 的任务
+
+```java
+TaskQuery taskQuery1 = taskQuery.processInstanceId(processInstance.getProcessInstanceId())
+```
+
+##### 2.3.2.3. singleResult()
+
+> 获取单个数据
+
+```java
+Task task = taskQuery1.singleResult();
+//获取任务ID
+String taskid = task.getId()
+```
+
+##### 2.3.2.4. getAssignee（）
+
+> 获取act_ru_task这个表单个数据的操作人
+
+```java
+// 获取当前任务的  处理人
+String assignee = task.getAssignee();
+```
+
+
+
+#### 2.3.3. addComment（）
+
+> 添加审批意见   保存至 `act_hi_comment`
+
+```java
+//  设置审批意见的审批人,  这个必须写
+Authentication.setAuthenticatedUserId(userid+"");
+//添加审批意见
+taskService.addComment(taskid+"",task.getProcessInstanceId(),comment);;
+```
+
+
+
+#### 2.3.4. complete（）
+
+> 完成任务
 >
-> 定义流程变量
+> - 参数1：任务id
+> - 参数2： 任务设置的变量
 
-- 启动流程定义的实例-通过processKey( 实例key)
+```java
+Map<String, Object> map = new HashMap<String, Object>();
+map.put("agree",agree);
 
-  ```java
-  //定义流程变量
-  Map<String, Object> variables = new HashMap<String, Object>();
-          variables.put("employee", employee);
-          variables.put("nrOfHolidays", nrOfHolidays);
-          variables.put("description", description);
-  //启动流程并设置流程变量
-   ProcessInstance processInstance=runtimeService.startProcessInstanceByKey(processKey,variables);
-  ```
+taskService.complete(taskid+"",map);
+```
 
-- 启动流程定义的实例-通过procInsId  (实例id)
 
-  ```java
-  ProcessInstance processInstance = runtimeService.startProcessInstanceById(procDefId, variables);
-  ```
 
-  
+#### 2.3.5. claim（）
+
+> 拾取任务
+>
+> 参数1：任务id **taskid**
+>
+> 参数2：候选人名字
+
+```java
+taskService.claim("f5c87a6e-ba27-11ec-89da-e02be94c81b8","wukong");
+```
+
+
+
+#### 2.3.6. setAssignee（）
+
+> 设置候选人，可以在流程画图里面设置
+>
+> + 归还
+> + 交办
+
+```java
+  //归还候选任务
+taskService.setAssignee("f5c87a6e-ba27-11ec-89da-e02be94c81b8",null);
+//交办,其实就是设置执行人
+taskService.setAssignee("f5c87a6e-ba27-11ec-89da-e02be94c81b8","wukong");
+```
+
+
 
 ### 2.3. HistoryService
 
