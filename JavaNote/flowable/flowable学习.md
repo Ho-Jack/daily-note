@@ -72,16 +72,16 @@
 
 ## 2. API与服务
 
-![](D:\notes\daily-note\JavaNote\flowable\API.png)
+![](img\API.png)
 
 ### 2.1. RepositoryService
 
 > 提供了管理与控制部署(deployments)与流程定义(process definitions)的操作。
 >
 > - deploymentId   ("78323ad6-fdd2-11ec-a784-00ff0b7a6947")   部署ID
-> - definitionId   ("Process_1657183049555:8:785fda89-fdd2-11ec-a784-00ff0b7a6947")   定义id
+> - definitionId   ("Process_1657183049555:8:785fda89-fdd2-11ec-a784-00ff0b7a6947")   定义id-含版本信息
 > - procInsId:( "f432d9c1-fdd4-11ec-a784-00ff0b7a6947")   实例id
-> - processKey: "Process_1657183049555"    实例key
+> - processKey:( "Process_1657183049555"  )  实例key
 > - 
 
 - 流程定义和流程部署 
@@ -119,8 +119,12 @@
               vo.setDeploymentTime(deployment.getDeploymentTime());
   }
   //根据部署id查询
-  .ProcessDefinition processDefinition=repositoryService.createProcessDefinitionQuery()
+  ProcessDefinition processDefinition=repositoryService.createProcessDefinitionQuery()
                   .deploymentId(deployment.getId())
+                  .singleResult();
+  //根据定义id查
+   ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                  .processDefinitionId(procDefId)
                   .singleResult();
   ```
 
@@ -133,27 +137,56 @@
 ### 2.2. TaskService
 
 > BPM引擎来说，核心是需要人类用户操作的任务
+>
+> 实例化流程后就可以查询任务节点,启动和分配任务
+
+- 查询实例流程的所有任务
+
+  ```java
+  //通过流程实例ID 查询第一个任务
+  Task task = taskService.createTaskQuery()
+          .processInstanceId(processInstance.getProcessInstanceId())
+          .singleResult();
+  ```
+
+- 添加审批意见
+
+  ```java
+  //  设置审批意见的审批人,  这个必须写
+  Authentication.setAuthenticatedUserId(userid+"");
+  //        添加审批意见
+  taskService.addComment(taskid+"",task.getProcessInstanceId(),comment);
+  ```
+
+  
 
 - 查询分派给用户或组的任务
+
 - 创建*独立运行(standalone)*任务。这是一种没有关联到流程实例的任务。
+
 - 决定任务的执行用户(assignee)，或者将用户通过某种方式与任务关联。
+
 - 认领(claim)与完成(complete)任务。认领是指某人决定成为任务的执行用户，也即他将会完成这个任务。完成任务是指“做这个任务要求的工作”，通常是填写某个表单。
 
 ### 2.2. RuntimeService
 
 > 用于**启动流程定义的新流程实例**。
+>
+> 定义流程变量
 
-- 启动流程定义的实例-通过processKey 实例key
+- 启动流程定义的实例-通过processKey( 实例key)
 
   ```java
-    Map<String, Object> variables = new HashMap<String, Object>();
+  //定义流程变量
+  Map<String, Object> variables = new HashMap<String, Object>();
           variables.put("employee", employee);
           variables.put("nrOfHolidays", nrOfHolidays);
           variables.put("description", description);
+  //启动流程并设置流程变量
    ProcessInstance processInstance=runtimeService.startProcessInstanceByKey(processKey,variables);
   ```
 
-- 启动流程定义的实例-通过procInsId  实例id
+- 启动流程定义的实例-通过procInsId  (实例id)
 
   ```java
   ProcessInstance processInstance = runtimeService.startProcessInstanceById(procDefId, variables);

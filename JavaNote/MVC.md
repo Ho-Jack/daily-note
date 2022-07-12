@@ -13,6 +13,8 @@
 Controler负责**请求转发**，接受页面过来的参数，传给Service处理，接到返回值，再传给页面。
 
 - Controller类:提供给管理后台的 RESTful API (业务方法,提供外部调用的接口方法)
+  1. 依赖注入:Service层的接口/接口的实现类
+  2. 使用Service层的接口/接口的实现类中的实现方法,来传递数据
 - VO类: 接口的入参 ReqVO、出参 RespVO  (业务对象,作为Controller类中的方法的参数)
 
 ### Service层：
