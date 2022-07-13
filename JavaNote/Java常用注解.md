@@ -683,10 +683,14 @@ public Class getClass(int id);
 | readOnly               | 事务读写性，默认为false                          |
 | noRollbackFor          | 一组异常类，遇到时不回滚，默认为{}               |
 | noRollbackForClassName | 一组异常类名，遇到时不回滚，默认为{}             |
-| rollbackFor            | 一组异常类，遇到时回滚，默认为{}                 |
+| **rollbackFor**        | 一组异常类，遇到时回滚，默认为{}                 |
 | rollbackForClassName   | 一组异常类名，遇到时回滚，默认为{}               |
 | timeout                | 超时时间，以秒为单位                             |
 | value                  | 可选的限定描述符，指定使用的事务管理器，默认为“” |
+
+```java
+    @Transactional(rollbackFor = Exception.class)
+```
 
 
 

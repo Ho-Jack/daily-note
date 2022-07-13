@@ -42,11 +42,105 @@
 > RuntimeService接口操作的表
 
 - act_ru_task：运行时流程任务节点表，存储运行中流程的任务节点信息，重要，常用于查询人员或部门的待办任务时使用；
-- act_ru_event_subscr：监听信息表，不常用；
-- act_ru_execution：运行时流程执行实例表，记录运行中流程运行的各个分支信息（当没有子流程时，其数据与act_ru_task表数据是一一对应的）；
+- act_ru_event_subscr：监听信息(运行时事件)表，不常用；
+- act_ru_execution：运行时流程执行**实例表，**记录运行中流程运行的各个分支信息（当没有子流程时，其数据与act_ru_task表数据是一一对应的）；
 - act_ru_identitylink：运行时流程人员表，重要，常用于查询人员或部门的待办任务时使用；
 - act_ru_job：运行时定时任务数据表，存储流程的定时任务信息；
 - act_ru_variable：运行时流程变量数据表，存储运行中的流程各节点的变量信息；
+
+#### 启动一个流程实例的时候涉及到以下四个表
+
+##### act_ru_execution 运行时-流程实例表
+
+| 字段                  | 名称                 | 备注 |
+| --------------------- | -------------------- | ---- |
+| ID_                   | 主键                 |      |
+| REV_                  | 版本号               |      |
+| PROC_INST_ID_         | 流程实例ID           |      |
+| BUSINESS_KEY_         | 业务主键ID           |      |
+| PARENT_ID_            | 父执行流的ID         |      |
+| PROC_DEF_ID_          | 流程定义的数据ID     |      |
+| SUPER_EXEC_           |                      |      |
+| ROOT_PROC_INST_ID_    | 流程实例的root流程id |      |
+| ACT_ID_               | 节点实例ID           |      |
+| IS_ACTIVE_            | 是否存活             |      |
+| IS_CONCURRENT_        | 执行流是否正在并行   |      |
+| IS_SCOPE_             |                      |      |
+| IS_EVENT_SCOPE_       |                      |      |
+| IS_MI_ROOT_           |                      |      |
+| SUSPENSION_STATE_     | 流程终端状态         |      |
+| CACHED_ENT_STATE_     |                      |      |
+| TENANT_ID_            | 租户编号             |      |
+| NAME_                 |                      |      |
+| START_TIME_           | 开始时间             |      |
+| START_USER_ID_        | 开始的用户编号       |      |
+| LOCK_TIME_            | 锁定时间             |      |
+| IS_COUNT_ENABLED_     |                      |      |
+| EVT_SUBSCR_COUNT_     |                      |      |
+| TASK_COUNT_           |                      |      |
+| JOB_COUNT_            |                      |      |
+| TIMER_JOB_COUNT_      |                      |      |
+| SUSP_JOB_COUNT_       |                      |      |
+| DEADLETTER_JOB_COUNT_ |                      |      |
+| VAR_COUNT_            |                      |      |
+| ID_LINK_COUNT_        |                      |      |
+
+##### act_ru_task 运行时- 任务表
+
+| 字段              | 名称                 | 备注                |
+| ----------------- | -------------------- | ------------------- |
+| ID_               | 主键                 |                     |
+| REV_              | 版本号               |                     |
+| EXECUTION_ID_     | 任务所在的执行流ID   |                     |
+| PROC_INST_ID_     | 流程实例ID           |                     |
+| PROC_DEF_ID_      | 流程定义数据ID       |                     |
+| NAME_             | 任务名称             |                     |
+| PARENT_TASK_ID_   | 父任务ID             |                     |
+| DESCRIPTION_      | 说明                 |                     |
+| TASK_DEF_KEY_     | 任务定义的ID值       |                     |
+| OWNER_            | 任务拥有人           |                     |
+| ASSIGNEE_         | 被指派执行该任务的人 |                     |
+| DELEGATION_       | 委托人               |                     |
+| PRIORITY_         | 优先级               |                     |
+| CREATE_TIME_      | 创建时间             |                     |
+| DUE_DATE_         | 耗时                 |                     |
+| CATEGORY_         | 类别                 |                     |
+| SUSPENSION_STATE_ | 是否挂起             | 1代表激活 2代表挂起 |
+| TENANT_ID_        | 租户编号             |                     |
+| FORM_KEY_         |                      |                     |
+| CLAIM_TIME_       | 拾取时间             |                     |
+
+##### act_ru_variable 运行时-变量表
+
+| 字段          | 名称                           | 备注                                 |
+| ------------- | ------------------------------ | ------------------------------------ |
+| ID_           | 主键                           |                                      |
+| REV_          | 版本号                         |                                      |
+| TYPE_         | 参数类型                       | 可以是基本的类型，也可以用户自行扩展 |
+| NAME_         | 参数名称                       |                                      |
+| EXECUTION_ID_ | 参数执行ID                     |                                      |
+| PROC_INST_ID_ | 流程实例ID                     |                                      |
+| TASK_ID_      | 任务ID                         |                                      |
+| BYTEARRAY_ID_ | 资源ID                         |                                      |
+| DOUBLE_       | 参数为double，则保存在该字段中 |                                      |
+| LONG_         | 参数为long，则保存在该字段中   |                                      |
+| TEXT_         | 用户保存文本类型的参数值       |                                      |
+| TEXT2_        | 用户保存文本类型的参数值       |                                      |
+
+##### act_ru_identitylink 运行时- 用户关系信息 
+
+| 字段          | 名称         | 备注                                                         |
+| ------------- | ------------ | ------------------------------------------------------------ |
+| ID_           | 主键         |                                                              |
+| REV_          | 版本号       |                                                              |
+| GROUP_ID_     | 用户组ID     |                                                              |
+| TYPE_         | 关系数据类型 | assignee支配人(组)、candidate候选人(组)、owner拥有人,participant参与者,starter发起者 |
+| USER_ID_      | 用户ID       |                                                              |
+| TASK_ID_      | 任务ID       |                                                              |
+| PROC_INST_ID_ | 流程定义ID   |                                                              |
+| PROC_DEF_ID_  | 属性ID       |                                                              |
+
+
 
 #### 1.4. 历史表（8个）
 
@@ -60,6 +154,109 @@
 - act_hi_procinst：历史流程实例表，存储流程实例历史数据（包含正在运行的流程实例）；
 - act_hi_taskinst：历史流程任务表，存储历史任务节点；
 - act_hi_varinst：流程历史变量表，存储流程历史节点的变量信息；
+
+#### 完成一个任务涉及到的表
+
+##### act_hi_actinst 历史-节点表
+
+| 字段               | 名称                 | 备注                                         |
+| ------------------ | -------------------- | -------------------------------------------- |
+| ID_                | 主键                 |                                              |
+| PROC_DEF_ID_       | 流程定义ID           |                                              |
+| PROC_INST_ID_      | 流程实例ID           |                                              |
+| EXECUTION_ID_      | 执行ID               |                                              |
+| ACT_ID_            | 节点实例ID           |                                              |
+| TASK_ID_           | 任务ID               | startEvent、sequenceFlow、userTask、endEvent |
+| CALL_PROC_INST_ID_ | 调用外部的流程实例ID |                                              |
+| ACT_NAME_          | 节点名称             |                                              |
+| ACT_TYPE_          | 节点类型             |                                              |
+| ASSIGNEE_          | 处理人               |                                              |
+| START_TIME_        | 开始时间             |                                              |
+| END_TIME_          | 结束时间             |                                              |
+| DURATION_          | 耗时                 |                                              |
+| DELETE_REASON_     | 删除原因             |                                              |
+| TENANT_ID_         | 租户编号             |                                              |
+
+#####  act_hi_identitylink历史的流程运行过程中用户关系
+
+| 字段                 | 名称         | 备注 |
+| -------------------- | ------------ | ---- |
+| ID_                  | 主键         |      |
+| GROUP_ID_            | 组编号       |      |
+| TYPE_                | 类型         |      |
+| USER_ID_             | 用户编号     |      |
+| TASK_ID_             | 任务编号     |      |
+| CREATE_TIME_         | 创建时间     |      |
+| PROC_INST_ID_        | 流程实例编号 |      |
+| SCOPE_ID_            |              |      |
+| SCOPE_TYPE_          |              |      |
+| SCOPE_DEFINITION_ID_ |              |      |
+
+##### act_hi_procinst历史的流程实例
+
+| 字段                       | 名称         | 备注 |
+| -------------------------- | ------------ | ---- |
+| ID_                        | 主键         |      |
+| PROC_INST_ID_              | 流程实例ID   |      |
+| BUSINESS_KEY_              | 业务主键     |      |
+| PROC_DEF_ID_               | 属性ID       |      |
+| START_TIME_                | 开始时间     |      |
+| END_TIME_                  | 结束时间     |      |
+| DURATION_                  | 耗时         |      |
+| START_USER_ID_             | 起始人       |      |
+| START_ACT_ID_              | 起始节点     |      |
+| END_ACT_ID_                | 结束节点     |      |
+| SUPER_PROCESS_INSTANCE_ID_ | 父流程实例ID |      |
+| DELETE_REASON_             | 删除原因     |      |
+| TENANT_ID_                 | 租户编号     |      |
+| NAME_                      |              |      |
+
+##### act_hi_taskinst历史的任务实例
+
+| 字段            | 名称                    | 备注                                   |
+| --------------- | ----------------------- | -------------------------------------- |
+| ID_             | 主键                    |                                        |
+| PROC_DEF_ID_    | 流程定义ID              |                                        |
+| TASK_DEF_KEY_   | 任务定义的ID值          |                                        |
+| PROC_INST_ID_   | 流程实例ID              |                                        |
+| EXECUTION_ID_   | 执行ID                  |                                        |
+| PARENT_TASK_ID_ | 父任务ID                |                                        |
+| NAME_           | 名称                    |                                        |
+| DESCRIPTION_    | 说明                    |                                        |
+| OWNER_          | 实际签收人 任务的拥有者 | 签收人（默认为空，只有在委托时才有值） |
+| ASSIGNEE_       | 被指派执行该任务的人    |                                        |
+| START_TIME_     | 开始时间                |                                        |
+| CLAIM_TIME_     | 任务拾取时间            |                                        |
+| END_TIME_       | 结束时间                |                                        |
+| DURATION_       | 耗时                    |                                        |
+| DELETE_REASON_  | 删除原因                |                                        |
+| PRIORITY_       | 优先级别                |                                        |
+| DUE_DATE_       | 过期时间                |                                        |
+| FORM_KEY_       | 节点定义的formkey       |                                        |
+| CATEGORY_       | 类别                    |                                        |
+| TENANT_ID_      | 租户                    |                                        |
+
+##### act_hi_varinst历史的流程运行中的变量信息：
+
+> 流程变量虽然在任务完成后在流程实例表中会删除，但是在历史表中还是会记录的
+
+| 字段          | 名称               | 备注 |
+| ------------- | ------------------ | ---- |
+| ID_           | 主键               |      |
+| PROC_INST_ID_ | 流程实例ID         |      |
+| EXECUTION_ID_ | 指定ID             |      |
+| TASK_ID_      | 任务ID             |      |
+| NAME_         | 名称               |      |
+| VAR_TYPE_     | 参数类型           |      |
+| REV_          | 数据版本           |      |
+| BYTEARRAY_ID_ | 字节表ID           |      |
+| DOUBLE_       | 存储double类型数据 |      |
+| LONG_         | 存储long类型数据   |      |
+| .....         |                    |      |
+
+
+
+
 
 #### 1.5. 用户相关表（4个）
 
@@ -83,7 +280,9 @@
 | FormService       | 一个可选服务                               |
 | ManagerService    | 管理服务                                   |
 
+### 完整流程示例图
 
+![flowable完整流程](\img\flowable完整流程.png)
 
 ### 2.1. RepositoryService
 
@@ -268,6 +467,20 @@ runtimeService.activateProcessInstanceById("73f0fb9a-ce5b-11ea-bf67-dcfb4875e032
 runtimeService.deleteProcessInstance("45b8b797-ba0c-11ec-8af3-e02be94c81b8","删着玩");
 ```
 
+##### 2.2.9. setVariables()
+
+> 给流程设置变量
+>
+> `void setVariables(String executionId, Map<String, ? extends Object> variables);`
+>
+> `ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> variables);`
+>
+> setVariables方法的作用等同于startProcessInstanceByKey的第二参数
+
+```
+runtimeService.setVariables("流程实例id",variables);
+```
+
 
 
 ### 2.3.  TaskService
@@ -309,7 +522,7 @@ TaskQuery taskQuery = taskService.createTaskQuery();
 
 ##### 2.3.2.1. taskId（）
 
-> 根据**任务id**查询`act_ru_task`表数据的任务
+> 根据**任务id**查询`act_ru_task`表数据的任务查询对象
 
 ```java
 //根据任务id查询任务表
@@ -318,7 +531,7 @@ TaskQuery taskQuery1 = taskQuery.taskId(taskid + "");
 
 ##### 2.3.2.2. processInstanceId（）
 
-> 通过**流程实例ID** 查询`act_ru_task`表数据 的任务
+> 通过**流程实例ID** 查询`act_ru_task`表数据 的任务的查询对象
 
 ```java
 TaskQuery taskQuery1 = taskQuery.processInstanceId(processInstance.getProcessInstanceId())
@@ -330,6 +543,14 @@ TaskQuery taskQuery1 = taskQuery.processInstanceId(processInstance.getProcessIns
 
 ```java
 Task task = taskQuery1.singleResult();
+//通过taskId查询一个任务
+Task task = taskService.createTaskQuery()
+            .taskId(taskid + "")
+            .singleResult();
+//通过流程实例ID 查询一个任务(第一个任务?)
+Task task = taskService.createTaskQuery()
+            .taskId(taskid + "")
+            .singleResult();
 //获取任务ID
 String taskid = task.getId()
 ```
@@ -351,7 +572,7 @@ String assignee = task.getAssignee();
 
 ```java
 //  设置审批意见的审批人,  这个必须写
-Authentication.setAuthenticatedUserId(userid+"");
+identityService.setAuthenticatedUserId(userid+"");
 //添加审批意见
 taskService.addComment(taskid+"",task.getProcessInstanceId(),comment);;
 ```
@@ -376,7 +597,11 @@ taskService.complete(taskid+"",map);
 
 #### 2.3.5. claim（）
 
-> 拾取任务
+> 拾取任务 (和多个候选人的任务关联,candidate) 
+>
+> * 一个候选人拾取了这个任务之后其他的用户就没有办法拾取这个任务了
+>
+> * 所以如果一个用户拾取了任务之后又不想处理了，那么可以退还 **`unclaim()`**
 >
 > 参数1：任务id **taskid**
 >
@@ -390,7 +615,7 @@ taskService.claim("f5c87a6e-ba27-11ec-89da-e02be94c81b8","wukong");
 
 #### 2.3.6. setAssignee（）
 
-> 设置候选人，可以在流程画图里面设置
+> 设置支配人，可以在流程画图里面设置
 >
 > + 归还
 > + 交办
@@ -402,30 +627,217 @@ taskService.setAssignee("f5c87a6e-ba27-11ec-89da-e02be94c81b8",null);
 taskService.setAssignee("f5c87a6e-ba27-11ec-89da-e02be94c81b8","wukong");
 ```
 
+在BPMN画图设置支配人`assignee`
+
+```xml
+<bpmn2:userTask id="Activity_1fuexxv" name="审批" flowable:dataType="USERS" flowable:assignee="1" flowable:text="若依管理员">
+```
 
 
-### 2.3. HistoryService
+
+### 2.4.  HistoryService
 
 > 暴露Flowable引擎收集的所有历史数据。要提供查询历史数据的能力。
 
 例如流程实例启动时间、谁在执行哪个任务、完成任务花费的事件、每个流程实例的执行路径，等等
 
-### 2.4. IdentityService
+#### 2.4.1. getHistoryService()
+
+> 获取HistoryService的方法
+
+```java
+//      获取引擎
+ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+HistoryService historyService = processEngine.getHistoryService();
+```
+
+#### 2.4.2.  历史任务: createHistoricTaskInstanceQuery()
+
+>  创建历史任务实例对象
+>
+> 操作act_hi_taskinst这个表
+
+```java
+// 创建历史任务实例对象
+HistoricTaskInstanceQuery historicTaskInstanceQuery = historyService.createHistoricTaskInstanceQuery();
+```
+
+##### 2.4.2.1. processDefinitionKey（）
+
+> 通过流程定义key 获取任务实例对象
+
+```java
+HistoricTaskInstanceQuery qingjia1 = historyService.createHistoricTaskInstanceQuery()
+     .processDefinitionKey("qingjia");
+```
+
+##### 2.4.2.2  taskAssignee()
+
+> 根据用户id，查询属于当前用户的任务
+
+```java
+HistoricTaskInstanceQuery qingjia1 =  historyService.createHistoricTaskInstanceQuery()
+      .taskAssignee(id + "");
+```
+
+##### 2.4.3 taskNameLike（）
+
+> act_hi_taskinst表里的name字段，是当前任务的名称，我们可以根据这个字段进行模糊查询
+
+```java
+HistoricTaskInstanceQuery qingjia1 = historyService.createHistoricTaskInstanceQuery()
+    .taskNameLike("%审批%");
+```
+
+##### 2.4.4 finished（）
+
+> 查询已经完成的任务，就是endTime字段有值的数据，相当于查询已经审核完成的数据
+
+```java
+HistoricTaskInstanceQuery finished = historyService.createHistoricTaskInstanceQuery()
+    .finished();
+```
+
+
+
+##### 2.4.5 listPage（page, rows）  根据上述限定条件形成集合
+
+> 分页查询act_hi_taskinst这个表里面的数据
+
+```java
+  List<HistoricTaskInstance> historicTaskInstances =  historyService.createHistoricTaskInstanceQuery()
+      .listPage(page, rows);
+```
+
+##### 2.4.6.  orderByHistoricTaskInstanceEndTime()
+
+> act_hi_taskinst这个表里面有个endTime字段，完成的任务，这个字段就有值，可以根据这个字段进行排序
+
+```java
+ List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery()
+            .orderByHistoricTaskInstanceEndTime()
+            .asc()
+            .listPage(page, rows);
+```
+
+#### 2.4.3 历史流程实例:createHistoricProcessInstanceQuery（）
+
+> 创建流程实例对象
+>
+> 操作act_hi_procinst这个表
+
+```java
+HistoricProcessInstanceQuery hisquery = historyService.createHistoricProcessInstanceQuery();
+```
+
+##### 2.4.3.1. processDefinitionKey（）
+
+> 根据流程定义的key查询创建的流程实例
+
+```java
+HistoricProcessInstanceQuery qingjia3 = historyService.createHistoricProcessInstanceQuery()
+    .processDefinitionKey("qingjia");
+```
+
+
+
+##### 2.4.3.2.  processInstanceBusinessKey()
+
+> 根据业务id，查询当前业务下创建的流程实例
+>
+> 根据表中的BusinessKey字段来查
+
+```java
+ HistoricProcessInstanceQuery qingjia3 = historyService.createHistoricProcessInstanceQuery()
+            .processInstanceBusinessKey(id + "");
+```
+
+##### 2.4.3.3.  list()
+
+> 查询流程实例的集合
+
+```java
+List<HistoricProcessInstance> qingjia2 = historyService.createHistoricProcessInstanceQuery()
+            .processDefinitionKey("qingjia")
+            .processInstanceBusinessKey(id + "")
+            .list();
+```
+
+##### 2.4.3.4  getEndActivityId()
+
+> 获取当前流程结束的节点的活动id
+>
+> 判断当前流程实例是否已经走完；为null就是没有走完；
+
+```java
+List<HistoricProcessInstance> qingjia2 = historyService.createHistoricProcessInstanceQuery()
+            .processDefinitionKey("qingjia")
+            .processInstanceBusinessKey(id + "")
+            .list();  
+for(HistoricProcessInstance item: qingjia2){
+       //getEndActivityId   判断当前流程实例是否完成，如果没有完成，不能创建
+                if(item.getEndActivityId() == null){
+                    System.out.println("不能重复提交申请单");
+                }
+            }
+```
+
+
+
+#### 2.4.4. 创建流程活动对象createHistoricActivityInstanceQuery（）
+
+> 拿到操作act_hi_actinst 这个表的对象，这个表里面的各个节点都有
+
+```java
+HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery();
+```
+
+##### 2.4.4.1. activityId（）
+
+> 根据查询出来的流程结束的节点id，查询最后一个数据
+
+```java
+HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery()
+     .activityId(endActivityId);
+```
+
+##### 2.4.4.2. list（）
+
+```java
+//根据最后节点的id，获取任务,其实只有一个，但是这里使用了list，是没有找到获取单个的方法
+List<HistoricActivityInstance> list1 = historyService.createHistoricActivityInstanceQuery()
+    .activityId(endActivityId)
+    .list();
+HistoricActivityInstance historicActivityInstance = list1.get(0);
+
+```
+
+##### 2.4.4.3. getActivityName()
+
+> 获取act_hi_actinst 这个表的name字段，获取最后节点的名称
+
+```java
+  String activityName = historicActivityInstance.getActivityName();//获取最后节点的名称
+```
+
+
+
+### 2.5. IdentityService
 
 > 用于管理（创建，更新，删除，查询……）组与用户。
 
-### 2.5. FormService
+### 2.6. FormService
 
 > 是可选服务。也就是说Flowable没有它也能很好地运行，而不必牺牲任何功能。
 
 - *开始表单(start form)*是在流程实例启动前显示的表单
 - *任务表单(task form)*是用户完成任务时显示的表单
 
-### 2.6. ManagementService
+### 2.7. ManagementService
 
 > 通常在用Flowable编写用户应用时不需要使用。它可以读取数据库表与表原始数据的信息，也提供了对作业(job)的查询与管理操作。
 
-### 2.7. DynamicBpmnService
+### 2.8. DynamicBpmnService
 
 > 可用于修改流程定义中的部分内容，而不需要重新部署它。例如可以修改流程定义中一个用户任务的办理人设置，或者修改一个服务任务中的类名。
 
@@ -591,3 +1003,32 @@ public class TestFlowable {
 
 ```
 
+
+
+
+
+### 设置任务审批人/执行人/支配人/assignee
+
+1. 画BPMN图时:
+
+   ```xml
+       <bpmn2:userTask id="Activity_0b3ukpl" name="发起任务" flowable:dataType="INITIATOR" flowable:assignee="${initiator}" flowable:text="流程发起人">
+         <bpmn2:incoming>Flow_1sh09sz</bpmn2:incoming>
+         <bpmn2:outgoing>Flow_0y2qces</bpmn2:outgoing>
+       </bpmn2:userTask>
+       <bpmn2:userTask id="Activity_1fuexxv" name="审批" flowable:dataType="USERS" flowable:assignee="1" flowable:text="若依管理员">
+         <bpmn2:incoming>Flow_0y2qces</bpmn2:incoming>
+         <bpmn2:outgoing>Flow_0eo7464</bpmn2:outgoing>
+       </bpmn2:userTask>
+   ```
+
+2. 通过setAssignee()
+
+   ```java
+     //归还候选任务
+   taskService.setAssignee("f5c87a6e-ba27-11ec-89da-e02be94c81b8",null);
+   //交办,其实就是设置执行人
+   taskService.setAssignee("f5c87a6e-ba27-11ec-89da-e02be94c81b8","wukong");
+   ```
+
+   
