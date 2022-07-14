@@ -564,7 +564,19 @@ String taskid = task.getId()
 String assignee = task.getAssignee();
 ```
 
+##### active()
 
+#####  includeProcessVariables
+
+> 查询结果包含流程参数
+
+##### taskCandidateOrAssigned()
+
+> 查询已签收和未签收?? 待办任务
+
+##### taskCandidateGroupIn
+
+##### 
 
 #### 2.3.3. addComment（）
 
@@ -1032,3 +1044,110 @@ public class TestFlowable {
    ```
 
    
+
+###  任务的多实例(for-each)-会签的实现
+
+* collection：表示要循环的集合
+* elementVariable：表示循环的变量item
+* completionCondition ：表示任务结束的条件，也就是多人会签的结束条件，在此处我们用的是UEL表达式，`mulitiInstanceCompleteTask`表示的是我们注入到Spring容器中的对象
+  - nrOfInstances:该会签环节中总共有多少个实例
+  - nrOfActiveInstances:当前活动的实例的数量，即还没有完成的实例数量
+  - nrOfCompletedInstances:已经完成的实例的数量
+* isSequential="false|true"  : 顺序执行(三横true)还是并发执行(三竖false)
+
+```xml
+<userTask id="miTasks" name="My Task" flowable:assignee="${assignee}">
+  <multiInstanceLoopCharacteristics isSequential="true"
+     flowable:collection="assigneeList" flowable:elementVariable="assignee" >
+     <completionCondition xsi:type="bpmn2:tFormalExpression">${nrOfCompletedInstances &gt;= nrOfInstances}         
+     </completionCondition>   
+  </multiInstanceLoopCharacteristics>
+</userTask> 
+```
+
+如上:assigneeList为集合通过 for-each遍历:循环变量的item 为assignee 填充到上面flowable:assignee="${assignee}" 表达式作为任务变量,
+
+
+
+### 设置流程变量
+
+#### 全局变量/流程变量
+
+- 作用域: 流程实例。
+
+- 流程变量中变量名不允许重复，设置相同名称的变量，后设置的值会覆盖前设置的变量值。
+
+#### 局部变量( VariableLocal )
+
+> 局部变量针对于execution、task。设置局部变量，local变量的好处是，可以在每个分支使用同名的变量，互相之间不受影响，会签multi-instance就是通过local局部变量实现的。
+
+- 作用域: 任务和执行实例(针对一个任务和一个执行实例范围，范围没有流程实例大)
+- Local 变量由于在不同的任务或不同的执行实例中，作用域互不影响，变量名可以相同没有影响。Local 变量名也可以和 global 变量名相同，没有影响。 
+
+```java
+taskService.setVariableLocal(任务ID,变量名，变量值)
+```
+
+
+
+#### 作用: 
+
+- 排他网关上顺序流上的条件,作为表达式计算,如  ${num>1}
+- 任务节点XML画图的设置的审批人assignee,如:`flowable:assignee="${assignee}"`
+
+说明: 流程设置的变量将自动填充进去 `${xx}`
+
+#### 设置方法:
+
+- 启动时`*startProcessInstanceXXX*`设置:
+
+  *startProcessInstanceXXX*方法都有一个可选参数，用于在流程实例创建及启动时设置变量。例如，在*RuntimeService*中：
+
+  ```
+  1ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> variables);
+  ```
+
+- 任务完成时设置
+
+  ```java
+  taskService.complete(taskId,variables);
+  ```
+
+  
+
+- 流程实例`RuntimeService`中设置:
+
+  ```java
+  //全局变量(作用于流程实例)
+  void setVariable(String executionId, String variableName, Object value);
+  void setVariables(String executionId, Map<String, ? extends Object> variables);
+  //局部变量(作用于任务和执行实例(针对一个任务和一个执行实例范围，范围没有流程实例大))
+  void setVariableLocal(String executionId, String variableName, Object value);
+  void setVariablesLocal(String executionId, Map<String, ? extends Object> variables);
+  ```
+
+- 任务`taskService`中设置
+
+  ```java
+  void setVariable(String executionId, String variableName, Object value);
+  void setVariables(String executionId, Map<String, ? extends Object> variables);
+  void setVariableLocal(String executionId, String variableName, Object value);
+  void setVariablesLocal(String executionId, Map<String, ? extends Object> variables);
+  ```
+
+  
+
+#### 读取变量:
+
+流程实例`RuntimeService` 和任务`taskService`均可获取
+
+```java
+Map<String, Object> getVariables(String executionId);
+Map<String, Object> getVariables(String executionId, Collection<String> variableNames);
+Object getVariable(String executionId, String variableName);
+<T> T getVariable(String executionId, String variableName, Class<T> variableClass);
+
+Map<String, Object> getVariablesLocal(String executionId);
+Map<String, Object> getVariablesLocal(String executionId, Collection<String> variableNames);
+```
+

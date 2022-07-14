@@ -62,9 +62,11 @@
 
 ## 2. 流程说明
 
-1.在用户任务节点绑定了一个监听器，监听`create`行为，该监听器我们是通过UEL表达式来实现的，`mulitiInstanceTaskListener`是我们注入到Spring容器中的对象
+### 2.1. 创建任务监听器:`taskListener`
 
-![image-20220402095348908](\img\image-20220402095348908.png)
+在用户任务节点绑定了一个监听器，监听`create`行为，该监听器我们是通过UEL表达式来实现的，`mulitiInstanceTaskListener`是我们注入到Spring容器中的对象
+
+![image-20220402095348908](img\image-20220402095348908.png)
 
 对应的监听的代码如下：
 
@@ -80,14 +82,32 @@ public class MulitiInstanceTaskListener implements Serializable {
 }
 ```
 
-2.在Multi instance中的配置
+### 2.2. 创建多实例(for-each)`multiInstanceLoopCharacteristics`
+
+```xml
+    <userTask id="usertask1" name="User Task">
+            <extensionElements>
+                <activiti:taskListener event="create"                  
+                                       expression="${mulitiInstanceTaskListener.completeListener(execution)}">
+                </activiti:taskListener>
+            </extensionElements>
+            <multiInstanceLoopCharacteristics isSequential="false" 
+                                              activiti:collection="persons" 
+                                              activiti:elementVariable="person">
+                <loopCardinality>3</loopCardinality>
+                <completionCondition>${mulitiInstanceCompleteTask.completeTask(execution)}</completionCondition>
+            </multiInstanceLoopCharacteristics>
+        </userTask>
+```
+
+
 
 * Loop cardinality:设置为3表示只循环3次，也就是三个人会签
 * Collection：表示要循环的集合，我们给的是persons，后面需要在流程变量中赋值
 * Element variable：表示循环的变量
 * Completion condition：表示任务结束的条件，也就是多人会签的结束条件，在此处我们用的是UEL表达式，`mulitiInstanceCompleteTask`表示的是我们注入到Spring容器中的对象
 
-![image-20220402100649924](\img\image-20220402100649924.png)
+![image-20220402100649924](img\image-20220402100649924.png)
 
 
 
@@ -115,13 +135,11 @@ public class MulitiInstanceCompleteTask implements Serializable {
 }
 ```
 
-上面的三个变量是Flowable中自带的可用变量
+### Flowable中自带的会签可用变量
 
-1. nrOfInstances:该会签环节中总共有多少个实例
-
-2. nrOfActiveInstances:当前活动的实例的数量，即还没有完成的实例数量。
-
-3. nrOfCompletedInstances:已经完成的实例的数量
+- nrOfInstances:该会签环节中总共有多少个实例
+- nrOfActiveInstances:当前活动的实例的数量，即还没有完成的实例数量
+- nrOfCompletedInstances:已经完成的实例的数量
 
 
 
@@ -161,13 +179,13 @@ public class MulitiInstanceCompleteTask implements Serializable {
     }
 ```
 
-![image-20220402104240267](\img\image-20220402104240267.png)
+![image-20220402104240267](img\image-20220402104240267.png)
 
 
 
 同时控制也有对应的输出，触发了Task的创建事件
 
-![image-20220402104319944]( \img\image-20220402104319944.png)
+![image-20220402104319944](img\image-20220402104319944.png)
 
 
 
@@ -185,15 +203,15 @@ public class MulitiInstanceCompleteTask implements Serializable {
     }
 ```
 
-![image-20220402104554823](\img\image-20220402104554823.png)
+![image-20220402104554823](img\image-20220402104554823.png)
 
 当任务执行完成时会同步触发会签完成表达式中对象方法。有如下的输出
 
-![image-20220402104729627](\img\image-20220402104729627.png)
+![image-20220402104729627](img\image-20220402104729627.png)
 
 同时Task表中的记录还有两条
 
-![image-20220402104819239](\img\image-20220402104819239.png)
+![image-20220402104819239](img\image-20220402104819239.png)
 
 然后当我们在完成一个任务，这时设置flag为true，会发现在这个多人处理中，最多3个人处理在第二个人处理后就结束了
 
@@ -211,13 +229,13 @@ public class MulitiInstanceCompleteTask implements Serializable {
 
 
 
-![image-20220402105058601](\img\image-20220402105058601.png)
+![image-20220402105058601](img\image-20220402105058601.png)
 
 
 
 同时来看看表结构中的记录，发现没有了
 
-![image-20220402105148471](\img\image-20220402105148471.png)
+![image-20220402105148471](img\image-20220402105148471.png)
 
 
 
