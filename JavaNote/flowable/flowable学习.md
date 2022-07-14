@@ -282,7 +282,7 @@
 
 ### 完整流程示例图
 
-![flowable完整流程](\img\flowable完整流程.png)
+![flowable完整流程](img\flowable完整流程.png)
 
 ### 2.1. RepositoryService
 
@@ -1071,6 +1071,29 @@ public class TestFlowable {
 
 ### 设置流程变量
 
+Flowable变量：
+
+- 运行时变量
+
+  > 流程实例运行时的变量，存入act_ru_variable表中。在流程实例运行结束时，此实例的变量在表中删除
+
+- 历史变量
+
+  >历史变量，存入act_hi_varinst表中。在流程启动时，流程变量会同时存入历史变量表中；在流程结束时，历史表中的变量仍然存在。可理解为“永久代”的流程变量。
+
+  ```java
+   //查询流程实例的历史变量 
+  historyService.createHistoricVariableInstanceQuery()
+        .processInstanceId("XXX")
+        .orderByVariableName
+        .desc()
+        .list();
+  ```
+
+  
+
+  注意：由于流程实例结束时，对应在运行时表的数据跟着被删除。所以，查询一个已经完结流程实例的变量，只能在历史变量表中查找。
+
 #### 全局变量/流程变量
 
 - 作用域: 流程实例。
@@ -1081,11 +1104,24 @@ public class TestFlowable {
 
 > 局部变量针对于execution、task。设置局部变量，local变量的好处是，可以在每个分支使用同名的变量，互相之间不受影响，会签multi-instance就是通过local局部变量实现的。
 
-- 作用域: 任务和执行实例(针对一个任务和一个执行实例范围，范围没有流程实例大)
+- 作用域: task任务和execution执行实例(针对一个任务和一个执行实例范围，范围没有流程实例大)
 - Local 变量由于在不同的任务或不同的执行实例中，作用域互不影响，变量名可以相同没有影响。Local 变量名也可以和 global 变量名相同，没有影响。 
 
 ```java
+//任务task
 taskService.setVariableLocal(任务ID,变量名，变量值)
+Map<String, Object> getVariables(String executionId);
+Map<String, Object> getVariablesLocal(String executionId);
+Map<String, Object> getVariables(String executionId, Collection<String> variableNames);
+Map<String, Object> getVariablesLocal(String executionId, Collection<String> variableNames);
+Object getVariable(String executionId, String variableName);
+<T> T getVariable(String executionId, String variableName, Class<T> variableClass);    
+ //执行实例execution
+execution.getVariables();
+execution.getVariables(Collection<String> variableNames);
+execution.getVariable(String variableName);
+execution.setVariables(Map<String, object> variables);
+execution.setVariable(String variableName, Object value);
 ```
 
 
@@ -1099,12 +1135,13 @@ taskService.setVariableLocal(任务ID,变量名，变量值)
 
 #### 设置方法:
 
-- 启动时`*startProcessInstanceXXX*`设置:
+- 创建和启动流程实例时`*startProcessInstanceXXX*`设置:
 
   *startProcessInstanceXXX*方法都有一个可选参数，用于在流程实例创建及启动时设置变量。例如，在*RuntimeService*中：
 
-  ```
-  1ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> variables);
+  ```java
+  ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> variables);
+  //RuntimeService.startProcessInstanceByKey()
   ```
 
 - 任务完成时设置
@@ -1150,4 +1187,52 @@ Object getVariable(String executionId, String variableName);
 Map<String, Object> getVariablesLocal(String executionId);
 Map<String, Object> getVariablesLocal(String executionId, Collection<String> variableNames);
 ```
+
+#### setVariables与 setVariablesLocal的区别
+
+- setVariable
+
+  > [生命周期](https://so.csdn.net/so/search?q=生命周期&spm=1001.2101.3001.7020)与“流程实例对象”一致
+  >
+  > 只要当前这个流程实例还没有走完，都可以在act_ru_variable表中查询到指定的流程变量。
+  >
+  > 同名变量会覆盖
+  >
+  > 
+
+- setVariableLocal
+
+  > 生命周期与“当前任务对象”一致
+  >
+  > 当前流程变量只能在当前任务期间获取。如果流程执行到下一个任务节点，那么将获取不到。
+  >
+  > 同名变量，在同一个流程实例的不同执行实例，不会覆盖
+  >
+  > 可以通过历史任务查询对象查询
+  >
+  > ```java
+  > // 创建历史任务查询对象
+  >     HistoricTaskInstanceQuery  historicTaskInstanceQuery  =
+  >     historyService
+  >     .createHistoricTaskInstanceQuery();
+  >     // 查询结果包括 local变量
+  >     historicTaskInstanceQuery.includeTaskLocalVariables();
+  >     for (HistoricTaskInstance historicTaskInstance : list) {
+  >         System.out.println("==============================");
+  >         System.out.println(" 任 务 id ： "  +
+  >         historicTaskInstance.getId());
+  >         System.out.println(" 任 务 名 称 ： "  +
+  >         historicTaskInstance.getName());
+  >         System.out.println(" 任 务 负 责 人 ： "  +
+  >         historicTaskInstance.getAssignee());
+  >         System.out.println(" 任 务 local 变 量 ： "+
+  >         historicTaskInstance.getTaskLocalVariables());
+  >     }
+  > ```
+  >
+  > 作用： 一个任务节点下form表单的填值记录
+  >
+  > 如果是任务的全局变量：任务节点下form表达填值的最终记录
+
+
 
