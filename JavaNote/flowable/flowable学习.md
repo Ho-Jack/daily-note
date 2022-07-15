@@ -1017,9 +1017,47 @@ public class TestFlowable {
 
 
 
+## 流程知识点总结
+
+### 1.ProcessInstance流程实例与Execution执行实例的区别
+
+![流程实例和执行实例的区别](D:\notes\daily-note\JavaNote\flowable\img\流程实例和执行实例的区别.png)
+
+- 如果流程是单线流程，ProcessInstance就是Execution，在act_ru_exection表中的`ID_`与`PROC_INST_ID`_的值相同且`PARENT_ID_`为空，这时的数据代表的就是ProcessInstance的相关数据(描述不是很正确，单线流程有一个流程实例和执行实例数据，)
+- 如果是多分支流程，一个流程会对应一个ProcessInstance还有与分支数量相同的Execution， 在act_ru_exection表中有一条流程实例和多条执行实例，执行实例的PARENT_ID_为流程实例的ID， 他们的PROC_INST_ID_相等
+
+总结： `ProcessInstance继承于Execution`，本质上ProcessInstance与Execution是一个东西
+
+![image-20220715095528823](D:\notes\daily-note\JavaNote\flowable\img\执行实例和流程实例acti_ru_exection表.png)
+
+#### 流程实例和执行实例和流程任务的关系
+
+![flowable完整流程](img\flowable完整流程.png)
+
+一个流程实例可以有多个执行实例，一个执行实例有多个流程任务
+
+```java
+//根据流程实例ID，查询所有的执行实例
+List<Execution> executionList = runtimeService.createExecutionQuery()
+    .processInstanceId(xx.getProcessInstanceId())
+    .list();
+```
+
+#### 并行网关
+
+![image-20220326110341232](\img\流程实例和执行实例-并行网关.png)
+
+当我们执行了创建请假单后，到并行网关的位置的时候，在ACT_RU_TASK表中就有两条记录
+
+![image-20220326111359504](D:/notes/daily-note/JavaNote/flowable/课件资料/img/image-20220326111359504.png)
+
+然后同时在ACT_RU_EXECUTION中有三条记录，一个流程实例对应的有两个执行实例
+
+![image-20220326111453630](D:/notes/daily-note/JavaNote/flowable/课件资料/img/image-20220326111453630.png)
 
 
-### 设置任务审批人/执行人/支配人/assignee
+
+### 2. 设置任务审批人/执行人/支配人/assignee
 
 1. 画BPMN图时:
 
@@ -1045,7 +1083,7 @@ public class TestFlowable {
 
    
 
-###  任务的多实例(for-each)-会签的实现
+###  3. 任务的多实例(for-each)-会签的实现
 
 * collection：表示要循环的集合
 * elementVariable：表示循环的变量item
@@ -1069,9 +1107,9 @@ public class TestFlowable {
 
 
 
-### 设置流程变量
+### 4. 设置流程变量
 
-Flowable变量：
+#### 运行时变量和历史变量
 
 - 运行时变量
 
@@ -1089,8 +1127,6 @@ Flowable变量：
         .desc()
         .list();
   ```
-
-  
 
   注意：由于流程实例结束时，对应在运行时表的数据跟着被删除。所以，查询一个已经完结流程实例的变量，只能在历史变量表中查找。
 
@@ -1235,4 +1271,21 @@ Map<String, Object> getVariablesLocal(String executionId, Collection<String> var
   > 如果是任务的全局变量：任务节点下form表达填值的最终记录
 
 
+
+### 5. 获取下个任务节点
+
+> act_ru_task表的执行特性，当前节点任务完成后自动加载下一节点任务
+>
+> (当当前节点任务完成后，ac_ru_task表会删除当前任务保存下一待办任务)
+>
+> 也就是根据流程实例查询的任务节点就是下个任务节点
+
+```java
+  public List<Task> nextAllNodeTaskList(Task task) {
+        List<Task> taskList = null;
+        taskList = taskService.createTaskQuery().processInstanceId(task.getProcessInstanceId()).list();
+        //taskList.size() <= 0  那么流程就结束啦
+        return taskList;
+    }
+```
 

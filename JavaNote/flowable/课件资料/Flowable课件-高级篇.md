@@ -922,13 +922,13 @@ public void deploy(){
 
 案例：
 
-![image-20220326110341232](img\image-20220326110341232.png)
+![image-20220326110341232](D:\notes\daily-note\JavaNote\flowable\img\流程实例和执行实例-并行网关.png)
 
 当我们执行了创建请假单后，到并行网关的位置的时候，在ACT_RU_TASK表中就有两条记录
 
 ![image-20220326111359504](img\image-20220326111359504.png)
 
-然后同时在ACT_RU_EXECUTION中有三条记录，一个任务对应的有两个执行实例
+然后同时在ACT_RU_EXECUTION中有三条记录，一个流程实例对应的有两个执行实例
 
 ![image-20220326111453630](img\image-20220326111453630.png)
 
