@@ -776,10 +776,20 @@ public abstract class Employee
 
 ## 异常
 
-### 格式：
+### 异常分为2种：
+
+- 运行时异常（非受查异常）
+
+  空指针异常 、算数异常、数组越界异常、
+
+- 编译时异常（受查异常）
+
+   在编译前就划红线了就是编译时异常
+
+### 异常处理格式：
 
 ```java
-try{}catch(){}
+try{}catch(异常类型 异常对象){}
 try{}finally{}
 try{}catch(){}finally{}
 ```
