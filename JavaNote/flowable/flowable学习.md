@@ -336,7 +336,7 @@ deploymentBuilder.deploy();
 DeploymentQuery deploymentQuery = repositoryService.createDeploymentQuery();
 ```
 
-#### 2.1.3. list( )
+##### 2.1.2.1.  list( )
 
 > 创建查询部署的对象，
 >
@@ -383,6 +383,28 @@ ProcessDefinition processDefinition=repositoryService.createProcessDefinitionQue
  ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(procDefId)
                 .singleResult();
+```
+
+
+
+#### 2.1.5. getBpmnModel()
+
+> 获取流程定义的信息对象，传入processDefinitionId
+
+##### 2.1.5.1 getMainProcess()
+
+> 获取流程定义的信息对象的主流程信息
+
+###### 2.1.5.2  getFlowElements()
+
+> 获取流程定义的信息对象的主流程信息-的流程元素信息
+>
+> 获取的是流程上点、线、任务的元素信息
+
+```java
+List<FlowElement> =repositoryService.getBpmnModel(processDefinition.getId())
+                                            .getMainProcess()
+                                            .getFlowElements()
 ```
 
 
@@ -576,7 +598,7 @@ String assignee = task.getAssignee();
 
 ##### taskCandidateGroupIn
 
-##### 
+> 
 
 #### 2.3.3. addComment（）
 
@@ -589,9 +611,24 @@ identityService.setAuthenticatedUserId(userid+"");
 taskService.addComment(taskid+"",task.getProcessInstanceId(),comment);;
 ```
 
+#### 2.3.4. getProcessInstanceComments（）
+
+> 获取流程实例下的所有评论，可以通过任务id 过滤出当前任务的评论
+
+```java
+List<Comment> commentList = taskService.getProcessInstanceComments(procInsId);
+List<Comment> comments = new ArrayList<>();
+ //通过任务id 过滤出当前任务的评论                  
+for (Comment comment : commentList) {
+    if (comment.getTaskId().equals(taskInstance.getId())) {
+        comments.add(comment);
+    }
+}
+```
 
 
-#### 2.3.4. complete（）
+
+#### 2.3.5. complete（）
 
 > 完成任务
 >
@@ -607,7 +644,7 @@ taskService.complete(taskid+"",map);
 
 
 
-#### 2.3.5. claim（）
+#### 2.3.6. claim（）
 
 > 拾取任务 (和多个候选人的任务关联,candidate) 
 >
@@ -625,7 +662,7 @@ taskService.claim("f5c87a6e-ba27-11ec-89da-e02be94c81b8","wukong");
 
 
 
-#### 2.3.6. setAssignee（）
+#### 2.3.7. setAssignee（）
 
 > 设置支配人，可以在流程画图里面设置
 >
@@ -665,7 +702,7 @@ HistoryService historyService = processEngine.getHistoryService();
 
 #### 2.4.2.  历史任务: createHistoricTaskInstanceQuery()
 
->  创建历史任务实例对象
+>  创建历史任务实例对象（无论是否完成都能查到）
 >
 > 操作act_hi_taskinst这个表
 
@@ -731,6 +768,26 @@ HistoricTaskInstanceQuery finished = historyService.createHistoricTaskInstanceQu
             .asc()
             .listPage(page, rows);
 ```
+
+##### 2.4.7.  orderByHistoricTaskInstanceStartTime()
+
+
+
+##### 2.4.8. taskId（）
+
+##### 2.4.9. singleResult()
+
+###### 2.4.9.1  getProcessVariables()
+
+> 根据单条任务实例，获取流程变量
+
+###### taskDefinitionKey()
+
+> 任务定义key
+
+
+
+
 
 #### 2.4.3 历史流程实例:createHistoricProcessInstanceQuery（）
 
@@ -844,6 +901,42 @@ HistoricActivityInstance historicActivityInstance = list1.get(0);
 
 - *开始表单(start form)*是在流程实例启动前显示的表单
 - *任务表单(task form)*是用户完成任务时显示的表单
+
+#### 多态表单
+
+> 在流程XML上定义表单字段，如：字段名、类型、可读、可写、必填；在开始事件(startEvent)定义，如果任务(Task)节点需要用到开始节点的表单字段，需要再写一遍声明
+
+```xml
+//开始节点
+<startEvent activiti:initiator="applyUserId" id="start" name="start">
+  <extensionElements>
+    <activiti:formProperty datePattern="yyyy-MM-dd" id="startDate" name="请假开始日期" required="true" type="date"/>
+    <activiti:formProperty datePattern="yyyy-MM-dd" id="endDate" name="请假结束日期" required="true" type="date"/>
+    <activiti:formProperty id="reason" name="请假原因" required="true" type="string"/>
+  </extensionElements>
+</startEvent>
+//任务节点，如果需要使用
+<userTask activiti:assignee="admin" activiti:exclusive="true" id="deptLeaderAudit" name="部门领导审批">
+  <extensionElements>
+    <activiti:formProperty datePattern="yyyy-MM-dd" id="startDate" name="请假开始日期" 
+                           type="date" writable="false"/>
+    <activiti:formProperty datePattern="yyyy-MM-dd" id="endDate" name="请假结束日期" type="date" writable="false"/>
+    <activiti:formProperty id="reason" name="请假原因" type="string" writable="false"/>
+    <activiti:formProperty id="deptLeaderPass" name="审批意见" required="true" type="enum">
+      <activiti:value id="true" name="同意"/>
+      <activiti:value id="false" name="不同意"/>
+    </activiti:formProperty>
+  </extensionElements>
+</userTask>
+```
+
+优点：能够根据前台传过来的字段匹配自定义Task的内置表单字段，无须自己put单个赋值，不需要提供实体类
+
+缺点：每一个Task节点如需获取内置表单数据，都需要定义内置表单字段，操作麻烦
+
+#### 外置表单
+
+
 
 ### 2.7. ManagementService
 
@@ -1023,7 +1116,7 @@ public class TestFlowable {
 
 ![流程实例和执行实例的区别](D:\notes\daily-note\JavaNote\flowable\img\流程实例和执行实例的区别.png)
 
-- 如果流程是单线流程，ProcessInstance就是Execution，在act_ru_exection表中的`ID_`与`PROC_INST_ID`_的值相同且`PARENT_ID_`为空，这时的数据代表的就是ProcessInstance的相关数据(描述不是很正确，单线流程有一个流程实例和执行实例数据，)
+- 如果流程是单线流程，ProcessInstance就是Execution，在act_ru_exection表中的**`ID_`与`PROC_INST_ID`_的值相**同且`PARENT_ID_`为空，这时的数据代表的就是ProcessInstance的相关数据(描述不是很正确，单线流程有一个流程实例和执行实例数据，)
 - 如果是多分支流程，一个流程会对应一个ProcessInstance还有与分支数量相同的Execution， 在act_ru_exection表中有一条流程实例和多条执行实例，执行实例的PARENT_ID_为流程实例的ID， 他们的PROC_INST_ID_相等
 
 总结： `ProcessInstance继承于Execution`，本质上ProcessInstance与Execution是一个东西
@@ -1045,7 +1138,7 @@ List<Execution> executionList = runtimeService.createExecutionQuery()
 
 #### 并行网关
 
-![image-20220326110341232](\img\流程实例和执行实例-并行网关.png)
+![image-20220326110341232](img\流程实例和执行实例-并行网关.png)
 
 当我们执行了创建请假单后，到并行网关的位置的时候，在ACT_RU_TASK表中就有两条记录
 
@@ -1186,8 +1279,6 @@ execution.setVariable(String variableName, Object value);
   taskService.complete(taskId,variables);
   ```
 
-  
-
 - 流程实例`RuntimeService`中设置:
 
   ```java
@@ -1224,6 +1315,24 @@ Map<String, Object> getVariablesLocal(String executionId);
 Map<String, Object> getVariablesLocal(String executionId, Collection<String> variableNames);
 ```
 
+通过流程实例ID获取流程实例变量(流程实例和执行实例id在)
+
+```java
+Map<String, Object> processVariables = runtimeService.getVariables("9c269c58-03ea-11ed-a42b-00ff0b7a6947")
+```
+
+通过任务id获取流程实例的变量
+
+```java
+Map<String, Object> processVariables = taskService.getVariables(task.getId());
+```
+
+
+
+
+
+
+
 #### setVariables与 setVariablesLocal的区别
 
 - setVariable
@@ -1248,9 +1357,7 @@ Map<String, Object> getVariablesLocal(String executionId, Collection<String> var
   >
   > ```java
   > // 创建历史任务查询对象
-  >     HistoricTaskInstanceQuery  historicTaskInstanceQuery  =
-  >     historyService
-  >     .createHistoricTaskInstanceQuery();
+  >     HistoricTaskInstanceQuery  historicTaskInstanceQuery = historyService.createHistoricTaskInstanceQuery();
   >     // 查询结果包括 local变量
   >     historicTaskInstanceQuery.includeTaskLocalVariables();
   >     for (HistoricTaskInstance historicTaskInstance : list) {
@@ -1264,9 +1371,9 @@ Map<String, Object> getVariablesLocal(String executionId, Collection<String> var
   >         System.out.println(" 任 务 local 变 量 ： "+
   >         historicTaskInstance.getTaskLocalVariables());
   >     }
-  > ```
-  >
-  > 作用： 一个任务节点下form表单的填值记录
+  >    ```
+  >    
+  > 作用： 一个任务节点下form表单的填值记录(同名变量，在同一个流程实例的不同执行实例，不会覆盖)
   >
   > 如果是任务的全局变量：任务节点下form表达填值的最终记录
 
@@ -1288,4 +1395,21 @@ Map<String, Object> getVariablesLocal(String executionId, Collection<String> var
         return taskList;
     }
 ```
+
+### 6. 流程实例对象
+
+使用流程实例ID，查询正在执行的执行对象表，返回流程实例对象
+
+```java
+String instanceId = task.getProcessInstanceId(); 
+List<Execution> executions = runtimeService.createExecutionQuery()        
+    .processInstanceId(instanceId)        
+    .list();
+```
+
+### 7. 委派和转办
+
+委派：是将任务节点分给其他人处理，等其他人处理好之后，委派任务会自动回到委派人的任务中
+
+转办：直接将办理人assignee 换成别人，这时任务的拥有者不再是转办人，而是为空，相当与将任务转出。
 
