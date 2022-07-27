@@ -690,6 +690,7 @@ public Class getClass(int id);
 
 ```java
     @Transactional(rollbackFor = Exception.class)
+     throw new ServiceException("异常原因！");
 ```
 
 

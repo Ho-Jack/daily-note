@@ -402,7 +402,7 @@ ProcessDefinition processDefinition=repositoryService.createProcessDefinitionQue
 > 获取的是流程上点、线、任务的元素信息
 
 ```java
-List<FlowElement> =repositoryService.getBpmnModel(processDefinition.getId())
+List<FlowElement> FlowElement =repositoryService.getBpmnModel(processDefinition.getId())
                                             .getMainProcess()
                                             .getFlowElements()
 ```
