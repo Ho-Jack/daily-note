@@ -409,6 +409,16 @@ List<FlowElement> FlowElement =repositoryService.getBpmnModel(processDefinition.
 
 
 
+#### 2.1.6. getModel()
+
+> 获取流程定义的模型信息，传入processModelId
+
+```java
+Model model = repositoryService.getModel(modelBo.getModelId());
+```
+
+
+
 ### 2.2. RuntimeService
 
 > 创建流程定义的新流程实例
