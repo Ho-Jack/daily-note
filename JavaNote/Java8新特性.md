@@ -780,7 +780,7 @@ return strOpt.orElse("Hello World")
 
 ```java
 //getAuthor()获得一个 List<author>集合
-Optional<Author> authorOptional1 = Optional1.ofNullable(getAuthor());
+Optional<Author> authorOptional1 = Optional.ofNullable(getAuthor());
 authorOptional1.ifPresent(author -> System.out.prinLn(author.getName()));
 ```
 
