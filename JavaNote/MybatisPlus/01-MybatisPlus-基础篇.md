@@ -66,7 +66,6 @@ public class SGApplication {
         SpringApplication.run(SGApplication.class);
     }
 }
-
 ~~~~
 
 
@@ -164,7 +163,6 @@ public class MPTest {
     }
 
 }
-
 ~~~~
 
 
@@ -256,7 +254,6 @@ public class User {
     private Long id;
 	//.....
 }
-
 ~~~~
 
 
@@ -577,11 +574,11 @@ QueryWrapper,UpdateWrapper，【LambdaQueryWrapper】
 
 - orderByAsc : 
 
-  > `orderByAsc("id","name")`相当于 `ORDER BY  id ASC,name ASC`
+  > 升序`orderByAsc("id","name")`相当于 `ORDER BY  id ASC,name ASC`
 
 - orderByDesc :
 
-  > `orderByDesc ("id","name")`相当于 `ORDER BY  id DESC,name DESC`
+  > 降序`orderByDesc ("id","name")`相当于 `ORDER BY  id DESC,name DESC`
 
 
 

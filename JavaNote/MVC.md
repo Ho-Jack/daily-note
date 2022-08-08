@@ -90,25 +90,35 @@ Service层叫服务层，**中间层**，沟通DAL层和Controler层,
 
 ### 模型规约:
 
+- POJO（Plain Ordinary Java Object- 简单无规则Java对象 ）简单Java对象。PO、VO、DTO都是典型的POJO。
+
 - DO（Data Object）：与数据库表结构一一对应，通过DAO层向上传输数据源对象。
 
-- DTO（Data Transfer Object）：**数据传输对象**，Service或Manager向外传输的对象。
+- DTO（Data Transfer Object）：**数据传输对象**，Service或Manager**向外传输**的对象。
 
-- BO（Business Object）：业务对象。由Service层输出的封装业务逻辑的对象。
+- DAO (Data Access Object): **数据访问对象**，作用：访问数据库，包含对数据的操作方法；
 
-- AO（Application Object）：应用对象。在Web层与Service层之间抽象的复用对象模型，极为贴近展示层，复用度不高。
+- PO（Persistant Object）持久化对象，概念由ORM产生，与数据库中的表相映射的Java对象，通常是数据表中的一条记录，只是数据展示没有操作
 
-- VO（View Object）：显示层对象，通常是Web向模板渲染引擎层传输的对象。
+  
+
+- BO（Business Object-**业务对象**）：由Service层输出的封装业务逻辑的对象。
+
+- AO（Application Object-应用对象）：在Web层与Service层之间抽象的复用对象模型，极为贴近展示层，复用度不高。
+
+- VO（View Object-视图对象）：(**向外展示**)，通常是Web向模板渲染引擎层传输的对象。
+
+- VO（Value Object-值对象）：(**向外展示**)，通常是Web向模板渲染引擎层传输的对象。
 
 - Query：数据查询对象，各层接收上层的查询请求。注意超过2个参数的查询封装，禁止使用Map类来传输。
 
-  
+
 
 | 层次                | 领域模型 |
 | ------------------- | -------- |
 | Controller/TService | VO/DTO   |
 | Service/Manager     | AO/BO    |
-| DAL                 | DO       |
+| DAL/DAO             | DO       |
 
 
 
@@ -118,4 +128,4 @@ Service层叫服务层，**中间层**，沟通DAL层和Controler层,
 
  3.不允许DAO层的数据传入到Controller/TService.
 
-![](D:\notes\daily-note\JAVA\java数据与架构关系.png)
+![](img\java数据与架构关系.png)

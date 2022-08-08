@@ -561,6 +561,14 @@ greetService1.sayMessage("Runoob");
 
 ### 3. Stream流
 
+> 以一种声明的方式处理数组和集合，将要处理的元素集合看作一种流，流在管道中传输，并且可以在管道的节点上进行处理，比如筛选，排序，聚合等；
+
+优点/特点：
+
+- 无存储，不会修改源数据
+- 惰式执行，Stream流只有调用了最终操作的方法，Stream才会执行
+- 可消费性,Stream流调用了最终操作的方法，流就被消费了，必须重新生成流
+
 #### 3.1. 创建流:
 
 ##### 3.1.1. 通过值创建
@@ -625,15 +633,7 @@ try (Stream<String> lines = Files.lines(Paths.get("pom.xml"), StandardCharsets.U
 
 #### 3.2. 操作流
 
-##### 3.2.1. 中间操作:
-
-> 对**Stream**进行操作，对Stream操作返回完**返回的还是Stream**
-
-##### 3.2.2. 终结操作:
-
-> 最终操作返回的不再是Stream对象，**调用了最终操作的方法，Stream才会执行**
-
-##### 3.2.3. 操作流常用方法:
+##### 3.2.1. 操作流常用方法:
 
 当流创建后，便可以利用 Stream 类上的各种方法对流中的数据进行处理，常用的方法如下：
 
@@ -656,7 +656,48 @@ try (Stream<String> lines = Files.lines(Paths.get("pom.xml"), StandardCharsets.U
 | reduce      | 执行归约操作                       | Optional<T> | BinaryOperator<T>     |
 | count       | 计算流中元素的数量                 | long        |                       |
 
-> 注：上表中返回类型为 Stream<T> 的操作都是中间操作，代表还可以继续调用其它方法对流进行处理。返回类型为其它的操作都是终止操作，代表处理过程到此为止
+> 注：上表中返回类型为 Stream<T> 的操作都是**中间操作**，代表还可以继续调用其它方法对流进行处理。返回类型为其它的操作都是**终止操作**，代表处理过程到此为止
+
+##### 3.2.2. 中间操作:
+
+> 对**Stream**进行操作，对Stream操作返回完**返回的还是Stream**
+
+##### 3.2.3. 终结操作:
+
+> 最终操作返回的不再是Stream对象，**调用了最终操作的方法，Stream才会执行**
+>
+> 在最终操作之后，不能再次使用流，也不能再使用任何中间操作，否则将抛出异常
+
+Stream的最终操作可以将Stream转成其他形式，如计算出流中元素的个数、将流转换成集合、以及元素的遍历等。
+
+- **forEach**
+
+Stream 提供了方法 'forEach' 来迭代流中的每个数据。以下代码片段使用 forEach 输出了10个随机数：
+
+```java
+Random random = new Random();
+random.ints().limit(10).forEach(System.out::println);
+```
+
+- **count**
+
+count用来统计流中的元素个数。
+
+```java
+List<String> strings = Arrays.asList("Hollis", "HollisChuang", "hollis", "Hollis666", "Hello", "HelloWorld", "Hollis");
+System.out.println(strings.stream().count());
+```
+
+- **collect**
+
+collect就是一个归约操作，可以接受各种做法作为参数，将流中的元素累积成一个汇总结果：
+
+```java
+List<String> strings = Arrays.asList("Hollis", "HollisChuang", "hollis","Hollis666", "Hello", "HelloWorld", "Hollis");
+strings  = strings.stream().filter(string -> string.startsWith("Hollis")).collect(Collectors.toList());
+System.out.println(strings);
+//Hollis, HollisChuang, Hollis666, Hollis
+```
 
 
 
