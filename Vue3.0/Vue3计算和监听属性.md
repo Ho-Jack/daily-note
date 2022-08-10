@@ -1,20 +1,19 @@
 # Vue3说人话系列之Computed 与 watch
 
-## `computed`
+## 1. `computed`
 
-### `computed`只接收一个`getter函数`
+### 1.1. `computed`只接收一个`getter回调函数`
 
-> 1、getter必须有返回值
+> 1、getter回调函数必须有返回值
 >
-> 2、computed返回一个**只读**响应式ref对象   （只读、响应式、对象）
+> 2、computed返回一个**只读**响应式ref对象（只读、响应式、对象）
 >
-> 注意：omputed只接收一个getter函数时，返回的只读对象，也就是不能修改他的返回值！
+> 注意：computed只接收一个getter函数时，返回的是只读对象，也就是不能修改他的返回值！
 
 #### getter触发条件：
 
-- 1、computed返回值首次被读取时 
-
-- 2、getter绑定的响应式变量被修改时
+1. computed**返回值**首次被读取时 
+2. getter绑定的响应式变量被修改时
 
 ```html
 <script setup>
@@ -35,7 +34,7 @@ let computedNum = computed(() => num.value + 1)
 </template>
 ```
 
-###  `computed`同时接收`getter函数对象`和`setter函数对象`
+###  1.2. `computed`同时接收`getter函数对象`和`setter函数对象`
 
 > 1、setter函数对象没有返回值
 >
@@ -86,7 +85,7 @@ let computedNum2 = computed({
 
 
 
-### `调试 Computed`
+### 1.3. `调试 Computed`
 
 > 使用范围：仅开发模式生效
 >
@@ -124,7 +123,7 @@ let computedNum = computed(() => num.value + 1, {
 
 
 
-## `watchEffect` 
+## 2. `watchEffect` 
 
 语法：
 
@@ -142,7 +141,7 @@ let computedNum = computed(() => num.value + 1, {
 >
 > 局限性：不能监听对象(但可以监听对象的属性)，只能监听类似ref基本数据类型的响应式数据
 
-### 立即执行，监听基本数据类型
+### 2.1. 立即执行，监听基本数据类型
 
 ```html
 <script setup>
@@ -163,7 +162,7 @@ watchEffect(() => {
 
 
 
-### 停止`watchEffect` 
+### 2.2. 停止`watchEffect` 
 
 - 隐式：组件卸载时自动停止
 
@@ -180,7 +179,7 @@ watchEffect(() => {
 
 
 
-### 清理watchEffect
+### 2.3. 清理watchEffect
 
 - 语法： `  watchEffect( onInvalidate=>{    onInvalidate(()=>{ })    })`
 
@@ -220,13 +219,13 @@ watchEffect((onInvalidate ) => {
 //  watchEffect-3
 ```
 
-### `watchPostEffect` 和 `watchSyncEffect`
+### 2.4. `watchPostEffect` 和 `watchSyncEffect`
 
 > `watchPostEffect` 和 `watchSyncEffect`在Vue3.2新增,是watchEffect类似语法糖的东西,
 >
 > 是`watchEffect`可选参数对象`{ flush?: 'pre' | 'post' | 'sync'}`中post和sync的语法糖，pre是默认值
 
-#### 推迟触发`watchPostEffect` 
+#### 2.4.1. 推迟触发`watchPostEffect` 
 
 > `watchPostEffect` 是watchEffect可选参数对象`{flush:'post'}`的语法糖
 >
@@ -287,7 +286,7 @@ onUpdated()
 
 
 
-#### 同步触发`watchSyncEffect`
+#### 2.4.2. 同步触发`watchSyncEffect`
 
 > `watchSyncEffect` 是watchEffect可选参数对象`{flush:'sync'}`的语法糖
 >
@@ -310,7 +309,7 @@ watchSyncEffect(()=>{
 })
 ```
 
-### `watchEffect`不能监听对象
+### 2.5. `watchEffect`不能监听对象
 
 ```javascript
 
@@ -337,7 +336,7 @@ watch(obj, (obj) => {
 
 
 
-## `watch`
+## 3. `watch`
 
 语法：
 
@@ -351,7 +350,7 @@ watch(obj, (obj) => {
 >
 > 2、惰性，只在被监听数据变化时才触发（immediate属性可以设置在初始化的时候触发）
 
-### 监听单个数据
+### 3.1. 监听单个数据
 
 > 参数1被监听数据的形式： 
 >
@@ -377,7 +376,7 @@ watch(count, (count, prevCount) => {
 })
 ```
 
-### 监听多个数据(传入数组)
+### 3.2. 监听多个数据(传入数组)
 
 ```javascript
 watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
@@ -389,7 +388,7 @@ watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
 
 
 
-## 官方文档总结：
+## 4. 官方文档总结：
 
 > 以下代码截取官方文档，从TS代码可以看出很多关于watch和watchEffect函数参数和返回值的细节！
 

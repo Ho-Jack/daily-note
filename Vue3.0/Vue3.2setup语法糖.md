@@ -1,6 +1,6 @@
 ## Vue3.2 setup语法糖  [ 单文件组件的语法糖`<script setup>` ]
 
-阅读本来，默认你已经对Vue3.0的composition API有一定了解，但困扰于setup函数内需要繁琐return相关的变量和函数，那setup的语法糖`<script setup>` 你将收获满满。语法糖`<script setup>` 的引入让你写Vue3更爽，让Vue3更丰满。本文是在官方文档基础上写的，如果有时间，建议上[官方文档](https://v3.cn.vuejs.org/api/sfc-script-setup.html#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95)上看，本文写得更为语义化和通俗，希望你能喜欢。
+阅读本文，默认你已经对Vue3.0的composition API有一定了解，但困扰于setup函数内需要繁琐return相关的变量和函数，那setup的语法糖`<script setup>` 你将收获满满。语法糖`<script setup>` 的引入让你写Vue3更爽，让Vue3更丰满。本文是在官方文档基础上写的，如果有时间，建议上[官方文档](https://v3.cn.vuejs.org/api/sfc-script-setup.html#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95)上看，本文写得更为语义化和通俗，希望你能喜欢。
 
 >` <script setup>` 是在单文件组件 (SFC) 中使用组合式 API 的编译时语法糖
 > 解决Vue3.0中setup需要繁琐将声明的变量、函数以及 import 引入的内容通过return向外暴露,才能在`<template/>`使用

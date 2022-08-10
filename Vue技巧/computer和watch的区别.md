@@ -6,7 +6,7 @@ tags: [Vue, 开发笔记]
 
 ## methods、computed和watch的区别
 
-###  methods
+###  1.methods
 
 > 在vue中method就是普通意义的function域,可以定义方法来进行属性的修改,或者返回
 
@@ -28,7 +28,7 @@ methdos:{
 }
 ```
 
-### computed
+### 2. computed
 
 > 计算属性,类似过滤器,对绑定到view的数据进行处理
 >
@@ -88,7 +88,7 @@ computed:{
 
 
 
-###  watch
+###  3. watch
 
 > 侦听属性是专门用来观察和响应vue实例上的数据变动
 
@@ -124,7 +124,7 @@ watch:{
 - deep  深 度监听虽然可以监听到对象的变化,但是无法监听到具体对象里面那个属性的变化（oldVal和newVal值一样）
 -  深度监听对应的函数名必须为**handler**,否则无效果,因为watcher里面对应的是对handler的调用
 
-### 总结：
+### 4. 总结：
 
 #### watch
 1. 监听（观察的动作），其**专门用来观察和响应Vue实例上的数据的变动**。
