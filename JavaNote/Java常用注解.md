@@ -175,9 +175,11 @@ public String useRequestParam(@RequestParam("name")String username,
 
 #### @RequestBody
 
-> 获取POST请求的**body**部分数据（接收http请求的json转换为java对象）
+> 获取POST请求的**body**>**部分**<数据（接收http请求的json转换为java对象）
 >
 > 直接使用得到是 **key=value&key=value…** 结构的数据。
+>
+> ~~HTTP请求中的data整个数据~~
 >
 > GET 请求方式不适用。
 
@@ -256,11 +258,62 @@ public class  startApplication{
 
 @Valid：可以用在方法、构造函数、方法参数和**成员属性（字段）**上
 
-#### 分组：
+#### 分组校验：
+
+使用实体类的情况下更好的区分出新增、修改和其他操作验证的不同，可以通`@Validated`注解和`groups`属性设置
+
+1. 在validate文件夹下，**新增类接口，用于标识出不同的操作类型**
+
+   ```java
+   //AddGroup接口文件
+   public interface AddGroup
+   {
+   }
+   //EditGroup接口文件
+   public interface EditGroup
+   {
+   }
+   ```
+
+   
+
+2. **Controller.java**
+
+   ```java
+   // 新增
+   public AjaxResult addSave(@Validated(AddGroup.class) @RequestBody Xxxx xxxx)
+   {
+       return success(xxxx);
+   }
+   
+   // 编辑
+   public AjaxResult editSave(@Validated(EditGroup.class) @RequestBody Xxxx xxxx)
+   {
+       return success(xxxx);
+   }
+   ```
+
+3. 实体类
+
+   ```java
+   // 仅在新增时验证
+   @NotNull(message = "不能为空", groups = {AddGroup.class})
+   private String xxxx;
+   
+   // 在新增和修改时验证
+   @NotBlank(message = "不能为空", groups = {AddGroup.class, EditGroup.class})
+   private String xxxx;
+   ```
+
+
 
 @Validated：提供了一个分组功能，可以在入参验证时，根据不同的分组采用不同的验证机制
 
 @Valid：作为标准JSR-303规范，还没有吸收分组的功能
+
+
+
+
 
 #### 总结：
 
@@ -287,8 +340,6 @@ public class FamilyModel
     private String fatherName;
 }
 ```
-
-
 
 ### 约束性：
 
@@ -504,7 +555,112 @@ private CourseDAOImpl  courseDAOImpl;
 
 > 最终通知
 
+
+
+### XML系统参数:
+
+ XML配置参数
+
+```xml
+--- #第三方接口地址
+other-system:
+  url: 'http://192.168.166.116:8080'
+```
+
+##### @Configuration
+
+##### @ConfigurationPropertiesSca
+
+##### @ConfigurationProperties
+
+> `@ConfigurationProperties`需要和`@Configuration`/`@component`配合使用
+>
+> 作用:**声明**XM系统参数
+
+- prefix
+
+  > XML中表示配置的前缀
+
+- @Component
+
+  > XML系统参数实体类中必须要加上 @Component ,使这个类注入到 IOC 容器中
+  >
+  > 更细粒度控制:`@ComponentScan`或`@SpringBootApplication`注解配置扫描路径
+
+- @Data (@Getter @Setter)
+
+```java
+@Data
+@Component
+@ConfigurationProperties(prefix = "other-system")
+public class OtherSystemConfig {
+    private String url;
+}
+```
+
+
+
+##### @EnableConfigurationProperties
+
+> 作用: **让使用了 @ConfigurationProperties 注解的类生效,并且将该类注入到 IOC 容器中,交由 IOC 容器进行管理**
+>
+> 不用`@Configuration`/`@component` 的情况,就用`@EnableConfigurationProperties`注解中**手动导入配置文件**
+>
+> value设置: {类名.class}
+
+- ```java
+  @EnableConfigurationProperties({类名.class})
+  ```
+
+  ```java
+//@Component   
+  //如果是使用 @EnableConfigurationProperties让 @ConfigurationProperties生效 就不需要 @Component注解
+@ConfigurationProperties(prefix = "other-system")
+  public class OtherSystemConfig {
+      private String url;
+  }
+  ```
+  
+  
+  
+  
+  
+
+### @ConfigurationProperties的2种生效方式
+
+-  使用 @Component 进行依赖注入
+
+  ```java
+    @Component  
+    public class OtherSystemHttpUtils {
+        @Autowired
+        private OtherSystemConfig otherSystemConfig;
+    }
+  ```
+
+  
+
+-  使用@EnableConfigurationProperties({类名.class}) 注入
+
+  ```java
+    @Configuration
+    @EnableConfigurationProperties(OtherSystemConfig.class)
+    public class OtherSystemHttpUtils {
+        @Autowired
+        private OtherSystemConfig otherSystemConfig;
+  }
+  ```
+
+  
+
+
+
+  
+
+
+
 ## MyBatis注解
+
 > 貌似少用，之后再补充
 
 
@@ -789,4 +945,16 @@ public Class getClass(int id);
 > @ApiResponse 用于方法上，说明接口响应的一些信息；
 >
 > `@ApiResponses` 嵌套多个 `@ApiRespons`
+
+
+
+
+
+## 若依注解
+
+#### @Anonymous
+
+> token校验放行
+
+
 

@@ -68,6 +68,8 @@
 
 - 加法功能-Hook
 
+  `useAdd.js`  由 export default导出
+
 ```javascript
 import { ref, watch } from 'vue';
 const useAdd= ({ num1, num2 })  =>{
@@ -87,6 +89,8 @@ export default useAdd
 ```
 
 - 减法功能-Hook
+
+  `useSub.js` 由export 导出
 
 ```javascript
 //减法功能-Hook
@@ -122,8 +126,8 @@ export function useSub  ({ num1, num2 }){
 
 <script setup>
 import { ref } from 'vue'
-import useAdd from './useAdd.js'     //引入自动hook 
-import { useSub } from './useSub.js' //引入自动hook 
+import useAdd from './useAdd.js'     //引入自定义hook 
+import { useSub } from './useSub.js' //引入自定义hook 
 
 const num1 = ref(2)
 const num2 = ref(1)

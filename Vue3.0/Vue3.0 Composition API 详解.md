@@ -1,6 +1,6 @@
 ## Vue3.0 Composition API 详解
 
-- ### 3.0 & 2.0 区别
+#### 1. 3.0 & 2.0 区别
 
 1. 数据驱动能力更强，重构响应式系，基于 `proxy `的数据驱动能够弥补原来 `definePorperty `的不足,
 
@@ -30,7 +30,7 @@
 
 - ### 3.0 新特性
 
-#### 生命周期 & 常用api对比
+#### 2. 生命周期 & 常用api对比
 
 | Vue2.x        | Vue3.x                 |
 | ------------- | ---------------------- |
@@ -69,7 +69,7 @@ Option API vs Composition API
 
 
 
-#### `setup()`
+#### 3.`setup()`
 
 > setup 函数是 Compsition API 的入口函数，替代了我们之前的生命周期函数beforeCreate、created。
 > setup接受2个参数
@@ -98,10 +98,18 @@ export default {
 
 
 
-#### `ref`
+#### 4. `ref`
 
 >`ref` 函数将我们定义的变量包装成了一个响应式的数据对象。
 >`ref` 对象拥有一个指向内部值的单一属性` .value`，每次访问时我们都需要加上 `.value`，但在模板中使用时，它会自动解套，无需在模板内额外书写` .value`
+
+
+
+##### 4.1. 关于ref声明变量需要`.value`的情况
+
+1.  如果自己的代码取值，需要,l例如函数内部，取值和赋值都需要
+2. Vue 提供的 api 上，不需要（vue 自动帮你做了拆包）
+3. `<template></template>`中取值不需要
 
 ```vue
 <template>
@@ -125,9 +133,13 @@ export default {
 
 ```
 
+##### 4.2. $ref() 响应式语法糖
+
+> 解决频繁 .value 的情况
 
 
-#### reactive()    美: [riˈæktɪv] 反应
+
+#### 5. reactive()    美: [riˈæktɪv] 反应
 
 >reactive 函数是用来创建一个响应式的数据对象，类似我们之前Vue2.x的data。
 >
@@ -158,13 +170,94 @@ export default {
 
 ```
 
+##### reactive失去响应的情况：
+
+###### 1. 给响应式对象的字面量赋一整个普通对象/reactive对象
+
+> 通常在页面数据回显时,获取对象值直接赋值给响应式对象
+
+```react
+<template>
+  {{state}}
+</template>    
+
+<stcirpt setup>
+const state = reactive({ count: 0 })
 
 
-#### 区别 ref、reactive
+const demo = ()=>{
+   //虽然打印的state是响应的,对初始引用的响应性连接丢失
+   //  {{state }} 显示的值并未改变
+   state=reactive{count:1}
+   // {{state }} 显示的值并未改变
+   state={count:1}     
+}
+</stcirpt>
+```
+
+
+
+解决方法:
+
+1. 不要直接整个对象替换,对象属性一个个赋值
+
+   ```javascript
+   const state = reactive({ count: 0 })
+   //state={count:1}
+   state.conut = 1
+   ```
+
+2. 使用ref定义对象
+
+   > 个人推荐,非必要不用reactive
+
+   ```javascript
+   const state = ref({ count: 0 })
+   state.value={count:1}
+   ```
+
+
+
+###### 2.将响应式对象的属性-赋值给变量(断开连接)
+
+```javascript
+const state = reactive({ count: 0 })
+//赋值
+// n 是一个局部变量，同 state.count
+// 失去响应性连接
+let n = state.count
+// 不影响原始的 state
+n++
+```
+
+###### 3.解构至本地变量时
+
+```javascript
+const state = reactive({ count: 0 })
+//解构
+// count 也和 state.count 失去了响应性连接
+let { count } = state
+// 不会影响原始的 state
+count++
+```
+
+###### 4.传入一个函数时
+
+```jsx
+const state = reactive({ count: 0 })
+
+// 该函数接收一个普通数字，并且
+// 将无法跟踪 state.count 的变化
+callSomeFunction(state.count)
+```
+
+
+
+#### 6. 区别 ref、reactive
 
 建议：
 
-- ref :`基本类型值`(String 、Nmuber 、Boolean 等)或单值对象（类似像 {count: 3} 这样只有一个属性值的对象）
+- ref :`基本类型值`(String 、Nmuber 、Boolean 等)或单值对象（类似像` {count: 3}` 这样只有一个属性值的对象）
 
 - reactive:`引用类型值`（Object 、Array）
 
@@ -207,7 +300,11 @@ export default {
 问题：点击按钮后，name的值变成了BB，但是视图并没有更新，还是AA，但是ref的age却更新了。
 当然，这并不是bug，原因在于一个响应型对象(reactive object) 一旦被销毁或展开(...state),其响应式特性(reactivity)就会丢失。
 
-#### 解决reactive参数展开后丢失响应式 toRef、toRefs
+#### 7. toRef、toRefs  
+
+> 解决reactive参数展开后丢失响应式 
+
+
 
 #### ` isref()` 、  `unref()` 、`toRef()` 、 `toRefs()`
 
@@ -263,4 +360,30 @@ console.log(newAge) // ObjectRefImpl {_object: 20, _key: undefined, __v_isRef: 
     }
   }
 ```
+
+
+
+#### 8. 字符`$ `解决响应式ref,频繁`.value`
+
+> `$()`响应性语法糖目前默认是关闭状态，需要你显式选择启用
+
+##### 1. 常见ref响应式方法
+
+- [`ref`](https://cn.vuejs.org/api/reactivity-core.html#ref) -> `$ref`
+- [`computed`](https://cn.vuejs.org/api/reactivity-core.html#computed) -> `$computed`
+- [`shallowRef`](https://cn.vuejs.org/api/reactivity-advanced.html#shallowref) -> `$shallowRef`
+- [`customRef`](https://cn.vuejs.org/api/reactivity-advanced.html#customref) -> `$customRef`
+- [`toRef`](https://cn.vuejs.org/api/reactivity-utilities.html#toref) -> `$toRef`
+
+##### 2.  `$()`  解构自定义Hooks返回的ref
+
+```javascript
+import { useXX } from '/hook/useXX'
+
+const { x, y } = $(useXX())
+//通过$()解构了ref,不需要.value就能直接使用
+console.log(x, y)
+```
+
+
 

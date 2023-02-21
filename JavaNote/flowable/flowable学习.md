@@ -644,6 +644,8 @@ for (Comment comment : commentList) {
 >
 > - 参数1：任务id
 > - 参数2： 任务设置的变量
+> - 参数3：localScope（存储范围：本任务）
+> - complete(String taskId, Map<String,Object> variables, boolean localScope)
 
 ```java
 Map<String, Object> map = new HashMap<String, Object>();
@@ -785,6 +787,10 @@ HistoricTaskInstanceQuery finished = historyService.createHistoricTaskInstanceQu
 
 ##### 2.4.8. taskId（）
 
+##### startedBy()
+
+> 创建任务时设置的发起人
+
 ##### 2.4.9. singleResult()
 
 ###### 2.4.9.1  getProcessVariables()
@@ -897,6 +903,14 @@ HistoricActivityInstance historicActivityInstance = list1.get(0);
 
 ```java
   String activityName = historicActivityInstance.getActivityName();//获取最后节点的名称
+```
+
+
+
+#### 2.4.5  创建历史流程变量查询createHistoricVariableInstanceQuery
+
+```
+historyService.createHistoricVariableInstanceQuery().processInstanceId("f478444b-2815-11ed-8fc3-00ff0b7a6947").list()
 ```
 
 
@@ -1422,4 +1436,88 @@ List<Execution> executions = runtimeService.createExecutionQuery()
 委派：是将任务节点分给其他人处理，等其他人处理好之后，委派任务会自动回到委派人的任务中
 
 转办：直接将办理人assignee 换成别人，这时任务的拥有者不再是转办人，而是为空，相当与将任务转出。
+
+###  8、 回退、撤销、终止、拒绝
+
+中国式驳回
+
+- moveActivityIdsToSingleActivityId
+
+  ```
+  runtimeService.createChangeActivityStateBuilder()
+                  .processInstanceId(processInstanceId)
+                  .moveActivityIdsToSingleActivityId("当前的任务的节点id", "需要跳转的目标节点")
+                  .changeState();
+  ```
+
+- moveExecutionsToSingleActivityId
+
+
+
+### 9、监听器
+
+#### 9.1. 执行监听器（execution listener）
+
+可以被捕获的事件有：
+
+- 流程实例的启动和结束。
+
+- 流程执行转移。
+
+- 活动的启动和结束。
+
+- 网关的启动和结束。
+
+- 中间事件的启动和结束。
+
+- 启动事件的结束，和结束事件的启动。
+
+  ```java
+  @Component("ProcessStartListener")
+  public class ProcessStartListener implements ExecutionListener {
+      @Resource
+      private WfActHiProcinstMapper actHiProcinstMapper;
+      
+      @Override
+      public void notify(DelegateExecution execution) {
+       //流程状态保存到act_hi_procinst表中的businnesStaus中
+          actHiProcinstMapper.updateHistoryProcessStatusByProcessInst(execution.getProcessInstanceId(), ProcessStatus.FINISH.getType());
+      }
+  }
+  ```
+
+  ```xaml
+  <bpmn2:extensionElements>
+        <flowable:executionListener delegateExpression="${ProcessStartListener}" event="start" />
+  </bpmn2:extensionElements>
+  ```
+
+  
+
+#### 9.2.任务监听器（task listener）
+
+*任务监听器*包含下列属性：
+
+- **event（事件）**（必填）：触发任务监听器的任务事件类型。可用的事件有：
+  - **create（创建）**：当任务已经创建，并且**所有任务参数都已经设置**时触发。
+  - **assignment（指派）**：当任务已经指派给某人时触发。请注意：当流程执行到达用户任务时，在触发*create*事件**之前**，会首先触发*assignment*事件。这顺序看起来不太自然，但是有实际原因的：当收到*create*事件时，我们通常希望能看到任务的所有参数，包括办理人。
+  - **complete（完成）**：当任务已经完成，从运行时数据中删除前触发。
+  - **delete（删除）**：在任务即将被删除前触发。请注意任务由completeTask正常完成时也会触发。
+- **class**：需要调用的委托类。这个类必须实现`org.flowable.engine.delegate.TaskListener`接口。
+
+```javascript
+@Component("TaskEmailListener")
+public class TaskEmailListener implements TaskListener {
+    @Override
+    public void notify(DelegateTask delegateTask) {
+        System.out.println("------------------------");
+    }
+}
+```
+
+```xaml
+   <bpmn2:extensionElements>
+        <flowable:taskListener delegateExpression="${TaskEmailListener}" event="complete" />
+   </bpmn2:extensionElements>
+```
 

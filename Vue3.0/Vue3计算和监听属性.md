@@ -129,7 +129,7 @@ let computedNum = computed(() => num.value + 1, {
 
 - 参数1：触发监听回调函数，回调函数可传入一个onInvalidate函数作为参数！
 
-- 可选参数2：对象，包含3个可选属性flush、onTrack、onTrigger
+- 参数2(可选)：对象，包含3个可选属性flush、onTrack、onTrigger
 
 > **立即执行**传入的一个函数，同时响应式追踪其依赖，并在其依赖变更时重新运行该函数。
 >
@@ -137,7 +137,7 @@ let computedNum = computed(() => num.value + 1, {
 >
 > 2、关联的响应式数据**被修改**时触发
 >
-> 3、会自动感知代码依赖，和watch不一样，watchEffect会主动绑定监听数据
+> 3、会自动感知**代码依赖**，和watch不一样，watchEffect会主动绑定监听数据
 >
 > 局限性：不能监听对象(但可以监听对象的属性)，只能监听类似ref基本数据类型的响应式数据
 
