@@ -751,6 +751,53 @@ public List<Student> getAllStudents();
 public Class getClass(int id); 
 ```
 
+##### 多对多
+
+> 需要个中间表
+>
+> 用户表
+>
+> 角色表
+>
+> 用户角色中间表
+
+```xaml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keafmd.dao.IUserDao">
+
+    <!--定义User的resultMap-->
+    <resultMap id="userMap" type="user">
+        <id property="id" column="id"></id>
+        <result property="username" column="username"></result>
+        <result property="address" column="address"></result>
+        <result property="sex" column="sex"></result>
+        <result property="birthday" column="birthday"></result>
+        <!--配置角色集合的映射-->
+        <collection property="roles" ofType="role">
+            <id property="roleId" column="rid"></id>
+            <result property="roleName" column="role_name"></result>
+            <result property="roleDesc" column="role_desc"></result>
+        </collection>
+
+    </resultMap>
+
+    <!--配置查询所有-->
+    <select id="findAll" resultMap="userMap">
+         select tp.*,ti.*
+        from test_package tp
+                 left  join testPackage_testItem   tpIt  on   tpIt.test_package_id = tp.id
+                 left  join test_item ti on tpIt.test_item_id = ti.item_id
+    </select>
+
+</mapper>
+
+```
+
+left join语句将三个表关联查询
+
 
 
 #### @Param
