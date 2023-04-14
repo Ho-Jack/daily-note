@@ -10,6 +10,8 @@ module.exports ={
       es6: true  // 设置所需检查代码为 es6 语法书写
     },
     extends: ['plugin:vue/recommended', 'eslint:recommended'],// 扩展使用 vue 检查规则和eslint推荐规则
+    // extends: ['eslint:recommended', 'plugin:vue/vue3-essential', '@vue/prettier'], //拓展prettier进行格式化
+
       rules: {
         'vue/attribute-hyphenation': 0 , // 忽略属性连字
         'vue/max-attributes-per-line':[2, { singleline: 10, multiline: { max: 1, allowFirstLine: false } }], // 每行最大属性
