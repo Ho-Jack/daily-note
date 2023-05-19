@@ -32,6 +32,8 @@
 
 #### 2. 生命周期 & 常用api对比
 
+###### 2.1.生命周期
+
 | Vue2.x        | Vue3.x                 |
 | ------------- | ---------------------- |
 | beforeCreate  | setup()                |
@@ -49,7 +51,7 @@
 | this.$router  | useRouter()            |
 | this.$route   | useRoute()             |
 
-Option API vs Composition API
+###### 2.2. Option API vs Composition API
 
 | 选项式 API        | Hook inside `setup` |
 | ----------------- | ------------------- |
@@ -70,6 +72,8 @@ Option API vs Composition API
 
 
 #### 3.`setup()`
+
+setup应该是vue3.x最为关键的内容的,因为大部分的业务逻辑就是写在setup内的
 
 > setup 函数是 Compsition API 的入口函数，替代了我们之前的生命周期函数beforeCreate、created。
 > setup接受2个参数
@@ -93,7 +97,30 @@ export default {
   }
 }
 </script>
+```
 
+目前官方推荐是setup语法糖的形式写
+
+> 上面代码改为setup语法糖的形式
+
+```javascript
+<template>
+  <div> {{ count }} </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+//setup语法糖会自动将响应式变量return
+cosnt count  = ref(1)
+
+//    export default {
+//      setup(props, { attrs, emit, slots }) {
+//        const count = ref(1)
+//        // 需要将定义的变量在setup函数中return出来，提供外部template模板使用
+//        return { count }
+//      }
+//    }
+</script>
 ```
 
 
@@ -130,7 +157,6 @@ export default {
   }
 }
 </script>
-
 ```
 
 ##### 4.2. $ref() 响应式语法糖
