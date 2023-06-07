@@ -4,9 +4,9 @@
 
 > 本文会持续更新,在vue3开发中遇到的问题和总结
 
-提示:本文需要初步了解Vue3相关基础,为方便未使用TS
+🔔提示:本文需要初步了解Vue3相关基础,为方便未使用TS
 
-GPT的出现已经大大改变了我的开发习惯,从以前的**面向搜索引擎编程**,到现在的**面向GPT编程**,本文内容,我将会采用GPT给的回答,然后对GPT的回答进行解释和补充的形式进行解答
+🤖GPT🤖的出现已经大大改变了我的开发习惯,从以前的**面向搜索引擎编程**,到现在的**面向GPT编程**,本文内容,我将会采用GPT一问一答的形式,然后对GPT的回答进行解释和补充;如有自己观点欢迎评论区给出指正,互相学习~🦀🦀🦀🦀🦀🦀🦀
 
 
 
@@ -26,17 +26,17 @@ Vue 3 支持使用原生 JavaScript 编写应用程序，因此你可以选择�
 
 ### 1.2.👉我👈: 推荐使用
 
-**推荐使用**,缺点也就是学习成本,学习有多难呢无非就是大家说的卷点,但是TS的强类型语言特性,如果学会了对学习如java等强类型语言是大有益处了,各种语言都是大同小异的,并且github上有很多优秀的vue3后台管理系统项目基本采用TS(搜索关键字:vue3 admin)
+**推荐使用**,缺点无非就是学习成本高,学习有多难呢?无非就是大家说的卷点,但是TS的强类型语言特性,如果学会了对学习如java等强类型语言是大有益处了,并且github上有很多优秀的vue3后台管理系统项目基本采用TS(搜索关键字:vue3 admin)
 
 Vue3本身就是用TS重构的,Vue3有较好的TS支持的,比如**类型检查**和**代码提示** ,开发Vue3使用不使用TS,其实很多方面的限制,团队成员的技术栈,成员会不会TS, 如:①学习成本高②大量的anyscript用户~~~
 
-如果习惯了TS提供的类型检查和代码提示,ctrl+鼠标左键就能找到源头的感觉,就真回不去了
+如果习惯了TS提供的类型检查和代码提示,跳转到定义(ctrl+鼠标左键)就能找到源头的感觉,就真回不去了
 
-```javascript
+```html
 <script setup lang="ts">
 import { ref } from "vue";
 //声明一个ref响应式变量,类型限制为Boolean
-const demo = ref<Boolean>(true);
+let demo = ref<Boolean>(true);
 //当给这个变量赋值类型不是Boolean的时候就会标红报错
 demo.value = 1;
 </script>
@@ -50,9 +50,9 @@ demo.value = 1;
 
 
 
-## 2 ref声明的响应式变量访问和修改都得加`.value`小尾巴有点麻烦怎么办?
+## 2. ` ref`声明的响应式变量访问和修改都得加`.value`小尾巴有点麻烦怎么办?
 
-> 老老实实写,目前没好的方式
+> 老老实实写,目前没好的方式,但是volar插件支持补全!贼好用!记得开起来!!!!!
 
 ### 2.1.🤖GPT🤖: 通过computed计算属性解决(代码冗余,不好)
 
@@ -60,12 +60,10 @@ demo.value = 1;
 
 `computed`属性可以将响应式数据转换为计算属性，使其可以像普通属性一样访问和修改，而无需每次都加上`.value`。下面是一个例子：
 
-
-
 ```javascript
 import { ref, computed } from 'vue'
 
-const count = ref(0)
+let count = ref(0)
 
 // 将响应式数据转换为计算属性
 const countValue = computed({
@@ -84,7 +82,7 @@ countValue++ // 等价于 count.value++
 
 ### 2.2.👉我👈: 2种方案
 
-GPT的答案,确实解决了不用频繁了`.value`的问题,但是通过computed计算属性来实现,代码更加冗余没啥现实意义;
+GPT的答案,确实解决了不用频繁了`.value`的问题,但是通过computed计算属性来实现,代码更加冗余没啥现实意义;(太繁琐!麻烦!)
 
 #### 1. $()响应式语法糖(已废弃)
 
@@ -98,7 +96,7 @@ GPT的答案,确实解决了不用频繁了`.value`的问题,但是通过compute
 
   
 
-  **`$`响应式语法糖**来解决`ref`响应式属性频繁`.value`的问题(**已废弃🗑🗑🗑**):
+  **`$`响应式语法糖**来解决`ref`响应式属性频繁`.value`的问题(**已废弃**❌❌❌):
 
   > 该语法糖是一种编译宏,在被`$()`标记后的变量会在编译阶段自动加入`.value`,也就是编译后的代码也是有`.value`的
 
@@ -114,7 +112,7 @@ GPT的答案,确实解决了不用频繁了`.value`的问题,但是通过compute
   </script>
   ```
 
-  废弃的原因很多,大部分人认为是因为分不清是正常变量还是响应式变量
+  废弃的原因很多,大部分人认为,分不清是正常变量还是响应式变量(`.value`能一眼看出是ref声明的响应式变量)
 
   ```javascript
   <script setup>
@@ -144,31 +142,40 @@ GPT的答案,确实解决了不用频繁了`.value`的问题,但是通过compute
 
 
 
-#### 2. 使用reactive替代ref
+#### 2. 使用reactive替代ref(不推荐)
 
-> 对于这个方案,我是持中立态度的,因为reactive使用过程中也有其存在的问题
+> 下面关于reactive和ref使用哪个的问题,有具体分析;推荐使用ref,不要惧怕`.value`;因为有插件能自动补充!!!而且`.value`你一眼就能看出是响应式变量.而reactive却不明显;
 
-这种方案是我看同事的代码的启发的,代码如下
+
+
+#### 3. volar插件能自动补全`.value` (强烈推荐!!!!!!!)
+
+> 本人推荐ref一把梭,但是ref又得到处`.value` ,那就交给插件来完成吧!!!
+
+- `valor` 自动补全`.value` (不是默认开启,需要**手动开启**)
+
+- 不会有人不知道Vue3需要不能使用`vetur`要用`valor`替代吧?不会不会吧? (必备volar插件)
+
+  ![volar设置自动填充value](D:\notes\daily-note\Vue3.0\img\volar设置自动填充value.gif)
+
+  可以看到当输入ref声明的响应式变量时,volar插件自动填充`.value` 那还有啥烦恼呢? 方便!
+
+#### 4 .读取的时候unref()
+
+- unref()  传人ref类型的响应式参数,返回ref响应数据去掉`.value`的值
+- unref()  传入普通参数, 原样返回
+- 这是一个语法糖: `val = isRef(val) ? val.value : val`
+
+利用该属性可以在读取ref类型的响应式数据时不用频繁`.value`
 
 ```javascript
-let  data = reactive({
-   a:1,
-   b:2
-})
-//toRefs解决reactive参数展开后丢失响应式 
-let  {a , b}  = toRefs(data)
-//读取响应式a变量都不需要 .value
-console.log(a)  //1
-//修改响应式b变量都不需要 .value
-b=3
-console.log(b)  //3
+//读取Element-Plus 中form组件的resetFields方法
+let  elFormRef = ref()
+//通过unref
+unref(elFormRef)?.resetFields()
+//通过.value
+elFormRef.value?.resetFields()
 ```
-
-虽然上面这种形式看上去很完美,但是如果是数据回显的业务,我们就需要
-
-
-
-
 
 
 
@@ -191,49 +198,82 @@ reactive 用于将对象转换为响应式数据，包括复杂的嵌套对象�
 
 ### 3.2.👉我👈:推荐ref一把梭
 
+#### `reactive`和  `ref` 对比
+
+| `reactive`                                  | `ref`                                                        |
+| ------------------------------------------- | ------------------------------------------------------------ |
+| ❌只支持对象和数组(引用数据类型)             | ✅支持基本数据类型+引用数据类型                               |
+| ✅在 `<script>` 和 `<template>` 中无差别使用 | ❌在 `<script>` 和 `<template>` 使用方式不同(script中要`.value`) |
+| ❌重新分配一个新对象会丢失响应性             | ✅重新分配一个新对象**不会**失去响应                          |
+| 能直接访问属性                              | 需要使用 `.value` 访问属性                                   |
+| ❌将对象传入函数时,失去响应                  | ✅传入函数时,不会失去响应                                     |
+| ❌解构时会丢失响应性,使用toRefs              | ❌解构对象时会丢失响应性,使用toRefs                           |
+
+
+
+
 #### 3.2.1前提知识:
 
 ##### 3.2.1.1. ref既能声明基本数据类型,也能声明对象和数组;
 
-> Vue 提供了一个 [`ref()`](https://cn.vuejs.org/api/reactivity-core.html#ref) 方法来允许我们创建可以使用任何值类型的响应式 **ref**
+> Vue 提供了一个 [`ref()`](https://cn.vuejs.org/api/reactivity-core.html#ref) 方法来允许我们创建可以使用**任何值类型**的响应式 **ref**
 
-- `ref`声明的响应式变量进行解构不会失去响应
+```javascript
+//对象
+const state = ref({})
+//数组
+const state2 = ref([])
+```
+
+
 
 ##### 3.2.1.2. reactive失去响应的情况:
 
+> `reactive`一时爽,使用不恰当的时候失去响应泪两行,开开心心敲代码过程中,会感叹!!咦?怎么不行?为什么这么赋值失去响应了? 辣鸡reactive!!! 我要用 ref 👉👉yyds
+
 ###### 1. 给响应式对象的字面量赋一整个普通对象/reactive对象
 
-> 通常在页面数据回显时,获取对象值直接赋值给响应式对象
+> 通常在页面数据回显时,需要将AJAX请求获取的对象直接赋值给响应式对象,如果操作不当就导致`reactive声明的对象`失去响应
 
-```react
+- 赋值一个普通对象
+
+  ```javascript
+  let state = reactive({ count: 0 })
+  //这个赋值将导致state失去响应
+  state = {count: 1}
+  ```
+
+- 赋值一个`reactive`对象
+
+  > 如果给reactive的响应式对象赋值普通对象会失去响应,那么给它赋值一个reactive的响应式对象不就行了吗?下面试试看
+
+```html
 <template>
   {{state}}
 </template>    
 
 <stcirpt setup>
 const state = reactive({ count: 0 })
-
-
-const demo = ()=>{
-   //虽然打印的state是响应的,对初始引用的响应性连接丢失
-   //  {{state }} 显示的值并未改变
-   state=reactive{count:1}
-   // {{state }} 显示的值并未改变
-   state={count:1}     
-}
+ //nextTick异步方法中修改state的值
+nextTick(() => {
+  //并不会触发修改DOM  ,说明失去响应了
+  state = reactive({ count: 11 });
+});
 </stcirpt>
 ```
 
+在`nexTick`中给`state`赋值一个reactive的响应式对象,但是DOM并没有更新!
 
 
-解决方法:
+
+###### **解决方法:**
 
 1. 不要直接整个对象替换,对象属性一个个赋值
 
    ```javascript
-   const state = reactive({ count: 0 })
+   let state = reactive({ count: 0 })
    //state={count:1}
-   state.conut = 1
+   state.conut = 1 
    ```
 
 2. 使用ref定义对象
@@ -241,7 +281,7 @@ const demo = ()=>{
    > 个人推荐,非必要不用reactive
 
    ```javascript
-   const state = ref({ count: 0 })
+   let state = ref({ count: 0 })
    state.value={count:1}
    ```
 
@@ -249,10 +289,10 @@ const demo = ()=>{
 
 ###### 2.将响应式对象的属性-赋值给变量(断开连接/深拷贝)
 
-> 这种类似深拷贝(即使是对象也是深拷贝),只是字面量的赋值
+> 这种类似深拷贝不共享同一内存地址了,只是字面量的赋值;对该变量赋值也不会影响原来对象的属性值
 
 ```javascript
-const state = reactive({ count: 0 })
+let state = reactive({ count: 0 })
 //赋值
 // n 是一个局部变量，同 state.count
 // 失去响应性连接
@@ -262,51 +302,56 @@ n++
 console.log(state.count) //0
 ```
 
-###### 3.解构至本地变量时
+有人就说了,既然赋值对象的属性,那我赋值一整个对象不就是浅拷贝了吗?那不就是上面说的`给响应式对象的字面量赋一整个普通对象/reactive对象`这种情况吗?这种是会失去响应的
 
->解构state要不失去响应得使用toRefs解构
+###### 3.直接解构时
+
+- 直接解构会失去响应
 
 ```javascript
-const state = reactive({ count: 0 })
-//解构
-// count 也和 state.count 失去了响应性连接
-let { count } = state
-// 不会影响原始的 state
-count++
+let state = reactive({ count: 0 })
+//普通解构count 和 state.count 失去了响应性连接
+let { count } = state 
+count++ // state.count值依旧是0
 ```
 
-使用toRefs解构不会失去响应
+- 使用`toRefs`解构不会失去响应
 
 ```javascript
 const state = reactive({ count: 0 })
-//解构
-// count 也和 state.count 失去了响应性连接
-let { count } = state
-// 不会影响原始的 state
-count++
+//使用toRefs解构
+let { count } = toRefs(state)
+count++ // state.count值改变为1
 ```
 
 
 
 ###### 4.传入一个函数时
 
-```jsx
-const state = reactive({ count: 0 })
+> 将reactive声明的响应式对象的参数传入一个函数时,会失去响应
 
-// 该函数接收一个普通数字，并且
-// 将无法跟踪 state.count 的变化
-callSomeFunction(state.count)
+```jsx
+let state = reactive({ count: 0 })
+
+const fn = (count) => {
+  // ⚠️ 这里的 count 是一个普通的 number (不是)
+  console.log(count)
+  // 不能跟踪 state.count 的改变
+}
+
+//调用该函数,传入响应式对象的参数
+fn(state.count)
 ```
 
 #### 3.2.2. ref一把梭
 
-> 当你使用reactive声明对象,在数据需要重新回显时,发现赋值失效的时候你就得了解**reactive失去响应的情况**这个知识了
+> 当使用reactive时,如果不了解**reactive失去响应的情况**,那么使用reactive会造成很多困扰!
 
-从上面的前提知识,总结原因如下:
+推荐使用`ref`总结原因如下:
 
 1. reactive只能声明引用数据类型(对象/数组)
 
-2. reactive在一些情况下会失去响应,这个情况会导致数据回显失去响应(数据改了,dom没更新)
+2. reactive在一些情况下会失去响应,这个情况会导致数据回显**失去响应(数据改了,dom没更新)**
 
    给响应式对象的字面量赋一整个普通对象,将会导致reactive声明的响应式数据失去响应
 
@@ -318,7 +363,7 @@ callSomeFunction(state.count)
    </template>
    
    <script>
-    const state = reactive({ a:1,b:2,c:3 })
+    let state = reactive({ a:1,b:2,c:3 })
     onMounted(()=>{
         //通AJAX请求获取的数据,回显到reactive,如果处理不好将导致变量失去响应,
        //回显失败,给响应式数据赋值一个普通对象
@@ -345,10 +390,10 @@ callSomeFunction(state.count)
    </template>
    
    <script>
-    const state = ref({ a:1,b:2,c:3 })
+    let state = ref({ a:1,b:2,c:3 })
     onMounted(()=>{
        //回显成功
-       state =  { a:11,b:22,c:333 }
+       state.value =  { a:11,b:22,c:333 }
     })
    </script>
    ```
@@ -456,7 +501,7 @@ GPT的回答较为抽象,setup语法糖,所谓语法糖就是一种简便的写�
 
 
 
-#### 2、`<script setup>`引入组件将自动注册
+#### 2、`<script setup>`将自动注册引入组件
 
 > 不需要在引入组件后，通过 `components:{}`注册组件，可直接使用
 
@@ -500,7 +545,106 @@ Vue 3中引入了自定义Hook，旨在提供一种可复用的逻辑，以减�
 
 > Vue3中的自定义Hooks其实很多程度上是借鉴了React的
 
-Vue3引入自定义Hooks的很大原因是为了替代Mixin,优化了Mixin的一些弊端:
+#### 5.2.1. 怎么创建自定义HOOK?
+
+##### 步骤:
+
+1. 将可复用功能抽离为外部JS文件
+
+2. 函数名/文件名以use开头，形如：useXX
+
+3. 引用时将响应式变量或者方法显式暴露出来如：` const {nameRef，Fn} = useXX()`   
+
+   （在setup函数解构出自定义hooks的变量和方法）
+
+   
+
+   
+
+##### 创建自定义Hook实例:
+
+   > 简单的加减法计算，将加法和减法抽离为2个自定义Hooks，并且相互传递响应式数据
+
+   - 加法功能-Hook
+
+     `useAdd.js`  由 export default导出
+
+   ```javascript
+   import { ref, watch } from 'vue';
+   const useAdd= ({ num1, num2 })  =>{
+       const addNum = ref(0)
+       watch([num1, num2], ([num1, num2]) => {
+           addFn(num1, num2)
+       })
+       const addFn = (num1, num2) => {
+           addNum.value = num1 + num2
+       }
+       return {
+           addNum,
+           addFn
+       }
+   }
+   //默认导出Hook
+   export default useAdd
+   ```
+
+   - 减法功能-Hook
+
+     `useSub.js` 由export 导出
+
+   ```javascript
+   //减法功能-Hook
+   import { ref, watch } from 'vue';
+   //导出Hook
+   export function useSub  ({ num1, num2 }){
+       const subNum = ref(0)
+       watch([num1, num2], ([num1, num2]) => {
+           subFn(num1, num2)
+       })
+       const subFn = (num1, num2) => {
+           subNum.value = num1 - num2
+       }
+       return {
+           subNum,
+           subFn
+       }
+   }
+   ```
+
+   - 加减法计算组件
+
+   ```html
+   <template>
+       <div>
+           num1:<input v-model.number="num1" style="width:100px" />
+           <br />
+           num2:<input v-model.number="num2" style="width:100px" />
+       </div>
+       <span>加法等于:{{ addNum }}</span>
+       <br />
+       <span>减法等于:{{ subNum }}</span>
+   </template>
+   
+   <script setup>
+   import { ref } from 'vue'
+   import useAdd from './useAdd.js'     //引入自定义hook 
+   import { useSub } from './useSub.js' //引入自定义hook 
+   
+   const num1 = ref(2)
+   const num2 = ref(1)
+   //加法功能-自定义Hook（将响应式变量或者方法形式暴露出来）
+   const { addNum, addFn } = useAdd({ num1, num2 })
+   addFn(num1.value, num2.value)
+   //减法功能-自定义Hook (将响应式变量或者方法形式暴露出来)
+   const { subNum, subFn } = useSub({ num1, num2 })
+   subFn(num1.value, num2.value)
+   </script>
+   
+   ```
+
+   
+
+#### 5.2.2. Vue3引入自定义Hooks替代Mixin,优化了Mixin的一些弊端:
 
 #### 1、Mixin难以追溯的方法与属性！Vue3自定义Hooks却可以
 
@@ -727,7 +871,7 @@ Composition API是Vue 3中新增的API，它通过一组函数来描述组件，
 | 子传父           | $emit          | emits(defineEmits)       |
 | 子传父           | $listeners     | 无(合并到 attrs方式)     |
 | 子组件访问父组件 | $parent        | 无                       |
-| 兄弟传值         | EventBus       | mitt                     |
+| 兄弟传值         | EventBus       | mitt(需要引入插件实现)   |
 
 
 
@@ -847,7 +991,7 @@ Composition API是Vue 3中新增的API，它通过一组函数来描述组件，
   <button class="btn large">click me</button>
   ```
 
-###### 3.2 Attributes透传事件监听
+###### 3.2 Attributes透传事件监听(有点像冒泡事件)
 
 - 父组件
 
@@ -1183,19 +1327,108 @@ Vue Router 在 Vue3 中也做了不少改进,但最大的区别在 API 重构。
 
 > GPT的答案已经很好了
 
-1. 数据驱动能力更强，重构响应式系，基于 `proxy `的数据驱动能够弥补原来 `definePorperty `的不足,
+#### 大致对比
+
+| 区别项           | Option API                                    | Composition API                               |
+| :--------------- | :-------------------------------------------- | :-------------------------------------------- |
+| 定义方式         | 使用`options`对象配置组件(data 、methods ...) | 使用`setup()`函数配置组件                     |
+| 数据来源         | 数据定义在`data`函数返回对象中                | 数据定义在`setup()`函数中使用ref/reactive声明 |
+| 方法             | 定义在`methods`对象中                         | 定义在`setup()`函数中                         |
+| 侦听器           | 使用`watch`指定侦听                           | 使用`watch`和`watchEffect`实现侦听            |
+| 计算属性         | 使用`computed`定义                            | 使用`computed`函数定义                        |
+| 提取数据         | 使用`provide/inject`                          | 使用`provide/inject`                          |
+| 模块与组件间通信 | 使用`$on / $emit`                             | 使用`emit()`绑定到父组件                      |
+| 异步操作         | 在`created`生命周期中调用                     | 在`setup()`中直接调用                         |
+| 代码复用性       | 通过混入(mixins)和继承实现代码复用            | 自定义Hook                                    |
+| 访问状态和方法   | 使用`this`关键字                              | setup语法糖中直接访问状态和方法               |
+
+#### 生命周期Hook对比:
+
+| Option API    | Composition API                |
+| ------------- | ------------------------------ |
+| beforeCreate  | setup()                        |
+| created       | setup()                        |
+| beforeMount   | onBeforeMount                  |
+| mounted       | onMounted                      |
+| beforeUpdate  | onBeforeUpdate                 |
+| updated       | onUpdated                      |
+| beforeDestroy | onBeforeUnmount                |
+| destroyed     | **onUnmounted** (这个区别较大) |
+| errorCaptured | onErrorCaptured                |
+
+#### 路由对比
+
+| Option API   | Composition API |
+| ------------ | --------------- |
+| this.$router | useRouter()     |
+| this.$route  | useRoute()      |
+
+
+
+
+
+
+
+1. 数据驱动能力更强，重构响应式，基于 `proxy `的数据驱动能够弥补原来 `definePorperty `的不足,
 
    使用Proxy的优势：
 
-   ```
-   1.Proxy在使用上比Object.defineProperty方便的多
-   2.可直接监听数组类型的数据变化
-   3.Proxy代理整个对象，Object.defineProperty只代理对象上的某个属性
-   4.可拦截apply、ownKeys、has等方法，而Object.defineProperty不行
-   5.直接实现对象属性的新增/删除
-   ```
+   1. Proxy代理整个对象，Object.defineProperty只代理对象上的某个属性(更直观)
 
-2. 新增Composition API，更好的逻辑复用和代码组织
+      ```javascript
+      //user的对象包含name和age属性
+      const user = {
+        name: 'John',
+        age: 30
+      }
+      //proxy代理整个对象,它可以捕获对user对象的访问和修改
+      const userProxy = new Proxy(user, {
+        get(target, key) {
+          console.log(`Getting ${key} property`);
+          return target[key];
+        },
+        set(target, key, value) {
+          console.log(`Setting ${key} property to ${value}`);
+          target[key] = value;
+          return true;
+        }
+      });
+      //Object.defineProperty 对象的属性需要一个个代理,十分麻烦,更加冗长和复杂
+      Object.defineProperty(user, 'name', {
+        get() {
+          console.log(`Getting name property`);
+          return user.name;
+        },
+        set(value) {
+          console.log(`Setting name property to ${value}`);
+          user.name = value;
+        }
+      });
+      
+      Object.defineProperty(user, 'age', {
+        get() {
+          console.log(`Getting age property`);
+          return user.age;
+        },
+        set(value) {
+          console.log(`Setting age property to ${value}`);
+          user.age = value;
+        }
+      });
+      
+      ```
+
+   2. Proxy可直接监听数组类型的数据变化
+
+   3. 可拦截apply、ownKeys、has等方法，而Object.defineProperty不行
+
+   4. Proxy直接实现对象属性的新增/删除,依旧能监听(vue2中对象新增属性,需要使用$set()保持响应)
+
+   
+
+2. 新增`Composition API`，更好的逻辑复用和代码组织
+
+   > 按功能划分代码块,更直观
 
 3. 重构 Virtual DOM
 
@@ -1210,3 +1443,22 @@ Vue Router 在 Vue3 中也做了不少改进,但最大的区别在 API 重构。
 5. Vue3全面拥抱 typescript，2.x 版本无论用 class component 还是 配置 都不能很好的支持 ts.
 
 6. Vue3已经不兼容IE11
+
+7. Vue3支持自定义Hook替代Mixin
+
+
+
+## Vue3中还能使用this吗
+
+
+
+## Vue3中样式穿透
+
+
+
+Vue3中为什么使用Vite
+
+
+
+Vue3中为什么更多推荐使用windi css 等原子化样式 而不是Scss/Less 等预处理器
+

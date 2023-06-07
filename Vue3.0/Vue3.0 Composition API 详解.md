@@ -347,7 +347,11 @@ console.log(isAgeRef); //true
 
 -  ### unref()
 
- >接收一个ref参数，如果这个值是 ref 就返回 .value，否则原样返回
+ >传人ref类型的参数,返回ref响应数据去掉`.value`的值
+ >
+ >传入普通参数, 原样返回
+ >
+ >这是一个语法糖: `val = isRef(val) ? val.value : val`
 
 ```js
 const age = ref(1);
@@ -389,7 +393,7 @@ console.log(newAge) // ObjectRefImpl {_object: 20, _key: undefined, __v_isRef: 
 
 
 
-#### 8. 字符`$ `解决响应式ref,频繁`.value`
+#### 8. 字符`$ `解决响应式ref,频繁`.value` (废弃)
 
 > `$()`响应性语法糖目前默认是关闭状态，需要你显式选择启用
 

@@ -190,6 +190,18 @@ var result = arr.reduce( (tmp, item, index) => {
 
 > reduceRight ,从数组的末尾向前将数组中的数组项做累加
 
+**`Array.from()`**   类数组转换成数组
+
+>  [可迭代](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols#可迭代协议)或[类数组](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Indexed_collections#使用类数组对象)对象创建一个新的浅拷贝的数组实例
+
+```javascript
+//类数组(含length的对象/字符串)
+let newArr = Array.from('foo')
+console.log(newArr) // ["f", "o", "o"]
+```
+
+
+
 #### `for...of`
 
 > 遍历数组的 value
