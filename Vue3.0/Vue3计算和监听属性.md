@@ -1,14 +1,54 @@
-# Vue3说人话系列之Computed 与 watch
+# Computed 与 watch
 
-## 1. `computed`
+## computed、watch和watchEffect的区别
 
-### 1.1. `computed`只接收一个`getter回调函数`
+| 功能点         | computed                                                     | watch                                        | watchEffect                                              |
+| :------------- | :----------------------------------------------------------- | :------------------------------------------- | :------------------------------------------------------- |
+| 用法           | 声明式地计算衍生数据(计算多个响应式变量整合成一个**新的响应式变量**) | 监听特定的响应式数据变化并执行相应的回调函数 | 响应式地执行副作用函数                                   |
+| 自动收集依赖   | 是,自动收集计算数据中的响应式数据                            | 否,**需要指定**响应式数据                    | 是,与computed一样自动监听回调函数中的响应式数据          |
+| 数据依赖       | 计算中的响应式数据                                           | 监听一个或多个指定的响应式数据               | 自动追踪副作用函数中使用的所有响应式数据依赖             |
+| 特殊性         | 具有**缓存性**,开销小性能更高,只能执行**同步逻**辑           | 需要指定监听的响应数据,可以执行**异步**逻辑  | 初始化将会立即执行一次（和watch的immediate属性效果一致） |
+| 执行时机       | 访问计算属性时执行                                           | 数据源变化时执行                             | 数据源变化时执行                                         |
+| 回调参数       | 无                                                           | (新值,旧值)                                  | 无                                                       |
+| 返回值         | **有,计算后的值**` <br>只有getter返回只读的ref响应式数据<br>有setter返回可读可写的ref响应式数据 | 无                                           | 无                                                       |
+| 停止监视       | 不需要停止                                                   | 需要手动停止                                 | 组件销毁自动停止,也能手动停止                            |
+| 是否支持副作用 | 否,副作用应该是监听器的功能<br>副作用:会对函数体外部的变量或系统产生影响的操作(异步操作) | 是                                           | 是                                                       |
 
-> 1、getter回调函数必须有返回值
->
-> 2、computed返回一个**只读**响应式ref对象（只读、响应式、对象）
->
-> 注意：computed只接收一个getter函数时，返回的是只读对象，也就是不能修改他的返回值！
+
+
+# 1. 计算属性`computed`
+
+> 声明式地计算衍生数据(计算多个响应式变量整合成一个**新的响应式变量**)
+
+### 1.1. 只有一个`getter回调函数`
+
+
+
+- getter是**回调函数**且必须有返回值
+
+- getter的返回值是computed的值
+
+- getter中不应该有副作用
+
+  > 副作用:会对函数体外部的变量或系统产生影响的操作
+  >
+  > 副作用应该由watch监听器来做
+
+- computed返回一个**只读**响应式ref对象（只读、响应式、对象）
+
+  > 只读属性，修改会有警告提醒 `Write operation failed: computed value is readonly`
+
+  ```typescript
+  // 只读的
+  function computed<T>(
+    getter: () => T,
+    debuggerOptions?: DebuggerOptions
+  ): Readonly<Ref<Readonly<T>>>
+  ```
+
+  
+
+注意：computed只接收一个getter函数时，返回的是只读对象，也就是不能修改他的返回值！
 
 #### getter触发条件：
 
@@ -34,21 +74,46 @@ let computedNum = computed(() => num.value + 1)
 </template>
 ```
 
-###  1.2. `computed`同时接收`getter函数对象`和`setter函数对象`
+###  1.2. `同时接收`getter函数对象`和`setter函数对象`
 
-> 1、setter函数对象没有返回值
->
-> 2、computed返回一个**可读可写**响应式对象
->
-> 3、setter函数对象有参数，是getter的返回值，也是computed的值
->
-> 4、修改computed返回值，触发setter函数对象执行，但不会真正修改computed返回值（setter内改变getter计算值就会改变computed返回值）
+> computed中setter的触发条件是修改computed的返回值,当时
 
-#### setter触发条件：
+1. getter和setter都是函数对象
 
-- computed返回值被修改时
+   ```typescript
+   // 可写的
+   function computed<T>(
+     options: {
+       get: () => T
+       set: (value: T) => void  //setter函数对象有参数,参数是getter的返回值,且没有返回值
+     },
+     debuggerOptions?: DebuggerOptions
+   ): Ref<T>
+   interface DebuggerOptions {
+     onTrack?: (event: DebuggerEvent) => void
+     onTrigger?: (event: DebuggerEvent) => void
+   }
+   interface DebuggerEvent {
+     effect: ReactiveEffect
+     target: any
+     type: OperationTypes
+     key: string | symbol | undefined
+   }       
+   ```
 
-  
+2. setter函数对象没有返回值
+
+3. computed返回一个**可读可写**响应式对象
+
+4. setter函数对象有参数，是getter的返回值，也是computed的值
+
+5. 修改computed返回值，触发setter函数对象执行，但不会真正修改computed返回值（setter内改变getter计算值就会改变computed返回值）
+
+   > getter的返回值是computed的值,修改computed的返回值只会出发setter,如果在setter中修改get中返回的响应式变量则会触发getter
+
+#### 1.2.1. setter触发条件：
+
+> computed返回值被修改时
 
 实例：
 
@@ -84,8 +149,35 @@ let computedNum2 = computed({
 
 
 
+#### 1.2.2.避免直接修改计算属性值(减少使用setter)
 
-### 1.3. `调试 Computed`
+官方推荐:计算属性应该视为只读属性,而不应该去修改它,修改计算属性的值并不是一个推荐的做法，因为它违背了计算属性的初衷;
+
+
+
+### 1.3 computed的缓存性
+
+> computed依赖的响应式数据没改变前,会缓存getter返回的值,无论读取多少次computed,只要依赖的响应式数据没改变都不会重复执行getter函数
+
+优势: 开销小,高性能;很适合用来做消耗性能的数据计算,而不会经常改变的数据
+
+适用场景: 
+
+- 对于复杂的计算
+- 涉及大量数据的场景 ;
+
+- 当某个计算结果需要在多个地方使用时
+
+### 1.4 computed 的同步性
+
+> 计算是同步的，这意味着它会立即返回计算结果，并且在数据变化时能够立即响应更新
+
+因此以下情况最好是使用watch监听器
+
+- 异步请求
+- 触发事件
+
+### 1.4. `调试 Computed`
 
 > 使用范围：仅开发模式生效
 >
@@ -121,11 +213,15 @@ let computedNum = computed(() => num.value + 1, {
 
 
 
+# 2.监听器`watch`和`watchEffect` 
 
+> 当计算属性中需要执行"副作用",也就是要修改函数外部的变量或者执行一些异步操作的时候,计算属性`computed`就不适用了
 
-## 2. `watchEffect` 
+## 2.1. `watchEffect` 
 
-语法：
+> 使用 `watchEffect()` 可以消除手动维护依赖列表的负担(相比watch)
+
+##### 语法：
 
 - 参数1：触发监听回调函数，回调函数可传入一个onInvalidate函数作为参数！
 
@@ -139,7 +235,7 @@ let computedNum = computed(() => num.value + 1, {
 >
 > 3、会自动感知**代码依赖**，和watch不一样，watchEffect会主动绑定监听数据
 >
-> 局限性：不能监听对象(但可以监听对象的属性)，只能监听类似ref基本数据类型的响应式数据
+> 局限性：**不能监听对象(但可以监听对象的属性)**，只能监听类似ref基本数据类型的响应式数据
 
 ### 2.1. 立即执行，监听基本数据类型
 
@@ -162,7 +258,7 @@ watchEffect(() => {
 
 
 
-### 2.2. 停止`watchEffect` 
+### 2.1.2. 停止`watchEffect` 
 
 - 隐式：组件卸载时自动停止
 
@@ -179,7 +275,7 @@ watchEffect(() => {
 
 
 
-### 2.3. 清理watchEffect
+### 2.1.3. 清理watchEffect
 
 - 语法： `  watchEffect( onInvalidate=>{    onInvalidate(()=>{ })    })`
 
@@ -219,19 +315,21 @@ watchEffect((onInvalidate ) => {
 //  watchEffect-3
 ```
 
-### 2.4. `watchPostEffect` 和 `watchSyncEffect`
+### 2.1.4. `watchPostEffect` 和 `watchSyncEffect`
 
 > `watchPostEffect` 和 `watchSyncEffect`在Vue3.2新增,是watchEffect类似语法糖的东西,
 >
 > 是`watchEffect`可选参数对象`{ flush?: 'pre' | 'post' | 'sync'}`中post和sync的语法糖，pre是默认值
 
-#### 2.4.1. 推迟触发`watchPostEffect` 
+#### 2.1.4.1. 推迟触发`watchPostEffect` 
 
 > `watchPostEffect` 是watchEffect可选参数对象`{flush:'post'}`的语法糖
 >
-> 推迟watchEffect触发时机！组件更新前触发！也就是在生命周期`onBeforeUpdate`和 `onUpdated`之间触发
+> **推迟**watchEffect触发时机！**组件更新前触发**！也就是在生命周期`onBeforeUpdate`和 `onUpdated`之间触发
 
-语法：
+也就是可以替代`nextTick回调`
+
+###### 语法：
 
 ```javascript
 //推迟触发watchEffect
@@ -251,7 +349,7 @@ watchPostEffect(()=>{
 
 
 
-实例：
+###### 实例：
 
 ```javascript
 //实验watchEffect第二参数 flush: 'post'属性
@@ -286,7 +384,7 @@ onUpdated()
 
 
 
-#### 2.4.2. 同步触发`watchSyncEffect`
+#### 2.1.4.2. 同步触发`watchSyncEffect`
 
 > `watchSyncEffect` 是watchEffect可选参数对象`{flush:'sync'}`的语法糖
 >
@@ -309,7 +407,7 @@ watchSyncEffect(()=>{
 })
 ```
 
-### 2.5. `watchEffect`不能监听对象
+### 2.1.5. `watchEffect`不能监听对象
 
 ```javascript
 
@@ -332,13 +430,13 @@ watch(obj, (obj) => {
 })
 ```
 
-总结：`watchEffect`用来监听能监听基本数据类型，不能监听对象，但能监听对象的属性;watch能监听基本数据类型和对象！
+总结：`watchEffect`用来监听能监听**基本数据类型**，不能监听对象，但能监听对象的属性;watch能监听基本数据类型和对象！
 
 
 
 ## 3. `watch`
 
-语法：
+##### 语法：
 
 - 参数1-被监听数据（形式：单个数据、数组、带返回值的回调函数）
 - 参数2-触发监听的回调函数，无返回值
@@ -406,7 +504,7 @@ watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
   
 - `computed`同时接收`getter函数对象`和`setter函数对象`
 
-  `setter`触发条件：computed返回值被修改时
+  `setter`触发条件：computed返回值被修改时 (官方不推荐修改`computed`的返回值,也就是使用`setter`)
 
 ```typescript
 // 只读的

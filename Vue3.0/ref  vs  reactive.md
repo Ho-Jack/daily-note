@@ -1,5 +1,7 @@
 # 为什么推荐使用ref而不是reactive
 
+
+
 ## 1. `reactive`和  `ref` 对比
 
 | `reactive`                                  | `ref`                                                        |
@@ -15,7 +17,9 @@
 
 - reactive 用于将**对象**转换为响应式数据，包括复杂的嵌套对象和数组。使用 reactive 定义的数据可以**直接**访问和修改属性。
 
-###  reactive只能声明引用数据类型(对象)
+### 原因1:reactive有限的值类型
+
+####  reactive只能声明引用数据类型(对象)
 
 ```javascript
 let  obj = reactive({
@@ -24,7 +28,7 @@ let  obj = reactive({
 })
 ```
 
-###  ref既能声明基本数据类型,也能声明对象和数组;
+####  ref既能声明基本数据类型,也能声明对象和数组;
 
 > Vue 提供了一个 [`ref()`](https://cn.vuejs.org/api/reactivity-core.html#ref) 方法来允许我们创建可以使用**任何值类型**的响应式 **ref**
 
@@ -37,7 +41,7 @@ const state2 = ref([])
 
 
 
-#### reactive使用不当会失去响应:
+### 原因2:reactive使用不当会失去响应:
 
 > `reactive`一时爽,使用不恰当的时候失去响应泪两行,开开心心敲代码过程中,会感叹!!咦?怎么不行?为什么这么赋值失去响应了? 辣鸡reactive!!! 我要用 ref 👉👉yyds
 >
@@ -75,11 +79,6 @@ nextTick(() => {
 
 在`nexTick`中给`state`赋值一个reactive的响应式对象,但是DOM并没有更新!
 
-###### 为什么同样是赋值对象ref不会失去响应而reactive会?:
-
-ref 定义的数据（包括对象）时，都会变成 RefImpl(Ref 引用对象) 类的实例，无论是修改还是重新赋值都会调用 setter，都会经过 reactive 方法处理为响应式对象。
-reactive 定义数据（必须是对象），是直接调用 reactive 方法处理成响应式对象。如果重新赋值，就会丢失原来响应式对象的引用地址，变成一个新的引用地址，这个新的引用地址指向的对象是没有经过 reactive 方法处理的，所以是一个普通对象，而不是响应式对象。
-
 
 
 ###### **解决方法:**
@@ -92,16 +91,29 @@ reactive 定义数据（必须是对象），是直接调用 reactive 方法处�
    state.conut = 1 
    ```
 
-2. 使用`object.assign`
+2. 使用`Object.assign`
+
+   ```javascript
+   let state = reactive({ count: 0 })
+   // state =  {count:1}   state失去响应
+   state = Object.assign(state , {count:1})
+   ```
+
+   
 
 3. 使用ref定义对象
 
-   > 个人推荐,非必要不用reactive
+   > 非必要不用reactive
 
    ```javascript
    let state = ref({ count: 0 })
    state.value={count:1}
    ```
+
+###### 为什么同样是赋值对象ref不会失去响应而reactive会?:
+
+`ref` 定义的数据（包括对象）时，都会变成` RefImpl`(Ref 引用对象) 类的实例，无论是修改还是重新赋值都会调用` setter`，都会经过` reactive `方法处理为响应式对象。
+`reactive `定义数据（必须是对象），是直接调用` reactive` 方法处理成响应式对象。如果重新赋值，就会丢失原来响应式对象的**引用地址**，变成一个新的引用地址，这个新的引用地址指向的对象是没有经过` reactive` 方法处理的，所以是一个普通对象，而不是响应式对象。
 
 
 
@@ -135,13 +147,17 @@ let { count } = state
 count++ // state.count值依旧是0
 ```
 
+###### 解决方案:
+
 - 使用`toRefs`解构不会失去响应
+
+  > 使用toRefs解构后的属性是`ref`的响应式数据
 
 ```javascript
 const state = reactive({ count: 0 })
-//使用toRefs解构
+//使用toRefs解构,后的属性为ref的响应式变量
 let { count } = toRefs(state)
-count++ // state.count值改变为1
+count.value++ // state.count值改变为1
 ```
 
 
@@ -169,23 +185,15 @@ fn(state.count)
 
 
 
-
-
-#### 为什么reactive会失去响应而ref声明的对象不会?
-
-
-
-
-
-#### 3.2.2. ref一把梭
+## 建议: ref一把梭
 
 > 当使用reactive时,如果不了解**reactive失去响应的情况**,那么使用reactive会造成很多困扰!
 
 推荐使用`ref`总结原因如下:
 
-1. reactive只能声明引用数据类型(对象/数组)
+1. reactive有限的值类型:只能声明引用数据类型(对象/数组)
 
-2. reactive在一些情况下会失去响应,这个情况会导致数据回显**失去响应(数据改了,dom没更新)**
+2. reactive在一些情况下**会失去响应**,这个情况会导致数据回显**失去响应(数据改了,dom没更新)**
 
    给响应式对象的字面量赋一整个普通对象,将会导致reactive声明的响应式数据失去响应
 
@@ -236,9 +244,11 @@ fn(state.count)
 
 3. ref适用范围更大,声明的数据类型.基本数据类型和引用数据类型都行
 
-虽然使用ref声明的变量,在读取和修改时都需要加`.value`小尾巴,但是正因为是这个小尾巴,我们review代码的时候就很清楚知道这是一个ref声明的响应式数据;
+虽然使用ref声明的变量,在读取和修改时都需要加`.value`小尾巴,但是正因为是这个小尾巴,我们review代码的时候就很清楚知道这是一个`ref`声明的响应式数据;
 
 
+
+#### 推荐开启ref自动插入`.value`
 
 
 
