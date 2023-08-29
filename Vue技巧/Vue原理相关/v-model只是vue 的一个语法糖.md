@@ -8,6 +8,8 @@ tags: [Vue]
 
 ##   **v-model**   只是 vue 的一个语法糖 （**Vue 是单项数据流**）
 
+
+
 ### v-model指令实现了表单的双向绑定
 
 ```vue
@@ -17,13 +19,20 @@ tags: [Vue]
 
 ### v-model只是语法糖,原理实现：
 
+> vue是单向数据流,v-mdel双向绑定实质是一种语法糖;
+
+将语法糖拆解:
+
+- `v-bind`绑定`value`属性的值；(绑定响应数据)
+- `v-on`绑定`input`事件监听到函数中，函数会获取最新的值，赋值给绑定的属性中；(事件监听修改响应数据,实现单向数据流的双向绑定)
+
 ```vue
 <input type="text" :value="message" @input="message = $event.target.value">
 //$event  访问原始的 DOM 事件
 ```
 
-- 1、vue是单向数据流，`：value='message'`只是将input的value值绑定到message上，修改message影响输入框value值，但修改输入框值，并不会改变message值
-- 2、通过监听输入框oninput事件，将输入值绑定到message值，从而实现双向绑定
+- 1、：value='message'`只是将input的value值绑定到message上，修改message影响输入框value值，但修改输入框值，并不会改变message值
+- 2、通过监听输入框`oninput`事件，将输入值绑定到message值，从而实现双向绑定
 
 ### 原生简单实现v-model：
 
@@ -68,15 +77,22 @@ tags: [Vue]
 
 ### 类似react中的 受控组件
 
+> 受控组件,通过响应数据绑定和事件监听实现双向绑定的组件;
+
 ```react
 <input type="text"  value={this.state.message} 
     onChange={e=>{this.setState({message:e.target.value})}} ></input>
 ```
 
-> 从官网上看到，v-model在内部为不同的输入元素使用不同的属性并抛出不同的事件：
-> - text和textarea元素使用value属性和input事件
-> - checkbox和radio使用checked属性和change事件
-> - select使用value和change事件
+
+
+### v-model根据不同元素触发不同事件
+
+从官网上看到，v-model在内部为不同的输入元素使用不同的属性并抛出不同的事件：
+
+- text和textarea元素使用value属性和input事件
+- checkbox和radio使用checked属性和change事件
+- select使用value和change事件
 
 
 
