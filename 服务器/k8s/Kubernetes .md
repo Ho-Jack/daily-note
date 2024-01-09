@@ -52,7 +52,7 @@ Node节点包括Docker、kubelet、kube-proxy、Fluentd、kube-dns（可选）�
 
 - Docker，创建容器的。
 
-- Kubelet，主要负责监视指派到它所在Node上的Pod，包括创建、修改、监控、删除等。
+- Kubelet(节点代理)，主要负责监视指派到它所在Node上的Pod，包括创建、修改、监控、删除等。
 
 - Kube-proxy，主要负责为Pod对象提供代理。
 
@@ -60,7 +60,7 @@ Node节点包括Docker、kubelet、kube-proxy、Fluentd、kube-dns（可选）�
 
 
 
-![image-20230626103018215](D:\notes\daily-note\服务器\k8s\img\节点.png)
+![image-20230626103018215](img\节点.png)
 
 ###### 每个Node上都运行着以下关键组件：
 
@@ -122,7 +122,7 @@ Node节点包括Docker、kubelet、kube-proxy、Fluentd、kube-dns（可选）�
 
 Kubernetes最基本的操作单元
 
-一个Pod代表着集群中运行的一个进程，它内部封装了一个或多个紧密相关的容器。
+一个Pod代表着集群中运行的一个**进程**，它内部封装了一个或多个紧密相关的**容器**。
 
 **Pod可以被理解成一群可以共享网络、存储和计算资源的容器化服务的集合**
 
