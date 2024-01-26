@@ -35,15 +35,13 @@ deployment.apps/dashboard-metrics-scraper created
 1.执行以下命令
 
 ```shell
-shell
-复制代码kubectl proxy
+kubectl proxy
 ```
 
 2.或者指定监听端口
 
 ```shell
-shell
-复制代码kubectl proxy --port=8001 &
+kubectl proxy --port=8001 &
 ```
 
 3.浏览器访问：[http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/](https://link.juejin.cn?target=http%3A%2F%2Flocalhost%3A8001%2Fapi%2Fv1%2Fnamespaces%2Fkubernetes-dashboard%2Fservices%2Fhttps%3Akubernetes-dashboard%3A%2Fproxy%2F)

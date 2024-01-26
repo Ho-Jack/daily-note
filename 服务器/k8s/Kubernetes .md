@@ -154,11 +154,15 @@ Node节点包括Docker、kubelet、kube-proxy、Fluentd、kube-dns（可选）�
 
 
 
-###### Pod 中容器部署形式:
+##### Pod 中容器部署形式:
 
-- Pod 中部署多个容器，比如 tomcat + mysql + 应用程序，这样就构成了一个完整的服务；
+###### Pod 中部署多个容器
 
-- Pod 中只部署一个容器，比如部署 tomcat 容器，然后由多个 Pod 对外提供一个完整的服务
+比如 tomcat + mysql + 应用程序，这样就构成了一个完整的服务；
+
+###### Pod 中只部署一个容器
+
+比如部署 tomcat 容器，然后由多个 Pod 对外提供一个完整的服务
 
 ![Pod中容器的部署形式](img\Pod中容器的部署形式.webp)
 
