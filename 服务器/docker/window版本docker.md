@@ -1,5 +1,7 @@
 # window的Linux子系统容器WSL
 
+> [安装 WSL | Microsoft Learn](https://learn.microsoft.com/zh-cn/windows/wsl/install)
+
 ## WSL(Windows Subsystem for Linux)
 
 > WSL是一个Linux系统的容器,作为各种Linux版本的容器;WSL依赖于hyper-v虚拟化技术;
@@ -155,7 +157,13 @@
   wsl -d <Linux版本的名字> -u <对应Linux版本的用户,如root>
   ```
 
+- 查看当前目录路径在 WSL 中的装载位置
 
+  ```
+   wsl pwd 
+  ```
+
+  
 
 
 ## Window下安装Docker
@@ -208,12 +216,12 @@
 3. 重新导入并安装
 
    ```shell
-   wsl --import docker-desktop-data d:\WSL\docker-desktop-data.tar d:\docker-desktop-data.tar  --version 2
+   wsl --import docker-desktop-data d:\WSL\docker-desktop-data  d:\docker-desktop-data.tar  --version 2
    ```
 
    
-
-
+   
+   
 
 ### 5. 设置WSL容器下其他Linux版本访问(操作)Docker
 
@@ -224,7 +232,7 @@
 - Windows container: 通过window  访问
 -  Linux container: 通过WSL容器下安装的Linux版本访问
 
-![image-20220701112626206](\img\docker选择访问途径.png)
+![image-20220701112626206](img\docker选择访问途径.png)
 
 #### `Docker Desktop for Windows`切换至Linux container 来访问Docker
 
@@ -267,7 +275,7 @@
 
 无论是在`Windows container`还` Linux container `容器中访问Docker,使用命令`docker ps `查询到的容器都是一样的,都能访问
 
-![docker通过Window和Linux查询容器](\img\docker通过Window和Linux查询容器.png)
+![docker通过Window和Linux查询容器](img\docker通过Window和Linux查询容器.png)
 
 
 
