@@ -34,7 +34,7 @@
 select * from school a left join student b on a.sch_id=b.sch_id;
 ```
 
-![image-20220715151815623](D:\notes\daily-note\JavaNote\数据库\img\左连接left join.png)
+![image-20220715151815623](img\左连接left join.png)
 
 ![左外连接](img\左外连接.png)
 
@@ -88,7 +88,7 @@ left join student b on a.sch_id=b.sch_id
 where b.st_id is null; #右表中st_id字段为空
 ```
 
-![image-20220715160201689](D:\notes\daily-note\JavaNote\数据库\img\外连接差集.png)
+![image-20220715160201689](img\外连接差集.png)
 
 ![差集](img\差集.png)
 
@@ -116,7 +116,7 @@ union
 select * from school a right join student b on a.sch_id=b.sch_id;
 ```
 
-![image-20220715163819114](D:\notes\daily-note\JavaNote\数据库\img\并集.png)![并集2](img\并集2.png)
+![image-20220715163819114](img\并集.png)![并集2](img\并集2.png)
 
 #### 互斥 = 左差集+右差集
 
