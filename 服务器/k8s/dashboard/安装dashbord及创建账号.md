@@ -7,14 +7,13 @@
 1.执行以下命令
 
 ```shell
-shell
-复制代码kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
 ```
 
 2.等待`kubernetes-dashboard`的创建及配置
 
 ```shell
-shell复制代码namespace/kubernetes-dashboard created
+namespace/kubernetes-dashboard created
 serviceaccount/kubernetes-dashboard created
 service/kubernetes-dashboard created
 secret/kubernetes-dashboard-certs created
@@ -63,7 +62,7 @@ RBAC：Roles based Access Control
  `metadata.namespace`，所属命名空间
 
 ```yaml
-yaml复制代码apiVersion: v1
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: admin-user
@@ -73,8 +72,7 @@ metadata:
 2.在yaml文件所在目录执行命令
 
 ```shell
-shell
-复制代码kubectl apply -f k8s-dashboard-adminuser.yaml
+kubectl apply -f k8s-dashboard-adminuser.yaml
 ```
 
 #### 创建一个ClusterRoleBinding
@@ -92,7 +90,7 @@ shell
  1.创建文件：k8s-dashboard-adminuser2clusteradmin.yaml
 
 ```yaml
-yaml复制代码apiVersion: rbac.authorization.k8s.io/v1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: admin-user
@@ -109,8 +107,7 @@ subjects:
 2.在yaml文件所在目录执行命令
 
 ```shell
-shell
-复制代码kubectl apply -f k8s-dashboard-adminuser2clusteradmin.yaml
+kubectl apply -f k8s-dashboard-adminuser2clusteradmin.yaml
 ```
 
 ### 获取Bearer Token
@@ -119,15 +116,13 @@ shell
  `-n`，namespace，指定命名空间
 
 ```shell
-shell
-复制代码kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"
+kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"
 ```
 
 2.获取得到JWT
 
 ```shell
-shell
-复制代码eyJhbGciOiJSUzI1NiIsImtpZCI6IkdfYXVQNXVRZ0d5MGVWV3FveWg2REt6bHM2cEpuMG5xUDF4Rk1LU25adzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXJiNjZuIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI0MTFjYmM0NC02YzJkLTQwM2EtOWY4Yy03N2FjYzQ4MDQ3OTIiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.lSWeiMQ47ZBXMkzBlaGDvqtGLbpRXVwgGCsKSOXX5q9XWLiAgWxrDt8ypsjff1frlhaOgloYiwwZQZBuqBJXyuixxdyI-KQhQHwvngXiZrFZLzNBtp3K9uPuKUMX2NxJMsLnPDEFHx8tXkbba__xwryiJ8rvrckwj4KohTfsq5t2p8Jdrl2FFdGRYncOIHpE8uNEJpJpHzlyMSSvtAj1im1E2X4YyzZOmNmmrvq3dZG7jTXq8uUiDwNBZC6aNdqwd7c38eukl6pJqzjUz0aGhdm6n9Z9AzY37VfSfe0WXr0MFhPvOYY5PL1mBtkb5lC_Kd45WtYpTK49ODKoqbSQYg
+eyJhbGciOiJSUzI1NiIsImtpZCI6IkdfYXVQNXVRZ0d5MGVWV3FveWg2REt6bHM2cEpuMG5xUDF4Rk1LU25adzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXJiNjZuIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI0MTFjYmM0NC02YzJkLTQwM2EtOWY4Yy03N2FjYzQ4MDQ3OTIiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.lSWeiMQ47ZBXMkzBlaGDvqtGLbpRXVwgGCsKSOXX5q9XWLiAgWxrDt8ypsjff1frlhaOgloYiwwZQZBuqBJXyuixxdyI-KQhQHwvngXiZrFZLzNBtp3K9uPuKUMX2NxJMsLnPDEFHx8tXkbba__xwryiJ8rvrckwj4KohTfsq5t2p8Jdrl2FFdGRYncOIHpE8uNEJpJpHzlyMSSvtAj1im1E2X4YyzZOmNmmrvq3dZG7jTXq8uUiDwNBZC6aNdqwd7c38eukl6pJqzjUz0aGhdm6n9Z9AzY37VfSfe0WXr0MFhPvOYY5PL1mBtkb5lC_Kd45WtYpTK49ODKoqbSQYg
 ```
 
 3.使用token即可登入Dashboard
@@ -137,7 +132,7 @@ shell
 通过以下命令可删除 ServiceAccount 和 ClusterRoleBinding
 
 ```shell
-shell复制代码kubectl -n kubernetes-dashboard delete serviceaccount admin-user
+kubectl -n kubernetes-dashboard delete serviceaccount admin-user
 kubectl -n kubernetes-dashboard delete clusterrolebinding admin-user
 ```
 
