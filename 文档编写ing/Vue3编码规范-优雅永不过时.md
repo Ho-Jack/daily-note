@@ -8,7 +8,7 @@
 
 - 做到能轻松地将这一组代码移动到一个外部文件中(抽离成Hooks)
 
-  ![vue3代码规范-按功能块写代码](../../Goldpac/UMV/common-service-center-web/doc/img/vue3代码规范-按功能块写代码.gif)
+  ![vue3代码规范-按功能块写代码](img/vue3代码规范-按功能块写代码-1723628023701-3.gif)
 
   ###### 按功能块写法对比:
 
@@ -227,7 +227,7 @@
 
 好处: 通过`url`上的路径就能直接找到组件在项目中的位置
 
-![image-20240814154547690](C:/Users/hao-jie.chen/AppData/Roaming/Typora/typora-user-images/image-20240814154547690.png)
+![image-20240814154547690](img/image-20240814154547690.png)
 
 图中,个人中心的这个菜单的路径是`/personal/personnal-center` ,如果页面有报错,根据URL上的路径就直接能定位出现问题的组件的是在项目中`/Personal/PersonalCenter`下
 
@@ -267,7 +267,7 @@
 1. 方便跳转,在该业务目录下即可直达`api`请求的js文件,方便维护
 2. api接口与业务联系更紧密,提高了代码可读性,
 
-
+![](img/Snipaste_2024-08-14_16-53-33-1723628023701-4.png)
 
 
 
