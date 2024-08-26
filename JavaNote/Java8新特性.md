@@ -690,6 +690,8 @@ System.out.println(strings.stream().count());
 
 - **collect**
 
+> `Collector` 接口提供了许多预定义的收集器（例如 `toList()`、`toSet()`、`toMap()`、`joining()` 等）
+
 collect就是一个归约操作，可以接受各种做法作为参数，将流中的元素累积成一个汇总结果：
 
 ```java

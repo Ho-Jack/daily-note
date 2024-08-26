@@ -11,7 +11,7 @@ DAO接口：关联数据库操作  (与mapper映射文件的`<mapper namespace="
     <id column="" property=""/>  <!-- 用于表示哪个列是主键 -->
     <result column="" property=""/><!-- 注入到字段或JavaBean属性的普通结果 -->
 
-   <!-- 用于一对一关联  关联的是对象--> 
+   <!-- 用于一对一关联  关联的是对象   association  javaType  --> 
     <result column="" property="XX.xx"/>
     
     <association property="属性名称" javaType="resultMap标签关联的type">
@@ -20,7 +20,7 @@ DAO接口：关联数据库操作  (与mapper映射文件的`<mapper namespace="
     </association>
     <association property="json的字段名" select="mapper映射文件的其他方法" column="传入select方法的参数">
     </association>
-    <!-- 用于一对多、多对多关联  关联的是集合-->
+    <!-- 用于一对多、多对多关联  关联的是集合 collection   ofType-->
     <collection property="json的字段名" ofType="resultMap标签关联的type">
          <id property="id" column="role_id"></id>
 		<result property="name" column="role_name"></result>
@@ -712,7 +712,7 @@ mysql_password=admin123
 >| ---------------- | ------------------------------------------ |
 > | id               | 绑定对应DAO接口中的方法                    |
 >| parameterType    | 用以指定接口中对应方法的参数类型（可省略） |
-> | useGeneratedKeys | 设置添加操作是否需要回填生成的主键         |
+> | useGeneratedKeys | 设置添加操作是否需要**回填生成的主键**     |
 >| keyProperty      | 指定回填的id设置到参数对象中的哪个属性     |
 > | timeout          | 设置此操作的超时时间，如果不设置则一直等待 |
 
@@ -735,6 +735,78 @@ mysql_password=admin123
 </insert>
 ```
 
+新增一条数据
+
+```xml
+    <insert id="testInsert">
+        insert into massive_data_insert_test
+            (value1,value2)
+        values
+             (#{value1},#{value2})
+    </insert>
+
+```
+
+新增多条,利用动态SQL
+
+```java
+ public void insertTestPackageTestItemList(@Param("testPackageTestItemList") List<TestPackageTestItem> testPackageTestItemList);
+```
+
+
+
+```xml
+  <insert id="insertTestPackageTestItemList" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into testPackage_testItem
+        (test_package_id, test_item_id)
+        values
+        <foreach item="item" collection="testPackageTestItemList" index="index" separator=",">
+            (
+            #{item.testPackageId},
+            #{item.testItemId}
+            )
+        </foreach>
+    </insert>
+```
+
+判断插入
+
+```xml
+ <insert id="insertTestItem" parameterType="TestItem">
+        insert into test_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">item_id,</if>
+            <if test="testItems != null and testItems != ''">test_items,</if>
+            <if test="acceptanceLevel != null">acceptance_level,</if>
+            <if test="accessoriesType != null">accessories_type,</if>
+            <if test="hardwareType != null">hardware_type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="ifdelete != null">ifdelete,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">#{itemId},</if>
+            <if test="testItems != null and testItems != ''">#{testItems},</if>
+            <if test="acceptanceLevel != null">#{acceptanceLevel},</if>
+            <if test="accessoriesType != null">#{accessoriesType},</if>
+            <if test="hardwareType != null">#{hardwareType},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="ifdelete != null">#{ifdelete},</if>
+        </trim>
+    </insert>
+```
+
+
+
+
+
 #### 9.4 delete标签
 
 > 声明删除操作
@@ -742,6 +814,19 @@ mysql_password=admin123
 #### 9.5 update标签
 
 > 声明修改操作
+
+```xml
+  <update id="deleteAssistFactoryById" parameterType="String">
+        update assist_factory
+        <set>
+            ifdelete = 1,
+            update_time = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+```
+
+
 
 #### 9.6 select标签
 
@@ -770,6 +855,16 @@ mysql_password=admin123
         select sid , stu_num , stu_name , stu_gender , stu_age from tb_students
         where stu_num=#{aaa}
  </select>
+```
+
+```xml
+    <select id="selectProductCaseListByList" resultMap="ProductCaseResult">
+        <include refid="selectProductCase"/>
+        where (a.case_id,product_id,module_id,package_id) in
+        <foreach collection="list" item="ProductCase" open="(" close=")" separator=",">
+            (#{ProductCase.caseId},#{ProductCase.productId},#{ProductCase.moduleId},#{ProductCase.packageId})
+        </foreach>
+    </select>
 ```
 
 
@@ -1379,6 +1474,21 @@ public void testSearchMember() {
 
 #### 12.5 **trim**
 
+> 修饰SQL
+
+- **prefix：**
+
+  表示在trim包裹的SQL语句前面添加的指定内容。
+- **suffix：**
+
+  表示在trim包裹的SQL末尾添加指定内容
+- **prefixOverrides：**
+
+  表示去掉（覆盖）trim包裹的SQL的指定首部内容
+- **suffixOverrides：**
+
+  表示去掉（覆盖）trim包裹的SQL的指定尾部内容
+
 ```xml
 <select id="searchMember" resultMap="memberMap">
     select member_id,member_nick,member_gender,member_age,member_city
@@ -1419,6 +1529,8 @@ public interface MemberDAO {
 </select>
 ```
 
+
+
 **测试**
 
 ```java
@@ -1433,6 +1545,24 @@ public void searchMemberByCity() {
         System.out.println(m);
     }
 }
+```
+
+#### 12.7 sql
+
+> #### sql：相当于 Java 中的代码提重，需要配合 include 使用
+
+```
+<sql id="table"> user </sql>
+```
+
+#### 12.8 include
+
+> #### 相当于 Java 中的方法调用
+
+```xml
+<select id="count" resultType="java.lang.Integer">
+	select count(*) from <include refid=“table（sql 标签中的 id 值）” />
+</select>
 ```
 
 

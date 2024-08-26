@@ -96,7 +96,7 @@ Service层叫服务层，**中间层**，沟通DAL层和Controler层,
 
 - DTO（Data Transfer Object）：**数据传输对象**，Service或Manager**向外传输**的对象。
 
-- DAO (Data Access Object): **数据访问对象**，作用：访问数据库，包含对数据的操作方法；
+- DAO (Data Access Object): **数据访问对象**，作用：**访问数据库**，包含对数据的操作方法；
 
 - PO（Persistant Object）持久化对象，概念由ORM产生，与数据库中的表相映射的Java对象，通常是数据表中的一条记录，只是数据展示没有操作
 

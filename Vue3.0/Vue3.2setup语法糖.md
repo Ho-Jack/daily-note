@@ -96,7 +96,9 @@ import MyComponent from './MyComponent.vue'
 
 >`defineProps` 和 `defineEmits`具备完整的类型推断并且在 `<script setup>` 中是**直接可用的**(浏览了一下掘金，发现大部分文章demo还是通过import引入这2个api，这点官方文档写得很清楚)
 
-#### defineProps 代替props，接收父组件传递的数据（父组件向子组件传参）
+#### 3.1. defineProps 代替props
+
+> 接收父组件传递的数据（父组件向子组件传参）
 
 父组件:
 
@@ -139,10 +141,98 @@ console.log(props.title) //父的值
 
 ```
 
+##### 3.1.1. defineProps 存在的问题
+
+##### `$()` 可以解决以下3种问题:
+
+###### 1. 必须`props.x` 的方式访问这些 prop
 
 
 
-### defineEmit  代替emit，子组件向父组件传递数据（子组件向外暴露数据）
+###### 2. 不能够解构 `defineProps` 的返回值
+
+> 解构后,得到的变量将**不是响应式的**、也**不会更新**
+
+
+
+###### 3. 使用TS设置prop默认值麻烦
+
+```tsx
+const props = defineProps<{
+  foo: string
+  bar?: number
+}>()
+```
+
+
+
+TS设置prop默认值的方案:
+
+- `withDefaults()`
+
+  ```tsx
+  export interface Props {
+    msg?: string
+    labels?: string[]
+  }
+  
+  const props = withDefaults(defineProps<Props>(), {
+    msg: 'hello',
+    labels: () => ['one', 'two']
+  })
+  ```
+
+- `watchEffect()`
+
+  > 利用watchEffect其中一个特性,"会自动感知**代码依赖**，和watch不一样，watchEffect会主动绑定监听数据"
+
+  ```vue
+  <script setup lang="ts">
+    interface Props {
+      msg: string
+      count?: number
+      foo?: string
+    }
+  
+    const {
+      msg,
+      // 默认值正常可用
+      count = 1,
+      // 解构时命别名也可用
+      // 这里我们就将 `props.foo` 命别名为 `bar`
+      foo: bar
+    } = defineProps<Props>()
+  
+    watchEffect(() => {
+      // 会在 props 变化时打印
+      console.log(msg, count, bar)
+    })
+  </script>
+  
+  ```
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+​    
+
+  
+
+  
+
+#### 3.2. defineEmit  代替emit
+
+> 子组件向父组件传递数据（子组件向外暴露数据）
 
 子组件代码:
 

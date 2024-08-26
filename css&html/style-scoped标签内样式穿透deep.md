@@ -16,6 +16,7 @@ tags: [CSS, 开发笔记]
  /deep/ 
  ::v-deep       
  >>>            只能作用于普通css 对scss和less无效
+:deep(xxx)   //vue3写法
 ```
 
 #### 目前官推 ::v-deep ，在vue3中继续支持，Vue3放弃了/deep/的支持

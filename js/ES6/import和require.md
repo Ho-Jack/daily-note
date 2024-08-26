@@ -1,6 +1,6 @@
 ---
 title: import和require
-date: 2020-05-22  11:31:38
+date: 2021-05-22  11:31:38
 tags: [JS, ES6, 开发笔记]
 ---
 
