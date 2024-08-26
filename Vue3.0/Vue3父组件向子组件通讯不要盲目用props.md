@@ -133,6 +133,7 @@ console.log(msg) //父组件信息
 | ---------------- | -------------- | -------------------- |
 | 父传子           | props          | props                |
 | 父传子           | provide/inject | provide/inject       |
+| 父子互相通讯     | v-mode/        | v-model/defineModel  |
 | 父传子           | $attrs         | attrs                |
 | 父组件访问子组件 | $children      | 无                   |
 | 父组件访问子组件 | $ref           | expose&ref           |

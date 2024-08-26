@@ -46,7 +46,7 @@ demo.value = 1;
 
 > 当给demo这个类型限定为Boolean的变量赋值为其他基础类型的数据时,类型检查触发,爆红提示
 
-![](D:\notes\daily-note\Vue3.0\img\ts类型检查.png)
+![](\img\ts类型检查.png)
 
 
 
