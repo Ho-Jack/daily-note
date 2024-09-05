@@ -8,7 +8,7 @@
 
 ## 概念:
 
-一个K8S系统，通常称为一个K8S**集群**（Cluster）,包括一个Master主节点和一群Node节点;
+一个K8S系统，通常称为一个K8S**集群**（Cluster [ˈklʌstər]）,包括一个Master主节点和一群Node节点;
 
 **K8S是负责自动化运维管理多个Docker程序的集群**
 
