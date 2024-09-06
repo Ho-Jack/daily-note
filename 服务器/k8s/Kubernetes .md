@@ -27,6 +27,7 @@
 ###### 自动部署和回滚
 
 - 自动的对容器进行部署，如果发生紧急事件，当前的新版本出现了生产事故并且当前来不及进行修复的话可以回滚到历史稳定版本。
+- Kubernetes中的四种部署策略：滚动更新、重新创建、蓝绿部署和金丝雀部署。
 
 
 
@@ -62,7 +63,7 @@ Master节点包括API Server、Scheduler、Controller manager、etcd。
 
 ##### Node节点
 
-![img](D:\notes\daily-note\服务器\k8s\img\node节点.png)
+![img](img\node节点.png)
 
 Node节点包括Docker、kubelet、kube-proxy、Fluentd、kube-dns（可选），还有就是**Pod**。
 
