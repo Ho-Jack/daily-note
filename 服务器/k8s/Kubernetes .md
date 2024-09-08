@@ -1,5 +1,7 @@
 # Kubernetes (k8s)
 
+容器编排引擎
+
 > K8S，就是基于容器的集群管理平台,操作部署多个容器的工具;
 >
 > 解决了Docker应用于具体的业务实现存在编排、管理和调度等问题;
@@ -285,7 +287,7 @@ Namespace（命令空间）是用来做资源的逻辑隔离的，比如的**Pod
 - Deployment的作用是管理和控制Pod和ReplicaSet
 - ReplicaSet的作用就是管理和控制Pod
 
-![image-20230626110947645](D:\notes\daily-note\服务器\k8s\img\Deployment 和 ReplicaSet（简称RS）.png)
+![image-20230626110947645](img\Deployment 和 ReplicaSet（简称RS）.png)
 
 
 
