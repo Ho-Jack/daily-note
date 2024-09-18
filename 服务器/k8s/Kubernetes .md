@@ -205,8 +205,8 @@ Pause 容器:每个 Pod 中必须有一个 Pause 容器，主要作用是：提�
 
 > Kubernetes 为 Pods 提供自己的 IP 地址，并为一组 Pod 提供相同的 DNS 名， 并且可以在它们之间进行负载均衡。
 
-- Service:集群内部的网络拓扑。
-- Ingress:集群外部需要Ingress访问集群内部
+- Service:集群**内部**的网络拓扑。
+- Ingress:集群**外部**需要Ingress访问集群内部
 
 ##### Service
 
@@ -257,7 +257,7 @@ NodePort 是一种扩展 ClusterIP 的功能，它会在**每个节点上分配�
 
 
 
-#### Namespace
+#### Namespace（命令空间）
 
 Namespace（命令空间）是用来做资源的逻辑隔离的，比如的**Pod、Deployment、Service都属于资源**，不同Namespace下资源可以重名。同一Namespace下资源名需唯一
 
