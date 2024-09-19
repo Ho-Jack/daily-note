@@ -216,6 +216,8 @@ Pause 容器:每个 Pod 中必须有一个 Pause 容器，主要作用是：提�
 
 - 让多个不同主机上的 Pod 能够相互通信
 
+- 允许应用程序通过服务名而不是IP地址相互通信（pod通过服务名通讯）
+
   ![service解决pod之间通讯问题](img\service解决pod之间通讯问题.png)
 
 概念:
@@ -237,6 +239,10 @@ Pause 容器:每个 Pod 中必须有一个 Pause 容器，主要作用是：提�
 
 
 ##### Ingress:
+
+功能： 提供HTTP和HTTPS路由到集群中服务的规则。
+
+作用： 允许从集群**外部访问集群内**的服务，并执行负载均衡和路由。
 
 >Ingress 是对集群中服务的外部访问进行管理的 API 对象，典型的访问方式是 HTTP。
 >Ingress 可以提供负载均衡、SSL 终结和基于名称的虚拟托管。
@@ -284,7 +290,17 @@ Namespace（命令空间）是用来做资源的逻辑隔离的，比如的**Pod
 
 #### Deployment(无状态) 和 ReplicaSet（简称RS）:
 
-- Deployment的作用是管理和控制Pod和ReplicaSet
+##### Deployment
+
+Deployment的作用是管理和控制Pod和ReplicaSet
+
+- 创建指定数量的 Pod 副本
+- 滚动更新 Pod，保证更新过程中有指定数量的 Pod 可用
+- 扩大/缩小 Pod 的数量
+- 保存部署的历史记录，方便回滚应用
+
+##### ReplicaSet
+
 - ReplicaSet的作用就是管理和控制Pod
 
 ![image-20230626110947645](img\Deployment 和 ReplicaSet（简称RS）.png)
@@ -300,6 +316,13 @@ Namespace（命令空间）是用来做资源的逻辑隔离的，比如的**Pod
 ##### 前提知识:
 
 RC或Deployment控制**Pod的名字是随机产生**的，Pod的IP地址也是在运行期才确定且可能有变动的，我们事先无法为每个Pod确定唯一不变的ID，为了能够在其他节点上恢复某个失败的节点，这种集群中的Pod需要挂接某种共享存储
+
+##### 特点
+
+- 稳定的、唯一的网络[标识符](https://zhida.zhihu.com/search?q=标识符&zhida_source=entity&is_preview=1)
+- 稳定的、持久的存储
+- 有序的、优雅的部署和扩缩
+- 有序的、自动的滚动更新。
 
 ##### 作用
 
@@ -329,6 +352,14 @@ MySQL集群、MongoDB集群、Kafka集群、Zookeeper集群等，这些应用集
 
 
 
+
+#### Deployment和StatefulSet的区别
+
+|                  | Deployment                            | StatefulSet                                          |
+| ---------------- | ------------------------------------- | ---------------------------------------------------- |
+| 网络             | Pod 的IP是一个**随机**的集群地址      | Pod 会被分配形如 $(statefulset 名称)-$(序号)的主机名 |
+| 存储             | **临时存储**，删除 Pod 后数据也丟失了 | **持久存储**，删除 Pod 数据也不会丢失                |
+| 部署、扩缩、滚动 | 无序，所有 Pod 都是相互等价的         | 严格按照编号正序创建 Pod、逆序删除或更新 Pod         |
 
 
 
