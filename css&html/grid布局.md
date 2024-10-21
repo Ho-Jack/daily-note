@@ -172,6 +172,59 @@
 
 
 
+
+
+### 单元格布局属性
+
+#### `justify-items`
+
+> 单元格内容的水平位置（左中右）
+
+#### `align-items`
+
+> 单元格的垂直位置（上中下）
+
+- start：对齐单元格的起始边缘
+- end：对齐单元格的结束边缘
+- center：单元格内部居中
+- stretch：拉伸，占满单元格的整个宽度（默认值）
+
+
+
+### 内容区域属性
+
+#### `justify-content`
+
+> 整个内容区域在容器里面的水平位置（左中右）
+
+- start - 对齐容器的起始边框
+
+- end - 对齐容器的结束边框
+
+- center - 容器内部居中
+
+- space-around - 每个项目两侧的间隔相等。所以，项目之间的间隔比项目与容器边框的间隔大一倍
+
+- space-between - 项目与项目的间隔相等，项目与容器边框之间没有间隔
+
+- space-evenly - 项目与项目的间隔相等，项目与容器边框之间也是同样长度的间隔
+
+- stretch - 项目大小没有指定时，拉伸占据整个网格容器
+
+  ![image](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/26/173895926d20f5d6~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp#?w=1216&h=770&s=68085&e=png&b=fefbfb)
+
+  ![image](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/26/173895927ba770c4~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp#?w=1240&h=741&s=121464&e=png&b=fefbfb)
+
+
+
+#### `align-content`
+
+> 整个内容区域在容器里面的垂直位置（上中下）
+
+#### `place-content`
+
+
+
 ## 其他内容：
 
 ##### repeat() 函数
